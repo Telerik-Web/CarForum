@@ -8,21 +8,22 @@ import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@PropertySource("classpath:application.properties")
+@EnableTransactionManagement
 public class HibernateConfig {
 
     private final String dbUrl, dbUsername, dbPassword;
 
     @Autowired
     public HibernateConfig(Environment env) {
-        dbUrl = env.getProperty("spring.datasource.url");
-        dbUsername = env.getProperty("spring.datasource.username");
-        dbPassword = env.getProperty("spring.datasource.password");
+        dbUrl = env.getProperty("database.url");
+        dbUsername = env.getProperty("database.username");
+        dbPassword = env.getProperty("database.password");
     }
 
     @Bean(name = "entityManagerFactory")

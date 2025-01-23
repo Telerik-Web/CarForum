@@ -14,11 +14,11 @@ public class User {
     @Column(name = "id")
     private int Id;
 
-    @Size(min = 4, max = 32, message = "Firstname should be between 4 and 32 characters!")
+
     @Column(name = "first_name")
     private String firstName;
 
-    @Size(min = 4, max = 32, message = "Lastname should be between 4 and 32 characters!")
+
     @Column(name = "last_name")
     private String lastName;
 
