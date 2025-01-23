@@ -1,49 +1,60 @@
-CREATE TABLE users (
-                       id INT AUTO_INCREMENT PRIMARY KEY,
-                       first_name VARCHAR(255) NOT NULL,
-                       last_name VARCHAR(255) NOT NULL,
-                       email VARCHAR(255) NOT NULL UNIQUE,
-                       username VARCHAR(255) NOT NULL UNIQUE,
-                       password VARCHAR(255) NOT NULL,
-                       is_admin BOOLEAN DEFAULT FALSE
+create table users
+(
+    user_id    int auto_increment
+        primary key,
+    first_name varchar(32) not null,
+    last_name  varchar(32) not null,
+    email      varchar(50) not null,
+    username   varchar(32) not null,
+    password   varchar(32) not null,
+    isAdmin    tinyint(1)  not null,
+    isBlocked  tinyint(1)  not null
 );
 
-
-CREATE TABLE admins (
-                        id INT PRIMARY KEY,
-                        phone_number VARCHAR(255), -- Optional field
-                        FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE
+create table phone_numbers
+(
+    phone_number_id int auto_increment
+        primary key,
+    phone_number    varchar(32) not null,
+    user_id         int         null,
+    constraint phone_numbers_users_user_id_fk
+        foreign key (user_id) references forum.users (user_id)
 );
 
-
-CREATE TABLE posts (
-                       id INT AUTO_INCREMENT PRIMARY KEY,
-                       user_id INT NOT NULL,
-                       title VARCHAR(255) NOT NULL,
-                       content TEXT NOT NULL,
-                       likes_count INT DEFAULT 0,
-                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+create table posts
+(
+    post_id   int auto_increment
+        primary key,
+    title     varchar(128)  not null,
+    content   varchar(8192) not null,
+    user_id   int           null,
+    timestamp timestamp     default current_timestamp,
+    constraint posts_users_user_id_fk
+        foreign key (user_id) references forum.users (user_id)
 );
 
-
-CREATE TABLE comments (
-                          id INT AUTO_INCREMENT PRIMARY KEY,
-                          post_id INT NOT NULL,
-                          user_id INT NOT NULL,
-                          content TEXT NOT NULL,
-                          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                          FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
-                          FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+create table comments
+(
+    comment_id int auto_increment
+        primary key,
+    content    varchar(2000) not null,
+    post_id    int           null,
+    user_id    int           null,
+    constraint comments_posts_post_id_fk
+        foreign key (post_id) references forum.posts (post_id),
+    constraint comments_users_user_id_fk
+        foreign key (user_id) references forum.users (user_id)
 );
 
-
-CREATE TABLE likes (
-                       id INT AUTO_INCREMENT PRIMARY KEY,
-                       post_id INT NOT NULL,
-                       user_id INT NOT NULL,
-                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                       FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
-                       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-                       UNIQUE (post_id, user_id) -- Prevent duplicate likes from the same user
+create table likes
+(
+    like_id int not null
+        primary key,
+    post_id int null,
+    user_id int null,
+    constraint likes_posts_post_id_fk
+        foreign key (post_id) references forum.posts (post_id),
+    constraint likes_users_user_id_fk
+        foreign key (user_id) references forum.users (user_id)
 );
+

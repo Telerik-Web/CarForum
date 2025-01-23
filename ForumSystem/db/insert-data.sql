@@ -1,40 +1,27 @@
-INSERT INTO users (first_name, last_name, email, username, password, is_admin)
-VALUES
-    ('John', 'Doe', 'john.doe@example.com', 'johndoe', 'password123', FALSE),
-    ('Jane', 'Smith', 'jane.smith@example.com', 'janesmith', 'securepass', FALSE),
-    ('Admin', 'User', 'admin.user@example.com', 'adminuser', 'adminpass', TRUE),
-    ('Alice', 'Johnson', 'alice.johnson@example.com', 'alicejohnson', 'alice123', FALSE),
-    ('Bob', 'Williams', 'bob.williams@example.com', 'bobwilliams', 'bobpass', FALSE);
+INSERT INTO users (first_name, last_name, email, username, password, isAdmin, isBlocked) VALUES
+ ('John', 'Doe', 'john.doe@example.com', 'johndoe', 'password123', 1, 0),
+ ('Jane', 'Smith', 'jane.smith@example.com', 'janesmith', 'password456', 0, 0),
+ ('Michael', 'Brown', 'michael.brown@example.com', 'mikebrown', 'securepass', 0, 0);
+
+INSERT INTO phone_numbers (phone_number, user_id) VALUES
+('0885783123', 1),
+('0899450256', 2),
+('0889712748', 3);
+
+INSERT INTO posts (title, content, user_id, timestamp) VALUES
+('Top 5 Cars of 2025', 'Let\'s discuss the best cars of 2025. What are your top picks?', 1, CURRENT_TIMESTAMP),
+('Electric Cars vs Gasoline Cars', 'Do you think electric cars will completely replace gasoline cars?', 2, CURRENT_TIMESTAMP),
+('Tips for Maintaining Your Car', 'Here are some tips to keep your car in top shape.', 3, CURRENT_TIMESTAMP);
 
 
-INSERT INTO admins (id, phone_number)
-VALUES
-    (3, '123-456-7890');
+INSERT INTO comments (content, post_id, user_id) VALUES
+('I think the Tesla Model S is still the best!', 1, 2),
+('Electric cars are the future, but we still need better infrastructure.', 2, 3),
+('Great tips! I also recommend checking tire pressure regularly.', 3, 1);
 
-INSERT INTO posts (user_id, title, content, likes_count)
-VALUES
-    (1, 'Welcome to My Blog', 'This is the first post on my blog. I hope you enjoy it!', 5),
-    (2, 'My Travel Adventures', 'I recently visited Japan, and it was amazing! Here’s what I saw...', 12),
-    (4, 'Coding Tips for Beginners', 'Here are some essential tips for anyone starting with programming.', 8),
-    (5, 'Best Books I Read This Year', 'In this post, I’ll share my favorite books from the past year.', 3);
 
-INSERT INTO comments (post_id, user_id, content)
-VALUES
-    (1, 2, 'Great first post, John! Keep it up.'),
-    (2, 1, 'Japan is on my bucket list! Thanks for sharing your experience.'),
-    (2, 4, 'I love Japan too! Did you try the food there?'),
-    (3, 5, 'These tips are super helpful. Thanks, Alice!'),
-    (4, 1, 'I’m adding these books to my reading list. Appreciate the recommendations!');
-
-INSERT INTO likes (post_id, user_id)
-VALUES
-    (1, 2),
-    (1, 4),
-    (2, 1),
-    (2, 4),
-    (2, 5),
-    (3, 1),
-    (3, 2),
-    (3, 5),
-    (4, 2),
-    (4, 4);
+INSERT INTO likes (like_id, post_id, user_id) VALUES
+(1, 1, 2),
+(2, 1, 3),
+(3, 2, 1),
+(4, 3, 2);
