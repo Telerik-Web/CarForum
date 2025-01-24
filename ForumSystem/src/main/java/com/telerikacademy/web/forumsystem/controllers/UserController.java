@@ -46,10 +46,46 @@ public class UserController {
         }
     }
 
+//    @GetMapping("/search/username")
+//    public User getUsersByUsername(@RequestParam String username) {
+//        try {
+//            return userService.findByUsername(username);
+//        } catch (EntityNotFoundException e) {
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+//        }
+//    }
+//
+//    @GetMapping("/search/email")
+//    public User getUsersByEmail(@RequestParam String email) {
+//        try {
+//            return userService.findByEmail(email);
+//        } catch (EntityNotFoundException e) {
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+//        }
+//    }
+//
+//    @GetMapping("/search/firstName")
+//    public User getUsersByFirstname(@RequestParam String firstName) {
+//        try {
+//            return userService.findByFirstname(firstName);
+//        } catch (EntityNotFoundException e) {
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+//        }
+//    }
+
     @GetMapping("/search")
-    public User getUsersByName(@RequestParam String name) {
+    public User searchUser(@RequestParam String type, @RequestParam String value) {
         try {
-            return userService.findByUsername(name);
+            switch (type) {
+                case "username":
+                    return userService.findByUsername(value);
+                case "email":
+                    return userService.findByEmail(value);
+                case "firstName":
+                    return userService.findByFirstname(value);
+                default:
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, type);
+            }
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -59,7 +95,7 @@ public class UserController {
     public User createUser(@RequestHeader HttpHeaders headers, @RequestBody UserDto userDto) {
         try {
             User user = userMapper.fromDto(userDto);
-            userService.createUser(headers, user);
+            userService.createUser(user);
             return user;
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -71,9 +107,9 @@ public class UserController {
     @PutMapping("/{id}")
     public User updateUser(@RequestHeader HttpHeaders headers, @PathVariable int id, @RequestBody UserDto userDto) {
         try {
-            //User user = authorizationHelper.tryGetUser(headers);
+            User userFromHeader = authorizationHelper.tryGetUser(headers);
             User user = userMapper.fromDto(userDto);
-            userService.updateUser(headers, user, id);
+            userService.updateUser(user, userFromHeader, id);
             return user;
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -87,7 +123,8 @@ public class UserController {
     @DeleteMapping("/{id}")
     public void deleteUser(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
-            userService.deleteUser(headers, id);
+            User userFromHeader = authorizationHelper.tryGetUser(headers);
+            userService.deleteUser(id, userFromHeader);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (UnauthorizedOperationException e) {
@@ -99,3 +136,5 @@ public class UserController {
 
 //post, put, delete
 // admin logic
+//username email firstName
+//view all posts

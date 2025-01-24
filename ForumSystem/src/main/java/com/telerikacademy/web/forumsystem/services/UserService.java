@@ -16,9 +16,11 @@ public interface UserService {
 
     User findByEmail(String email);
 
-    User createUser(@RequestHeader HttpHeaders headers, User user);
+    User findByFirstname(String firstName);
 
-    User updateUser(@RequestHeader HttpHeaders headers, User user, int id);
+    User createUser(User user);
 
-    void deleteUser(@RequestHeader HttpHeaders headers, int id);
+    User updateUser(User user, User userFromHeader, int id);
+
+    void deleteUser(int id, User userFromHeader);
 }

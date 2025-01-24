@@ -65,6 +65,18 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public User findByFirstname(String firstName) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> user = session.createQuery("from User where firstName = :firstname", User.class);
+            user.setParameter("firstName", firstName);
+            return user
+                    .stream()
+                    .findFirst()
+                    .orElseThrow(() -> new EntityNotFoundException("User", "firstname", firstName));
+        }
+    }
+
+    @Override
     public void createUser(User user) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();

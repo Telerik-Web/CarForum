@@ -19,12 +19,10 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     UserRepository userRepository;
-    AuthorizationHelper authorizationHelper;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, AuthorizationHelper authorizationHelper) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.authorizationHelper = authorizationHelper;
     }
 
     @Override
@@ -48,7 +46,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(@RequestHeader HttpHeaders headers, User user) {
+    public User findByFirstname(String firstName) {
+        return userRepository.findByFirstname(firstName);
+    }
+
+    @Override
+    public User createUser(User user) {
         boolean exists = true;
 
         try {
@@ -66,10 +69,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(@RequestHeader HttpHeaders headers, User user, int id) {
+    public User updateUser(User user, User userFromHeader, int id) {
         boolean exists = true;
 
-        if (!user.isAdmin() || !authorizationHelper.tryGetUser(headers).equals(user)) {
+        if (!user.isAdmin() || !userFromHeader.equals(user)) {
             throw new UnauthorizedOperationException("You do not have permission to update this user");
         }
 
@@ -91,11 +94,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(@RequestHeader HttpHeaders headers, int id) {
+    public void deleteUser(int id, User userFromHeader) {
         User user = userRepository.findById(id);
 
-        if (!user.isAdmin() || !authorizationHelper.tryGetUser(headers).equals(user)) {
-            throw new UnauthorizedOperationException("You do not have permission to update this user");
+        if (!user.isAdmin() || !userFromHeader.equals(user)) {
+            throw new UnauthorizedOperationException("You do not have permission to delete this user");
         }
         userRepository.deleteUser(id);
     }
