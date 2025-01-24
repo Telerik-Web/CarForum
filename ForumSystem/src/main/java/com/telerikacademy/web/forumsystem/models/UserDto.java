@@ -1,8 +1,10 @@
 package com.telerikacademy.web.forumsystem.models;
 
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.checkerframework.common.aliasing.qual.Unique;
 
 public class UserDto {
 
@@ -14,6 +16,8 @@ public class UserDto {
     @Size(min = 4, max = 32, message = "Lastname should be between 4 and 32 symbols.")
     private String lastName;
 
+    @Email
+    @Unique
     @NotNull
     private String email;
 
@@ -27,10 +31,11 @@ public class UserDto {
     public UserDto() {
     }
 
-    public UserDto(String firstName, String lastName, String email) {
+    public UserDto(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.password = password;
     }
 
     public String getFirstName() {

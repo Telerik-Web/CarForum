@@ -19,30 +19,31 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "email")
+    @Column
     private String email;
 
-    @Column(name = "username")
+    @Column
     private String username;
 
     @JsonIgnore
-    @Column(name = "password")
+    @Column
     private String password;
 
-    @Column(name = "isAdmin")
+    @Column
     private boolean isAdmin;
 
-    @Column(name = "isBlocked")
+    @Column
     private boolean isBlocked;
 
     public User() {
     }
 
-    public User(String firstName, String lastName, int id, String email) {
+    public User(String firstName, String lastName, int id, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.id = id;
         this.email = email;
+        this.password = password;
     }
 
     public int getId() {
