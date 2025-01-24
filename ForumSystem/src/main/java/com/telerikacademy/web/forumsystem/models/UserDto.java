@@ -1,56 +1,36 @@
 package com.telerikacademy.web.forumsystem.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
-@Entity
-@Table(name = "users")
-public class User {
+public class UserDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private int id;
-
-    @Column(name = "first_name")
+    @NotNull(message = "Firstname can't be empty.")
+    @Size(min = 4, max = 32, message = "Firstname should be between 4 and 32 symbols.")
     private String firstName;
 
-    @Column(name = "last_name")
+    @NotNull(message = "Lastname can't be empty.")
+    @Size(min = 4, max = 32, message = "Lastname should be between 4 and 32 symbols.")
     private String lastName;
 
-    @Column(name = "email")
+    @NotNull
     private String email;
 
-    @Column(name = "username")
-    private String username;
-
-    @JsonIgnore
-    @Column(name = "password")
+    @NotNull
     private String password;
 
-    @Column(name = "isAdmin")
     private boolean isAdmin;
 
-    @Column(name = "isBlocked")
     private boolean isBlocked;
 
-    public User() {
+    public UserDto() {
     }
 
-    public User(String firstName, String lastName, int id, String email) {
+    public UserDto(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.id = id;
         this.email = email;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getFirstName() {
@@ -75,14 +55,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPassword() {

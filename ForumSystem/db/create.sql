@@ -4,7 +4,7 @@ create table users
         primary key,
     first_name varchar(32) not null,
     last_name  varchar(32) not null,
-    email      varchar(50) not null,
+    email      varchar(50) not null unique,
     username   varchar(32) not null,
     password   varchar(32) not null,
     isAdmin    tinyint(1)  not null,
