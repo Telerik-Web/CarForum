@@ -26,6 +26,11 @@ public class PermissionHelper {
         }
     }
 
+    public static void checkIfCreatorOrAdmin(int userId, User user) {
+        if (!(userId == user.getId() || user.isAdmin())) {
+            throw new UnauthorizedOperationException(AUTHORIZATION_PERMISSION_ERROR);
+        }
+    }
 
     public static void checkIfBlocked(User user) {
         if (user.isBlocked()) {
