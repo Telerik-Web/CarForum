@@ -1,5 +1,6 @@
 package com.telerikacademy.web.forumsystem.controllers;
 
+import com.telerikacademy.web.forumsystem.exceptions.UnauthorizedOperationException;
 import com.telerikacademy.web.forumsystem.models.User;
 import com.telerikacademy.web.forumsystem.services.UserService;
 import jakarta.persistence.EntityNotFoundException;
@@ -22,7 +23,7 @@ public class AuthorizationHelper {
 
     public User tryGetUser(HttpHeaders headers) {
         if (!headers.containsKey(AUTHORIZATION)) {
-            //throw new UnauthorizedOperationException("You are not authorized to perform this action");
+            throw new UnauthorizedOperationException("You are not authorized to perform this action");
         }
 
         String username = headers.getFirst(AUTHORIZATION);

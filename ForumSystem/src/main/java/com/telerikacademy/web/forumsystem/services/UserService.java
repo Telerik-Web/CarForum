@@ -1,26 +1,25 @@
 package com.telerikacademy.web.forumsystem.services;
 
 import com.telerikacademy.web.forumsystem.models.User;
-import jakarta.validation.Valid;
-import org.springframework.http.HttpHeaders;
-import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
 
 public interface UserService {
     List<User> findAll();
 
-    User findById(int id);
+    User findById(User user, int id);
 
     User findByUsername(String username);
 
-    User findByEmail(String email);
+    User findByUsername(User user, String username);
 
-    User findByFirstname(String firstName);
+    User findByEmail(User user, String email);
 
-    User createUser(User user);
+    User findByFirstname(User user, String firstName);
 
-    User updateUser(User user, User userFromHeader, int id);
+    void createUser(User user);
+
+    void updateUser(User user, User userFromHeader, int id);
 
     void deleteUser(int id, User userFromHeader);
 }
