@@ -92,7 +92,7 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestHeader HttpHeaders headers, @RequestBody UserDto userDto) {
+    public User createUser(@RequestBody UserDto userDto) {
         try {
             User user = userMapper.fromDto(userDto);
             userService.createUser(user);
