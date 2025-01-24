@@ -51,4 +51,43 @@ public class UserRepositoryImpl implements UserRepository {
                     .orElseThrow(() -> new EntityNotFoundException("User", "username", username));
         }
     }
+
+    @Override
+    public User findByEmail(String email) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> user = session.createQuery("From User where email = :email", User.class);
+            user.setParameter("email", email);
+            return user
+                    .stream()
+                    .findFirst()
+                    .orElseThrow(() -> new EntityNotFoundException("User", "email", email));
+        }
+    }
+
+    @Override
+    public void createUser(User user) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.persist(user);
+            session.getTransaction().commit();
+        }
+    }
+
+    @Override
+    public void updateUser(User user, int id) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.merge(user);
+            session.getTransaction().commit();
+        }
+    }
+
+    @Override
+    public void deleteUser(int id) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.remove(findById(id));
+            session.getTransaction().commit();
+        }
+    }
 }
