@@ -2,8 +2,7 @@ package com.telerikacademy.web.forumsystem.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
-import org.checkerframework.common.aliasing.qual.Unique;
+
 
 @Entity
 @Table(name = "users")
@@ -11,34 +10,36 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int Id;
-
+    @Column(name = "user_id")
+    private int id;
 
     @Column(name = "first_name")
     private String firstName;
-
-
     @Column(name = "last_name")
     private String lastName;
-
-    @Unique
     @Column(name = "email")
     private String email;
-
     @Column(name = "username")
     private String username;
-
     @JsonIgnore
     @Column(name = "password")
     private String password;
 
+    @Column(name = "isAdmin")
+    private boolean isAdmin;
+
+    @Column(name = "isBlocked")
+    private boolean isBlocked;
+
     public User() {
     }
 
-    public User(String email, String firstName) {
-        this.email = email;
-        this.firstName = firstName;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -79,5 +80,21 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
+
+    public boolean isBlocked() {
+        return isBlocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        isBlocked = blocked;
     }
 }
