@@ -4,9 +4,13 @@ package com.telerikacademy.web.forumsystem.controllers;
 
 import com.telerikacademy.web.forumsystem.exceptions.DuplicateEntityException;
 import com.telerikacademy.web.forumsystem.exceptions.EntityNotFoundException;
+import com.telerikacademy.web.forumsystem.exceptions.UnauthorizedOperationException;
+import com.telerikacademy.web.forumsystem.mappers.UserMapper;
 import com.telerikacademy.web.forumsystem.models.User;
+import com.telerikacademy.web.forumsystem.models.UserDto;
 import com.telerikacademy.web.forumsystem.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,10 +22,14 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final UserMapper userMapper;
+    private final AuthorizationHelper authorizationHelper;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserMapper userMapper, AuthorizationHelper authorizationHelper) {
         this.userService = userService;
+        this.userMapper = userMapper;
+        this.authorizationHelper = authorizationHelper;
     }
 
     @GetMapping
@@ -48,18 +56,43 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "User already exists");
+    public User createUser(@RequestHeader HttpHeaders headers, @RequestBody UserDto userDto) {
+        try {
+            User user = userMapper.fromDto(userDto);
+            userService.createUser(headers, user);
+            return user;
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (DuplicateEntityException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable int id, @RequestBody User user) {
-        throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "User already exists");
+    public User updateUser(@RequestHeader HttpHeaders headers, @PathVariable int id, @RequestBody UserDto userDto) {
+        try {
+            //User user = authorizationHelper.tryGetUser(headers);
+            User user = userMapper.fromDto(userDto);
+            userService.updateUser(headers, user, id);
+            return user;
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (DuplicateEntityException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        } catch (UnauthorizedOperationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable int id) {
-
+    public void deleteUser(@RequestHeader HttpHeaders headers, @PathVariable int id) {
+        try {
+            userService.deleteUser(headers, id);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (UnauthorizedOperationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
     }
 }
 

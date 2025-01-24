@@ -2,12 +2,16 @@
 
 package com.telerikacademy.web.forumsystem.services;
 
+import com.telerikacademy.web.forumsystem.controllers.AuthorizationHelper;
 import com.telerikacademy.web.forumsystem.exceptions.DuplicateEntityException;
 import com.telerikacademy.web.forumsystem.exceptions.EntityNotFoundException;
+import com.telerikacademy.web.forumsystem.exceptions.UnauthorizedOperationException;
 import com.telerikacademy.web.forumsystem.models.User;
 import com.telerikacademy.web.forumsystem.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
 
@@ -15,10 +19,12 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     UserRepository userRepository;
+    AuthorizationHelper authorizationHelper;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, AuthorizationHelper authorizationHelper) {
         this.userRepository = userRepository;
+        this.authorizationHelper = authorizationHelper;
     }
 
     @Override
@@ -42,7 +48,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(User user) {
+    public User createUser(@RequestHeader HttpHeaders headers, User user) {
         boolean exists = true;
 
         try {
@@ -60,8 +66,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(User user, int id) {
+    public User updateUser(@RequestHeader HttpHeaders headers, User user, int id) {
         boolean exists = true;
+
+        if (!user.isAdmin() || !authorizationHelper.tryGetUser(headers).equals(user)) {
+            throw new UnauthorizedOperationException("You do not have permission to update this user");
+        }
 
         try {
             User newUser = userRepository.findByUsername(user.getUsername());
@@ -71,12 +81,22 @@ public class UserServiceImpl implements UserService {
         } catch (EntityNotFoundException e) {
             exists = false;
         }
-        throw new EntityNotFoundException("User", "user", user.getUsername());
+
+        if (exists) {
+            throw new DuplicateEntityException("User", "username", user.getUsername());
+        }
+
+        userRepository.updateUser(user, id);
+        return user;
     }
 
     @Override
-    public void deleteUser(int id) {
+    public void deleteUser(@RequestHeader HttpHeaders headers, int id) {
         User user = userRepository.findById(id);
+
+        if (!user.isAdmin() || !authorizationHelper.tryGetUser(headers).equals(user)) {
+            throw new UnauthorizedOperationException("You do not have permission to update this user");
+        }
         userRepository.deleteUser(id);
     }
 }
