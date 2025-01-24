@@ -7,12 +7,10 @@ import com.telerikacademy.web.forumsystem.services.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ResponseStatusException;
 
 @Component
-public class AuthorizationHelper {
+public class AuthenticationHelper {
 
     private static final String AUTHORIZATION = "Authorization";
     public static final String AUTHENTICATION_ERROR = "The requested resource requires authentication.";
@@ -21,7 +19,7 @@ public class AuthorizationHelper {
     private final UserService userService;
 
     @Autowired
-    public AuthorizationHelper(UserService userService) {
+    public AuthenticationHelper(UserService userService) {
         this.userService = userService;
     }
 

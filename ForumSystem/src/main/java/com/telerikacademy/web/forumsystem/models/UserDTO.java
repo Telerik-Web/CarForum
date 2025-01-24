@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.checkerframework.common.aliasing.qual.Unique;
 
-public class UserDto {
+public class UserDTO {
 
     @NotNull(message = "Firstname can't be empty.")
     @Size(min = 4, max = 32, message = "Firstname should be between 4 and 32 symbols.")
@@ -28,10 +28,10 @@ public class UserDto {
 
     private boolean isBlocked;
 
-    public UserDto() {
+    public UserDTO() {
     }
 
-    public UserDto(String firstName, String lastName, String email, String password) {
+    public UserDTO(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

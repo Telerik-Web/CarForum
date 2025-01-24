@@ -7,7 +7,7 @@ import com.telerikacademy.web.forumsystem.exceptions.EntityNotFoundException;
 import com.telerikacademy.web.forumsystem.exceptions.UnauthorizedOperationException;
 import com.telerikacademy.web.forumsystem.mappers.UserMapper;
 import com.telerikacademy.web.forumsystem.models.User;
-import com.telerikacademy.web.forumsystem.models.UserDto;
+import com.telerikacademy.web.forumsystem.models.UserDTO;
 import com.telerikacademy.web.forumsystem.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -23,13 +23,13 @@ public class UserController {
 
     private final UserService userService;
     private final UserMapper userMapper;
-    private final AuthorizationHelper authorizationHelper;
+    private final AuthenticationHelper authorizationHelper;
 
     @Autowired
-    public UserController(UserService userService, UserMapper userMapper, AuthorizationHelper authorizationHelper) {
+    public UserController(UserService userService, UserMapper userMapper, AuthenticationHelper authenticationHelper) {
         this.userService = userService;
         this.userMapper = userMapper;
-        this.authorizationHelper = authorizationHelper;
+        this.authorizationHelper = authenticationHelper;
     }
 
     @GetMapping
@@ -104,7 +104,7 @@ public class UserController {
 //    }
 
     @PostMapping
-    public User createUser(@RequestBody UserDto userDto) {
+    public User createUser(@RequestBody UserDTO userDto) {
         try {
             User user = userMapper.fromDto(userDto);
             userService.createUser(user);
@@ -117,7 +117,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public User updateUser(@RequestHeader HttpHeaders headers, @PathVariable int id, @RequestBody UserDto userDto) {
+    public User updateUser(@RequestHeader HttpHeaders headers, @PathVariable int id, @RequestBody UserDTO userDto) {
         try {
             User userFromHeader = authorizationHelper.tryGetUser(headers);
             User user = userMapper.fromDto(userDto);
