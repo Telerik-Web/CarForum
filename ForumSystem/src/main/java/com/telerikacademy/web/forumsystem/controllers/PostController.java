@@ -4,10 +4,7 @@ import com.telerikacademy.web.forumsystem.exceptions.AuthorizationException;
 import com.telerikacademy.web.forumsystem.exceptions.EntityNotFoundException;
 import com.telerikacademy.web.forumsystem.exceptions.UnauthorizedOperationException;
 import com.telerikacademy.web.forumsystem.mappers.PostMapper;
-import com.telerikacademy.web.forumsystem.models.FilterPostOptions;
-import com.telerikacademy.web.forumsystem.models.Post;
-import com.telerikacademy.web.forumsystem.models.PostDTO;
-import com.telerikacademy.web.forumsystem.models.User;
+import com.telerikacademy.web.forumsystem.models.*;
 import com.telerikacademy.web.forumsystem.services.PostService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +31,7 @@ public class PostController {
     }
 
     @GetMapping
-    public List<Post> getAll(
+    public List<PostDTOOut> getAll(
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String content,
             @RequestParam(required = false) String createdBy,
@@ -42,7 +39,8 @@ public class PostController {
             @RequestParam(required = false) String sortOrder) {
         FilterPostOptions filterOptions = new FilterPostOptions(title, content, createdBy,
                 sortBy, sortOrder);
-        return postService.getAll(filterOptions);
+
+        return postMapper.toDTOOut(postService.getAll(filterOptions));
     }
 
     @GetMapping("/{id}")
