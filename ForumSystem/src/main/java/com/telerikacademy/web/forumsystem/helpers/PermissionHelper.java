@@ -8,14 +8,20 @@ public class PermissionHelper {
     private static final String AUTHORIZATION_PERMISSION_ERROR = "You don't have the permission to do this.";
     private static final String BLOCKED_USER_ERROR = "You are blocked and cannot perform that operation";
 
-    public static void checkIfCreator(User user, User userToUpdate) {
-        if (!(user.getId() == userToUpdate.getId())) {
+//    public static void checkIfCreator(User user, User userToUpdate) {
+//        if (!(user.getId() == userToUpdate.getId())) {
+//            throw new UnauthorizedOperationException(AUTHORIZATION_PERMISSION_ERROR);
+//        }
+//    }
+//
+    public static void checkIfAdmin(User user) {
+        if (!user.isAdmin()) {
             throw new UnauthorizedOperationException(AUTHORIZATION_PERMISSION_ERROR);
         }
     }
 
-    public static void checkIfAdmin(User user) {
-        if (!user.isAdmin()) {
+    public static void checkIfCreatorOrAdminForUser(User user, User userToUpdate) {
+        if (!(user.getId() == userToUpdate.getId()) || !user.isAdmin()) {
             throw new UnauthorizedOperationException(AUTHORIZATION_PERMISSION_ERROR);
         }
     }
