@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.checkerframework.common.aliasing.qual.Unique;
 
+import java.util.Optional;
+
 public class UserDTO {
 
     @NotNull(message = "Firstname can't be empty.")
@@ -21,11 +23,11 @@ public class UserDTO {
     @NotNull
     private String email;
 
-    //do the admin and the block update in the user
-
     //make userDtoOut - DONE
 
-    //na lacho premissionhelper go vkarai w user
+    //na lacho premissionhelper go vkarai w user - DONE
+
+    //do the admin and the block update in the user - DONE
 
     //phone number for admin/ and delete the username and password
 
@@ -34,9 +36,9 @@ public class UserDTO {
     @NotNull
     private String password;
 
-    private boolean isAdmin;
+    private Boolean isAdmin;
 
-    private boolean isBlocked;
+    private Boolean isBlocked;
 
     public UserDTO() {
     }
@@ -46,6 +48,16 @@ public class UserDTO {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+    }
+
+    public UserDTO(String firstName, String lastName, String email, String password,
+                   boolean isAdmin, boolean isBlocked) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.isAdmin = isAdmin;
+        this.isBlocked = isBlocked;
     }
 
     public String getFirstName() {
@@ -80,19 +92,19 @@ public class UserDTO {
         this.password = password;
     }
 
-    public boolean isAdmin() {
+    public Boolean isAdmin() {
         return isAdmin;
     }
 
-    public void setAdmin(boolean admin) {
+    public void setAdmin(Boolean admin) {
         isAdmin = admin;
     }
 
-    public boolean isBlocked() {
+    public Boolean isBlocked() {
         return isBlocked;
     }
 
-    public void setBlocked(boolean blocked) {
+    public void setBlocked(Boolean blocked) {
         isBlocked = blocked;
     }
 }

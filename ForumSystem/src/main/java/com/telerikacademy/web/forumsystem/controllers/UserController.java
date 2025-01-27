@@ -118,7 +118,8 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public UserDTOOut updateUser(@RequestHeader HttpHeaders headers, @PathVariable int id, @RequestBody UserDTO userDto) {
+    public UserDTOOut updateUser(@RequestHeader HttpHeaders headers, @PathVariable int id,
+                                 @RequestBody UserDTO userDto) {
         try {
             User userFromHeader = authorizationHelper.tryGetUser(headers);
             User user = userMapper.fromDto(userDto);

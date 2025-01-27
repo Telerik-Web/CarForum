@@ -32,10 +32,10 @@ public class User {
     private String password;
 
     @Column(name = "isAdmin")
-    private boolean isAdmin;
+    private Boolean isAdmin;
 
     @Column(name = "isBlocked")
-    private boolean isBlocked;
+    private Boolean isBlocked;
 
     public User() {
     }
