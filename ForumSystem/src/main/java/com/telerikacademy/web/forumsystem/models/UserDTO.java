@@ -33,6 +33,11 @@ public class UserDTO {
 
     //phone number repository and service
 
+    //filterOptions for the user
+
+    //username na user da se adwa nqkyde
+
+
     @NotNull
     private String password;
 
