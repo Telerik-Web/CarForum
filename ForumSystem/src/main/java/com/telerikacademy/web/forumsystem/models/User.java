@@ -3,6 +3,8 @@ package com.telerikacademy.web.forumsystem.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 
 @Entity
 @Table(name = "users")
@@ -19,20 +21,20 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column
+    @Column(name = "email")
     private String email;
 
-    @Column
+    @Column(name = "username")
     private String username;
 
     @JsonIgnore
-    @Column
+    @Column(name = "password")
     private String password;
 
-    @Column
+    @Column(name = "isAdmin")
     private boolean isAdmin;
 
-    @Column
+    @Column(name = "isBlocked")
     private boolean isBlocked;
 
     public User() {
@@ -108,5 +110,17 @@ public class User {
 
     public void setBlocked(boolean blocked) {
         isBlocked = blocked;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

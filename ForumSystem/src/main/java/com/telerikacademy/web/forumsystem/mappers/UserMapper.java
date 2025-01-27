@@ -2,6 +2,7 @@ package com.telerikacademy.web.forumsystem.mappers;
 
 import com.telerikacademy.web.forumsystem.models.User;
 import com.telerikacademy.web.forumsystem.models.UserDTO;
+import com.telerikacademy.web.forumsystem.models.UserDTOOut;
 import com.telerikacademy.web.forumsystem.repositories.UserRepository;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,10 @@ public class UserMapper {
     //create
     public User fromDto(UserDTO userDto) {
         return dtoToObject(userDto);
+    }
+
+    public UserDTOOut fromDtoOut(UserDTO userDto) {
+        return dtoOutToObject(userDto);
     }
 
     //update
@@ -36,4 +41,16 @@ public class UserMapper {
         user.setBlocked(userDto.isBlocked());
         return user;
     }
+
+    private UserDTOOut dtoOutToObject(UserDTO userDto) {
+        UserDTOOut user = new UserDTOOut();
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setEmail(userDto.getEmail());
+        user.setAdmin(userDto.isAdmin());
+        user.setBlocked(userDto.isBlocked());
+        return user;
+    }
+
+
 }

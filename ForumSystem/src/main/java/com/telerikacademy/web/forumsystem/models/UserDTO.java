@@ -17,9 +17,19 @@ public class UserDTO {
     private String lastName;
 
     @Email
-    @Unique
+    //move the unique check to the service - DONE
     @NotNull
     private String email;
+
+    //do the admin and the block update in the user
+
+    //make userDtoOut - DONE
+
+    //na lacho premissionhelper go vkarai w user
+
+    //phone number for admin/ and delete the username and password
+
+    //phone number repository and service
 
     @NotNull
     private String password;

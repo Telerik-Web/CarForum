@@ -8,6 +8,7 @@ import com.telerikacademy.web.forumsystem.exceptions.UnauthorizedOperationExcept
 import com.telerikacademy.web.forumsystem.mappers.UserMapper;
 import com.telerikacademy.web.forumsystem.models.User;
 import com.telerikacademy.web.forumsystem.models.UserDTO;
+import com.telerikacademy.web.forumsystem.models.UserDTOOut;
 import com.telerikacademy.web.forumsystem.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -104,11 +105,11 @@ public class UserController {
 //    }
 
     @PostMapping
-    public User createUser(@RequestBody UserDTO userDto) {
+    public UserDTOOut createUser(@RequestBody UserDTO userDto) {
         try {
             User user = userMapper.fromDto(userDto);
             userService.createUser(user);
-            return user;
+            return userMapper.fromDtoOut(userDto);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (DuplicateEntityException e) {
@@ -117,12 +118,12 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public User updateUser(@RequestHeader HttpHeaders headers, @PathVariable int id, @RequestBody UserDTO userDto) {
+    public UserDTOOut updateUser(@RequestHeader HttpHeaders headers, @PathVariable int id, @RequestBody UserDTO userDto) {
         try {
             User userFromHeader = authorizationHelper.tryGetUser(headers);
             User user = userMapper.fromDto(userDto);
             userService.updateUser(user, userFromHeader, id);
-            return user;
+            return userMapper.fromDtoOut(userDto);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (DuplicateEntityException e) {
@@ -131,6 +132,22 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
+
+//    @PutMapping("/{id}/admin")
+//    public User updateUser(/*@RequestHeader HttpHeaders headers,*/ @PathVariable int id, @RequestBody UserDTO userDto) {
+//        try {
+//            User userFromHeader = authorizationHelper.tryGetUser(headers);
+//            User user = userMapper.fromDto(userDto);
+//            userService.updateUser(user, userFromHeader, id);
+//            return user;
+//        } catch (EntityNotFoundException e) {
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+//        } catch (DuplicateEntityException e) {
+//            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+//        } catch (UnauthorizedOperationException e) {
+//            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+//        }
+//    }
 
     @DeleteMapping("/{id}")
     public void deleteUser(@RequestHeader HttpHeaders headers, @PathVariable int id) {
@@ -144,9 +161,3 @@ public class UserController {
         }
     }
 }
-
-
-//post, put, delete
-// admin logic
-//username email firstName
-//view all posts
