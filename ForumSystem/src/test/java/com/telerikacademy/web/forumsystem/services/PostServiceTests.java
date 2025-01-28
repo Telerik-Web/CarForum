@@ -107,13 +107,16 @@ public class PostServiceTests {
         );
     }
 
+    //Виж с лъчо
     @Test
     public void deletePost_Should_Throw_When_UserIsNotAnAdmin() {
         User mockUser = createMockUser();
+        mockUser.setId(2);
         mockUser.setAdmin(false);
         Post mockPost = createMockPost();
+        //mockPost.setId(1);
 
-        Assertions.assertDoesNotThrow(() -> {
+        Assertions.assertThrows(UnauthorizedOperationException.class, () -> {
             postService.deletePost(mockPost.getId(), mockUser);
         });
     }
