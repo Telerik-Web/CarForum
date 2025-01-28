@@ -39,7 +39,8 @@ public class Post {
     )
     private Set<User> likes = new HashSet<>();
 
-    //TODO commments set
+    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
+    private Set<Comment> comments = new HashSet<>();
 
 
     public Post() {
@@ -92,6 +93,14 @@ public class Post {
 
     public void setLikes(Set<User> likes) {
         this.likes = likes;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 
     @Override

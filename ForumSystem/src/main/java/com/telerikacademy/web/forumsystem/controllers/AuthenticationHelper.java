@@ -7,7 +7,9 @@ import com.telerikacademy.web.forumsystem.services.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 @Component
 public class AuthenticationHelper {
@@ -25,7 +27,8 @@ public class AuthenticationHelper {
 
     public User tryGetUser(HttpHeaders headers) {
         if (!headers.containsKey(AUTHORIZATION)) {
-            throw new AuthorizationException(AUTHENTICATION_ERROR);
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+                    AUTHENTICATION_ERROR);
         }
 
         String userInfo = headers.getFirst(AUTHORIZATION);
