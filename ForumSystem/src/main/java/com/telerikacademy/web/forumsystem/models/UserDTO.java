@@ -26,13 +26,13 @@ public class UserDTO {
 
     //do the admin and the block update in the user - DONE
 
-    //phone number for admin/ and delete the username and password
-
     //phone number repository and service - DONE
 
     //filterOptions for the user - DONE
 
     //username na user da se adwa nqkyde - DONE
+
+    //phone number for admin/ and delete the username and password
 
     //update i crate of user allow for the user to be created as an admin. fix it
 

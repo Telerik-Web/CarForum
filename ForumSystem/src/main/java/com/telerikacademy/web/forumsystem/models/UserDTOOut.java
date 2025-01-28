@@ -1,6 +1,8 @@
 package com.telerikacademy.web.forumsystem.models;
 
 public class UserDTOOut {
+    private int id;
+
     private String firstName;
 
     private String lastName;
@@ -22,6 +24,14 @@ public class UserDTOOut {
         this.email = email;
         this.isAdmin = isAdmin;
         this.isBlocked = isBlocked;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFirstName() {
