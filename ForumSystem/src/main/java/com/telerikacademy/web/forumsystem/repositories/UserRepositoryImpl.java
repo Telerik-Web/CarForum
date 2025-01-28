@@ -3,6 +3,7 @@
 package com.telerikacademy.web.forumsystem.repositories;
 
 import com.telerikacademy.web.forumsystem.exceptions.EntityNotFoundException;
+import com.telerikacademy.web.forumsystem.models.FilterUserOptions;
 import com.telerikacademy.web.forumsystem.models.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -10,7 +11,10 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
@@ -22,9 +26,42 @@ public class UserRepositoryImpl implements UserRepository {
         this.sessionFactory = sessionFactory;
     }
 
+//    @Override
+//    public List<User> findAll() {
+//        try (Session session = sessionFactory.openSession()) {
+//            return session.createQuery("From User", User.class).list();
+//        }
+//    }
+
     @Override
-    public List<User> findAll() {
+    public List<User> findAll(FilterUserOptions filterOptions) {
         try (Session session = sessionFactory.openSession()) {
+            StringBuilder sb = new StringBuilder("FROM User");
+            List<String> filters = new ArrayList<>();
+            Map<String, Object> params = new HashMap<>();
+
+            filterOptions.getFirstName().ifPresent(value -> {
+                filters.add("firstName like :firstName");
+                params.put("firstName", String.format("%%%s%%", value));
+            });
+
+            filterOptions.getLastName().ifPresent(value -> {
+                filters.add("lastName like :lastName");
+                params.put("lastName", String.format("%%%s%%", value));
+            });
+
+            filterOptions.getUsername().ifPresent(value -> {
+                filters.add("username like :username");
+                params.put("username", String.format("%%%s%%", value));
+            });
+
+            if(!filters.isEmpty()) {
+                sb.append(" WHERE ").append(String.join(" AND ", filters));
+            }
+
+            Query<User> query = session.createQuery(sb.toString(), User.class);
+
+
             return session.createQuery("From User", User.class).list();
         }
     }

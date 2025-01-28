@@ -1,12 +1,13 @@
 package com.telerikacademy.web.forumsystem.repositories;
 
+import com.telerikacademy.web.forumsystem.models.FilterUserOptions;
 import com.telerikacademy.web.forumsystem.models.User;
 import jakarta.validation.Valid;
 
 import java.util.List;
 
 public interface UserRepository {
-    List<User> findAll();
+    List<User> findAll(FilterUserOptions filterOptions);
 
     User findById(int id);
 
