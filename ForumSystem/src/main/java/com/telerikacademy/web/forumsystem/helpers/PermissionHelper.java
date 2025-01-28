@@ -21,7 +21,7 @@ public class PermissionHelper {
     }
 
     public static void checkIfCreatorOrAdminForUser(User user, User userToUpdate) {
-        if (!(user.getId() == userToUpdate.getId()) || !user.isAdmin()) {
+        if (!(user.getId() == userToUpdate.getId() || user.isAdmin())) {
             throw new UnauthorizedOperationException(AUTHORIZATION_PERMISSION_ERROR);
         }
     }

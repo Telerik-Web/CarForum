@@ -57,12 +57,14 @@ public class UserRepositoryImpl implements UserRepository {
 
             if(!filters.isEmpty()) {
                 sb.append(" WHERE ").append(String.join(" AND ", filters));
+            } else {
+                sb.append(" order by username desc");
             }
 
+            sb.append(createOrderBy(filterOptions));
             Query<User> query = session.createQuery(sb.toString(), User.class);
-
-
-            return session.createQuery("From User", User.class).list();
+            query.setProperties(params);
+            return query.list();
         }
     }
 
@@ -104,7 +106,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User findByFirstname(String firstName) {
         try (Session session = sessionFactory.openSession()) {
-            Query<User> user = session.createQuery("from User where firstName = :firstname", User.class);
+            Query<User> user = session.createQuery("from User where firstName = :firstName", User.class);
             user.setParameter("firstName", firstName);
             return user
                     .stream()
@@ -138,5 +140,26 @@ public class UserRepositoryImpl implements UserRepository {
             session.remove(findById(id));
             session.getTransaction().commit();
         }
+    }
+
+    private String createOrderBy(FilterUserOptions filterOptions) {
+        if(filterOptions.getSortBy().isEmpty()){
+            return "";
+        }
+
+        String orderBy = switch (filterOptions.getSortBy().get()) {
+            case "firstName" -> "firstName";
+            case "lastName" -> "lastName";
+            case "username" -> "username";
+            default -> "";
+        };
+
+        orderBy = String.format(" order by %s", orderBy);
+        if(filterOptions.getSortOrder().isPresent() &&
+                filterOptions.getSortOrder().get().equalsIgnoreCase("desc")){
+            orderBy = String.format("%s desc", orderBy);
+        }
+
+        return orderBy;
     }
 }

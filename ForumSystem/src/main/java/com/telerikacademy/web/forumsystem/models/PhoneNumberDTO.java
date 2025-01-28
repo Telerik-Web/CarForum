@@ -9,12 +9,12 @@ public class PhoneNumberDTO {
     private String number;
 
     @NotNull
-    private User createdBy;
+    private String createdBy;
 
     public PhoneNumberDTO() {
     }
 
-    public PhoneNumberDTO(String number, User createdBy) {
+    public PhoneNumberDTO(String number, String createdBy) {
         this.number = number;
         this.createdBy = createdBy;
     }
@@ -27,11 +27,11 @@ public class PhoneNumberDTO {
         this.number = number;
     }
 
-    public User getCreatedBy() {
+    public String getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(User user_id) {
-        this.createdBy = user_id;
+    public void setCreatedBy(String username) {
+        this.createdBy = username;
     }
 }

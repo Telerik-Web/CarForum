@@ -4,6 +4,7 @@ package com.telerikacademy.web.forumsystem.services;
 
 import com.telerikacademy.web.forumsystem.exceptions.DuplicateEntityException;
 import com.telerikacademy.web.forumsystem.exceptions.EntityNotFoundException;
+import com.telerikacademy.web.forumsystem.models.FilterUserOptions;
 import com.telerikacademy.web.forumsystem.models.User;
 import com.telerikacademy.web.forumsystem.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<User> findAll(FilterUserOptions filterOptions) {
+        return userRepository.findAll(filterOptions);
     }
 
     @Override
@@ -79,7 +80,7 @@ public class UserServiceImpl implements UserService {
         boolean exists = true;
         checkIfCreatorOrAdminForUser(userFromHeader, user);
         try {
-            User newUser = userRepository.findByUsername(user.getUsername());
+            User newUser = userRepository.findByEmail(user.getEmail());
             if (newUser.getId() == user.getId()) {
                 exists = false;
             }

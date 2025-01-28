@@ -40,12 +40,14 @@ public class User {
     public User() {
     }
 
-    public User(String firstName, String lastName, int id, String email, String password) {
+    public User(String firstName, String lastName, int id, String email, String password, Boolean isAdmin, Boolean isBlocked) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.id = id;
         this.email = email;
         this.password = password;
+        this.isAdmin = isAdmin;
+        this.isBlocked = isBlocked;
     }
 
     public int getId() {

@@ -11,6 +11,8 @@ public class UserDTOOut {
 
     private boolean isBlocked;
 
+    private String username;
+
     public UserDTOOut() {
     }
 
@@ -60,5 +62,13 @@ public class UserDTOOut {
 
     public void setBlocked(boolean blocked) {
         isBlocked = blocked;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

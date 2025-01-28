@@ -30,9 +30,9 @@ public class UserDTO {
 
     //phone number repository and service - DONE
 
-    //filterOptions for the user
+    //filterOptions for the user - DONE
 
-    //username na user da se adwa nqkyde
+    //username na user da se adwa nqkyde - DONE
 
     //update i crate of user allow for the user to be created as an admin. fix it
 
@@ -40,9 +40,14 @@ public class UserDTO {
     @NotNull
     private String password;
 
+    @NotNull
     private Boolean isAdmin;
 
+    @NotNull
     private Boolean isBlocked;
+
+    @NotNull
+    private String username;
 
     public UserDTO() {
     }
@@ -55,7 +60,7 @@ public class UserDTO {
     }
 
     public UserDTO(String firstName, String lastName, String email, String password,
-                   boolean isAdmin, boolean isBlocked) {
+                   Boolean isAdmin, Boolean isBlocked) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -110,5 +115,13 @@ public class UserDTO {
 
     public void setBlocked(Boolean blocked) {
         isBlocked = blocked;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

@@ -1,11 +1,12 @@
 package com.telerikacademy.web.forumsystem.services;
 
+import com.telerikacademy.web.forumsystem.models.FilterUserOptions;
 import com.telerikacademy.web.forumsystem.models.User;
 
 import java.util.List;
 
 public interface UserService {
-    List<User> findAll();
+    List<User> findAll(FilterUserOptions filterOptions);
 
     User findById(User user, int id);
 

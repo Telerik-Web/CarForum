@@ -38,8 +38,13 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
-        return userService.findAll();
+    public List<UserDTOOut> getAllUsers(@RequestParam(required = false) String firstName,
+                                  @RequestParam(required = false) String lastName,
+                                  @RequestParam(required = false) String username,
+                                  @RequestParam(required = false) String sortBy,
+                                  @RequestParam(required = false) String orderBy) {
+        FilterUserOptions filterOptions = new FilterUserOptions(firstName, lastName, username, sortBy, orderBy);
+        return userMapper.toDTOOut(userService.findAll(filterOptions));
     }
 
     @GetMapping("/{id}")
@@ -142,7 +147,7 @@ public class UserController {
                                  @RequestBody UserDTO userDto) {
         try {
             User userFromHeader = authorizationHelper.tryGetUser(headers);
-            User user = userMapper.fromDto(userDto);
+            User user = userMapper.fromDto(userDto, id);
             userService.updateUser(user, userFromHeader, id);
             return userMapper.fromDtoOut(userDto);
         } catch (EntityNotFoundException e) {
