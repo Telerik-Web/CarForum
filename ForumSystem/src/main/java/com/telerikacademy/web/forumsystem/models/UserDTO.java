@@ -4,9 +4,6 @@ package com.telerikacademy.web.forumsystem.models;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.checkerframework.common.aliasing.qual.Unique;
-
-import java.util.Optional;
 
 public class UserDTO {
 
@@ -36,6 +33,8 @@ public class UserDTO {
     //filterOptions for the user
 
     //username na user da se adwa nqkyde
+
+    //update i crate of user allow for the user to be created as an admin. fix it
 
 
     @NotNull

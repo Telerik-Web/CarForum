@@ -5,10 +5,10 @@ package com.telerikacademy.web.forumsystem.controllers;
 import com.telerikacademy.web.forumsystem.exceptions.DuplicateEntityException;
 import com.telerikacademy.web.forumsystem.exceptions.EntityNotFoundException;
 import com.telerikacademy.web.forumsystem.exceptions.UnauthorizedOperationException;
+import com.telerikacademy.web.forumsystem.mappers.PhoneNumberMapper;
 import com.telerikacademy.web.forumsystem.mappers.UserMapper;
-import com.telerikacademy.web.forumsystem.models.User;
-import com.telerikacademy.web.forumsystem.models.UserDTO;
-import com.telerikacademy.web.forumsystem.models.UserDTOOut;
+import com.telerikacademy.web.forumsystem.models.*;
+import com.telerikacademy.web.forumsystem.services.PhoneNumberService;
 import com.telerikacademy.web.forumsystem.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -25,12 +25,16 @@ public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
     private final AuthenticationHelper authorizationHelper;
+    private final PhoneNumberService phoneNumberService;
+    private final PhoneNumberMapper phoneNumberMapper;
 
     @Autowired
-    public UserController(UserService userService, UserMapper userMapper, AuthenticationHelper authenticationHelper) {
+    public UserController(UserService userService, UserMapper userMapper, AuthenticationHelper authenticationHelper, PhoneNumberService phoneNumberService, PhoneNumberMapper phoneNumberMapper) {
         this.userService = userService;
         this.userMapper = userMapper;
         this.authorizationHelper = authenticationHelper;
+        this.phoneNumberService = phoneNumberService;
+        this.phoneNumberMapper = phoneNumberMapper;
     }
 
     @GetMapping
@@ -114,6 +118,22 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
+    }
+
+    @PostMapping("/{id}")
+    public PhoneNumber createPhoneNumber(@RequestHeader HttpHeaders headers, @PathVariable int id,
+                                         @RequestBody PhoneNumberDTO phoneNumberDto) {
+        try {
+            PhoneNumber phoneNumber = phoneNumberMapper.map(phoneNumberDto);
+            User user = authorizationHelper.tryGetUser(headers);
+            User userToAddPhoneNumber = userService.findById(user, id);
+            phoneNumberService.create(phoneNumber, user, userToAddPhoneNumber);
+            return phoneNumber;
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (UnauthorizedOperationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
 
