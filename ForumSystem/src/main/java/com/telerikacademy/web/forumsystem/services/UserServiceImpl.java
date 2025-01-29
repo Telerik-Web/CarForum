@@ -40,23 +40,23 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUsername(username);
     }
 
-    @Override
-    public User findByUsername(User user, String username) {
-        checkIfAdmin(user);
-        return userRepository.findByUsername(username);
-    }
-
-    @Override
-    public User findByEmail(User user, String email) {
-        checkIfAdmin(user);
-        return userRepository.findByEmail(email);
-    }
-
-    @Override
-    public User findByFirstname(User user, String firstName) {
-        checkIfAdmin(user);
-        return userRepository.findByFirstname(firstName);
-    }
+//    @Override
+//    public User findByUsername(User user, String username) {
+//        checkIfAdmin(user);
+//        return userRepository.findByUsername(username);
+//    }
+//
+//    @Override
+//    public User findByEmail(User user, String email) {
+//        checkIfAdmin(user);
+//        return userRepository.findByEmail(email);
+//    }
+//
+//    @Override
+//    public User findByFirstname(User user, String firstName) {
+//        checkIfAdmin(user);
+//        return userRepository.findByFirstname(firstName);
+//    }
 
     @Override
     public void createUser(User user) {

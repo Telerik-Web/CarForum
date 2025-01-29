@@ -36,11 +36,11 @@ public class UserDTO {
 
     //update i crate of user allow for the user to be created as an admin. fix it - DONE
 
-    //comment test
+    //comment test - DONE
 
     //findBy neshtata
 
-    //isAdmin & blocked
+    //isAdmin & blocked remove from the DTO class
 
     //name of everything must be same
 

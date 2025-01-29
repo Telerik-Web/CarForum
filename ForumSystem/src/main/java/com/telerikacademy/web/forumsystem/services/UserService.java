@@ -12,11 +12,11 @@ public interface UserService {
 
     User findByUsername(String username);
 
-    User findByUsername(User user, String username);
-
-    User findByEmail(User user, String email);
-
-    User findByFirstname(User user, String firstName);
+//    User findByUsername(User user, String username);
+//
+//    User findByEmail(User user, String email);
+//
+//    User findByFirstname(User user, String firstName);
 
     void createUser(User user);
 

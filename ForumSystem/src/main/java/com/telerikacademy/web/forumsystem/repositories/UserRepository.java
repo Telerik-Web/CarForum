@@ -14,8 +14,8 @@ public interface UserRepository {
     User findByUsername(String username);
 
     User findByEmail(String email);
-
-    User findByFirstname(String firstName);
+//
+//    User findByFirstname(String firstName);
 
     void createUser(@Valid User user);
 

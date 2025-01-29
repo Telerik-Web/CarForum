@@ -39,12 +39,13 @@ public class UserController {
 
     @GetMapping
     public List<UserDTOOut> getAllUsers(@RequestParam(required = false) String firstName,
-                                  @RequestParam(required = false) String lastName,
-                                  @RequestParam(required = false) String username,
-                                  @RequestParam(required = false) String sortBy,
-                                  @RequestParam(required = false) String orderBy) {
+                                        @RequestParam(required = false) String lastName,
+                                        @RequestParam(required = false) String username,
+                                        @RequestParam(required = false) String email,
+                                        @RequestParam(required = false) String sortBy,
+                                        @RequestParam(required = false) String orderBy) {
         FilterUserOptions filterOptions = new FilterUserOptions(firstName, lastName,
-                username, sortBy, orderBy);
+                username, email, sortBy, orderBy);
         return userMapper.toDTOOut(userService.findAll(filterOptions));
     }
 
@@ -60,41 +61,41 @@ public class UserController {
         }
     }
 
-    @GetMapping("/search/username")
-    public User getUsersByUsername(@RequestHeader HttpHeaders headers, @RequestParam String username) {
-        try {
-            User user = authorizationHelper.tryGetUser(headers);
-            return userService.findByUsername(user, username);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (UnauthorizedOperationException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
-    }
-
-    @GetMapping("/search/email")
-    public User getUsersByEmail(@RequestHeader HttpHeaders headers, @RequestParam String email) {
-        try {
-            User user = authorizationHelper.tryGetUser(headers);
-            return userService.findByEmail(user, email);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (UnauthorizedOperationException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
-    }
-
-    @GetMapping("/search/firstName")
-    public User getUsersByFirstname(@RequestHeader HttpHeaders headers, @RequestParam String firstName) {
-        try {
-            User user = authorizationHelper.tryGetUser(headers);
-            return userService.findByFirstname(user, firstName);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (UnauthorizedOperationException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
-    }
+//    @GetMapping("/search/username")
+//    public User getUsersByUsername(@RequestHeader HttpHeaders headers, @RequestParam String username) {
+//        try {
+//            User user = authorizationHelper.tryGetUser(headers);
+//            return userService.findByUsername(user, username);
+//        } catch (EntityNotFoundException e) {
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+//        } catch (UnauthorizedOperationException e) {
+//            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+//        }
+//    }
+//
+//    @GetMapping("/search/email")
+//    public User getUsersByEmail(@RequestHeader HttpHeaders headers, @RequestParam String email) {
+//        try {
+//            User user = authorizationHelper.tryGetUser(headers);
+//            return userService.findByEmail(user, email);
+//        } catch (EntityNotFoundException e) {
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+//        } catch (UnauthorizedOperationException e) {
+//            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+//        }
+//    }
+//
+//    @GetMapping("/search/firstName")
+//    public User getUsersByFirstname(@RequestHeader HttpHeaders headers, @RequestParam String firstName) {
+//        try {
+//            User user = authorizationHelper.tryGetUser(headers);
+//            return userService.findByFirstname(user, firstName);
+//        } catch (EntityNotFoundException e) {
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+//        } catch (UnauthorizedOperationException e) {
+//            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+//        }
+//    }
 
 //    @GetMapping("/search")
 //    public User searchUser(@RequestParam String type, @RequestParam String value) {

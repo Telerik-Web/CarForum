@@ -55,6 +55,11 @@ public class UserRepositoryImpl implements UserRepository {
                 params.put("username", String.format("%%%s%%", value));
             });
 
+            filterOptions.getEmail().ifPresent(value -> {
+                filters.add("email like :email");
+                params.put("email", String.format("%%%s%%", value));
+            });
+
             if(!filters.isEmpty()) {
                 sb.append(" WHERE ").append(String.join(" AND ", filters));
             } else {
@@ -102,18 +107,18 @@ public class UserRepositoryImpl implements UserRepository {
                     .orElseThrow(() -> new EntityNotFoundException("User", "email", email));
         }
     }
-
-    @Override
-    public User findByFirstname(String firstName) {
-        try (Session session = sessionFactory.openSession()) {
-            Query<User> user = session.createQuery("from User where firstName = :firstName", User.class);
-            user.setParameter("firstName", firstName);
-            return user
-                    .stream()
-                    .findFirst()
-                    .orElseThrow(() -> new EntityNotFoundException("User", "firstname", firstName));
-        }
-    }
+//
+//    @Override
+//    public User findByFirstname(String firstName) {
+//        try (Session session = sessionFactory.openSession()) {
+//            Query<User> user = session.createQuery("from User where firstName = :firstName", User.class);
+//            user.setParameter("firstName", firstName);
+//            return user
+//                    .stream()
+//                    .findFirst()
+//                    .orElseThrow(() -> new EntityNotFoundException("User", "firstname", firstName));
+//        }
+//    }
 
     @Override
     public void createUser(User user) {
