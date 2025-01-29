@@ -32,9 +32,11 @@ public class UserDTO {
 
     //username na user da se adwa nqkyde - DONE
 
-    //phone number for admin/ and delete the username and password
+    //phone number for admin/ and delete the username and password - DONE
 
     //update i crate of user allow for the user to be created as an admin. fix it
+
+    //return phone number if the user is an admin
 
 
     @NotNull

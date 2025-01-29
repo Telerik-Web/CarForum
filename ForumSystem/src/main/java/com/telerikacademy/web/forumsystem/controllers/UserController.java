@@ -43,7 +43,8 @@ public class UserController {
                                   @RequestParam(required = false) String username,
                                   @RequestParam(required = false) String sortBy,
                                   @RequestParam(required = false) String orderBy) {
-        FilterUserOptions filterOptions = new FilterUserOptions(firstName, lastName, username, sortBy, orderBy);
+        FilterUserOptions filterOptions = new FilterUserOptions(firstName, lastName,
+                username, sortBy, orderBy);
         return userMapper.toDTOOut(userService.findAll(filterOptions));
     }
 
@@ -131,6 +132,7 @@ public class UserController {
                                          @RequestBody PhoneNumberDTO phoneNumberDto) {
         try {
             PhoneNumber phoneNumber = phoneNumberMapper.map(phoneNumberDto);
+            phoneNumber.setCreatedBy(authorizationHelper.tryGetUser(headers));
             User user = authorizationHelper.tryGetUser(headers);
             User userToAddPhoneNumber = userService.findById(user, id);
             phoneNumberService.create(phoneNumber, user, userToAddPhoneNumber);

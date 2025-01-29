@@ -25,7 +25,7 @@ public class PhoneNumberMapper {
     private PhoneNumber dtoToObject(PhoneNumberDTO phoneNumberDTO) {
         PhoneNumber phoneNumber = new PhoneNumber();
         phoneNumber.setNumber(phoneNumberDTO.getNumber());
-        phoneNumber.setCreatedBy(userService.findByUsername(phoneNumberDTO.getCreatedBy()));
+        //phoneNumber.setCreatedBy(userService.findByUsername(phoneNumberDTO.getCreatedBy()));
         return phoneNumber;
     }
 }
