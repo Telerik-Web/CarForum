@@ -34,10 +34,17 @@ public class UserDTO {
 
     //phone number for admin/ and delete the username and password - DONE
 
-    //update i crate of user allow for the user to be created as an admin. fix it
+    //update i crate of user allow for the user to be created as an admin. fix it - DONE
+
+    //comment test
+
+    //findBy neshtata
+
+    //isAdmin & blocked
+
+    //name of everything must be same
 
     //return phone number if the user is an admin
-
 
     @NotNull
     private String password;

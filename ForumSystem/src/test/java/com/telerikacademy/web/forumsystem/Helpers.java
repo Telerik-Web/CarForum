@@ -1,5 +1,6 @@
 package com.telerikacademy.web.forumsystem;
 
+import com.telerikacademy.web.forumsystem.models.Comment;
 import com.telerikacademy.web.forumsystem.models.Post;
 import com.telerikacademy.web.forumsystem.models.User;
 
@@ -33,5 +34,15 @@ public class Helpers {
         mockPost.setLikes(Set.copyOf(Collections.emptySet()));
         mockPost.setTimestamp(Timestamp.from(Instant.now()));
         return mockPost;
+    }
+
+    public static Comment createMockComment() {
+        var mockComment = new Comment();
+        User user = createMockUser();
+        mockComment.setId(1);
+        mockComment.setContent("Mock Content");
+        mockComment.setCreatedBy(user);
+        mockComment.setPost(createMockPost());
+        return mockComment;
     }
 }

@@ -71,6 +71,8 @@ public class UserServiceImpl implements UserService {
         if (exists) {
             throw new DuplicateEntityException("User", "email", user.getEmail());
         }
+//        user.setBlocked(false);
+//        user.setAdmin(false);
 
         userRepository.createUser(user);
     }
