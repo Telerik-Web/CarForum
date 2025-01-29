@@ -29,7 +29,8 @@ public class CommentServiceTests {
     private CommentServiceImpl commentService;
 
     @Test
-    public void getByUser_ShouldReturn_When_Valid() {
+    public void getByUser_ShouldReturnComments_WhenValidUser() {
+        // Arrange
         User user = createMockUser();
         List<Comment> comments = new ArrayList<>();
         Comment comment = createMockComment();
@@ -38,11 +39,16 @@ public class CommentServiceTests {
         Mockito.when(commentService.getByUser(user))
                 .thenReturn(comments);
 
-        Assertions.assertEquals(comments, commentService.getByUser(user));
+        // Act
+        List<Comment> result = commentService.getByUser(user);
+
+        // Assert
+        Assertions.assertEquals(comments, result);
     }
 
     @Test
-    public void getByPost_ShouldReturn_When_Valid() {
+    public void getByPost_ShouldReturnComments_WhenValidPost() {
+        // Arrange
         Post post = createMockPost();
         List<Comment> comments = new ArrayList<>();
         Comment comment = createMockComment();
@@ -51,105 +57,133 @@ public class CommentServiceTests {
         Mockito.when(commentService.getByPost(post))
                 .thenReturn(comments);
 
-        Assertions.assertEquals(comments, commentService.getByPost(post));
+        // Act
+        List<Comment> result = commentService.getByPost(post);
+
+        // Assert
+        Assertions.assertEquals(comments, result);
     }
 
     @Test
-    public void getById_ShouldReturn_When_Valid() {
+    public void getById_ShouldReturnComment_WhenValidId() {
+        // Arrange
         Comment comment = createMockComment();
         Mockito.when(commentService.getById(comment.getId()))
                 .thenReturn(comment);
-        Assertions.assertEquals(comment, commentService.getById(comment.getId()));
+
+        // Act
+        Comment result = commentService.getById(comment.getId());
+
+        // Assert
+        Assertions.assertEquals(comment, result);
     }
 
     @Test
-    public void create_Should_Throw_When_UserIsBlocked() {
+    public void create_ShouldThrowException_WhenUserIsBlocked() {
+        // Arrange
         Comment comment = createMockComment();
         Post post = createMockPost();
         User user = createMockUser();
         user.setBlocked(true);
+
+        // Act & Assert
         Assertions.assertThrows(UnauthorizedOperationException.class, () ->
                 commentService.create(comment, post, user)
         );
     }
 
     @Test
-    public void create_Should_Create_When_Valid() {
+    public void create_ShouldCreateComment_WhenValid() {
+        // Arrange
         Comment comment = createMockComment();
         Post post = createMockPost();
         User user = createMockUser();
+
+        // Act & Assert
         Assertions.assertDoesNotThrow(() ->
                 commentService.create(comment, post, user)
         );
     }
 
     @Test
-    public void update_Should_Throw_When_UserIsBlocked() {
+    public void update_ShouldThrowException_WhenUserIsBlocked() {
+        // Arrange
         Comment comment = createMockComment();
         User user = createMockUser();
         user.setBlocked(true);
+
+        // Act & Assert
         Assertions.assertThrows(UnauthorizedOperationException.class, () ->
                 commentService.update(comment, user)
         );
     }
 
     @Test
-    public void update_Should_Throw_When_UserIsNotAnAdmin() {
+    public void update_ShouldThrowException_WhenUserIsNotAdmin() {
+        // Arrange
         Comment comment = createMockComment();
         User user = createMockUser();
+
+        // Act & Assert
         Assertions.assertThrows(UnauthorizedOperationException.class, () ->
                 commentService.update(comment, user)
         );
     }
 
     @Test
-    public void update_Should_Create_When_Valid() {
+    public void update_ShouldUpdateComment_WhenValidUserAndAdmin() {
+        // Arrange
         Comment comment = createMockComment();
         User user = createMockUser();
         user.setAdmin(true);
+
+        // Act & Assert
         Assertions.assertDoesNotThrow(() ->
                 commentService.update(comment, user)
         );
     }
 
     @Test
-    public void delete_Should_Throw_When_UserIsBlocked() {
+    public void delete_ShouldThrowException_WhenUserIsBlocked() {
+        // Arrange
         Comment comment = createMockComment();
         User user = createMockUser();
         user.setBlocked(true);
+
+        // Act & Assert
         Assertions.assertThrows(UnauthorizedOperationException.class, () ->
                 commentService.delete(comment.getId(), user)
         );
     }
 
     @Test
-    public void delete_Should_Throw_When_UserIsNotAnAdmin() {
+    public void delete_ShouldThrowException_WhenUserIsNotAdmin() {
+        // Arrange
         Comment comment = createMockComment();
-
         Mockito.when(commentService.getById(comment.getId()))
                 .thenReturn(comment);
-
         User user = createMockUser();
 
+        // Act & Assert
         Assertions.assertThrows(UnauthorizedOperationException.class, () ->
                 commentService.delete(comment.getId(), user)
         );
     }
 
     @Test
-    public void delete_Should_Create_When_Valid() {
-
+    public void delete_ShouldDeleteComment_WhenValidUserAndAdmin() {
+        // Arrange
         Comment comment = createMockComment();
         Mockito.when(commentService.getById(comment.getId()))
                 .thenReturn(comment);
-
         User user = createMockUser();
         comment.setCreatedBy(user);
         user.setAdmin(true);
 
+        // Act & Assert
         Assertions.assertDoesNotThrow(() ->
                 commentService.delete(comment.getId(), user)
         );
     }
-
 }
+

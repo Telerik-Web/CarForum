@@ -44,17 +44,17 @@ public class UserDTO {
 
     //name of everything must be same - DONE
 
-    //swagger postController
+    //swagger postController - DONE
 
     //test for postService new method - getMost recent post & get most commented post & the last method
-
-    //return phone number if the user is an admin
 
     //create to check if the user has a phone
 
     //update & delete for phoneNumber
 
     //act arrange & assert for the tests
+
+    //return phone number if the user is an admin
 
     @NotNull
     private String password;

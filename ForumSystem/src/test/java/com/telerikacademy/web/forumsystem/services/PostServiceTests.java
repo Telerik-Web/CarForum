@@ -28,115 +28,146 @@ public class PostServiceTests {
     private PostServiceImpl postService;
 
     @Test
-    public void getPostCount_Should_ReturnPostCount_When_Valid() {
+    public void getPostCount_ShouldReturnPostCount_WhenValid() {
+        // Arrange
         long expectedCount = 1L;
         Mockito.when(postRepository.getPostCount()).thenReturn(expectedCount);
 
+        // Act
         long actualCount = postService.getPostCount();
 
+        // Assert
         Assertions.assertEquals(expectedCount, actualCount);
     }
 
-    //CHECK
     @Test
-    public void getAll_Should_ReturnAll_When_Valid() {
+    public void getAll_ShouldReturnAllPosts_WhenValid() {
+        // Arrange
         FilterPostOptions filterPostOptions = new FilterPostOptions("title", "content", "createdBy",
                 "sortBy", "sortOrder");
-        List<Post> getAll = postService.getAll(filterPostOptions);
-        Assertions.assertEquals(postService.getAll(filterPostOptions).size(), getAll.size());
+
+        // Act
+        List<Post> allPosts = postService.getAll(filterPostOptions);
+
+        // Assert
+        Assertions.assertEquals(postService.getAll(filterPostOptions).size(), allPosts.size());
     }
 
     @Test
-    public void getById_Should_ReturnPost_When_Valid() {
+    public void getById_ShouldReturnPost_WhenValid() {
+        // Arrange
         Post mockPost = createMockPost();
-        Mockito.when(postRepository.getById(1))
-                .thenReturn(mockPost);
+        Mockito.when(postRepository.getById(1)).thenReturn(mockPost);
 
+        // Act
         Post result = postService.getById(1);
+
+        // Assert
         Assertions.assertEquals(1, result.getId());
     }
 
     @Test
-    public void create_Should_Throw_When_UserIsBlocked() {
+    public void create_ShouldThrowException_WhenUserIsBlocked() {
+        // Arrange
         User mockUser = createMockUser();
         mockUser.setBlocked(true);
         Post mockPost = createMockPost();
+
+        // Act & Assert
         Assertions.assertThrows(UnauthorizedOperationException.class, () -> {
             postService.create(mockPost, mockUser);
         });
     }
 
     @Test
-    public void create_Should_Create_When_ValidParameters() {
+    public void create_ShouldCreatePost_WhenValidParameters() {
+        // Arrange
         User mockUser = createMockUser();
         mockUser.setAdmin(true);
         Post mockPost = createMockPost();
+
+        // Act & Assert
         Assertions.assertDoesNotThrow(() -> {
             postService.create(mockPost, mockUser);
         });
     }
 
     @Test
-    public void Update_Should_Throw_When_UserIsNotAnAdmin() {
+    public void update_ShouldThrowException_WhenUserIsNotAnAdmin() {
+        // Arrange
         User mockUser = createMockUser();
         Post mockPost = createMockPost();
+
+        // Act & Assert
         Assertions.assertThrows(UnauthorizedOperationException.class, () -> {
             postService.update(mockPost, mockUser);
         });
     }
 
     @Test
-    public void Update_Should_Throw_When_UserIsBlocked() {
+    public void update_ShouldThrowException_WhenUserIsBlocked() {
+        // Arrange
         User mockUser = createMockUser();
         mockUser.setAdmin(true);
         mockUser.setBlocked(true);
         Post mockPost = createMockPost();
 
+        // Act & Assert
         Assertions.assertThrows(UnauthorizedOperationException.class, () -> {
             postService.update(mockPost, mockUser);
         });
     }
 
     @Test
-    public void Update_Should_Update_When_ValidInput() {
+    public void update_ShouldUpdatePost_WhenValidInput() {
+        // Arrange
         User mockUser = createMockUser();
         mockUser.setAdmin(true);
         Post mockPost = createMockPost();
-        Assertions.assertDoesNotThrow(() ->
-                postService.update(mockPost, mockUser)
-        );
+
+        // Act & Assert
+        Assertions.assertDoesNotThrow(() -> {
+            postService.update(mockPost, mockUser);
+        });
     }
 
     @Test
-    public void delete_Should_Throw_When_UserIsNotAnAdmin() {
+    public void delete_ShouldThrowException_WhenUserIsNotAnAdmin() {
+        // Arrange
         User mockUser = createMockUser();
         Post mockPost = createMockPost();
 
+        // Act & Assert
         Assertions.assertThrows(UnauthorizedOperationException.class, () -> {
             postService.delete(mockPost.getCreatedBy().getId(), mockUser);
         });
     }
 
     @Test
-    public void delete_Should_Throw_When_UserIsBlocked() {
+    public void delete_ShouldThrowException_WhenUserIsBlocked() {
+        // Arrange
         User mockUser = createMockUser();
         mockUser.setAdmin(true);
         mockUser.setBlocked(true);
         Post mockPost = createMockPost();
+
+        // Act & Assert
         Assertions.assertThrows(UnauthorizedOperationException.class, () -> {
             postService.delete(mockPost.getId(), mockUser);
         });
     }
 
     @Test
-    public void delete_Should_Delete_When_ValidInput() {
+    public void delete_ShouldDeletePost_WhenValidInput() {
+        // Arrange
         User mockUser = createMockUser();
         mockUser.setAdmin(true);
         Post mockPost = createMockPost();
 
+        // Act & Assert
         Assertions.assertDoesNotThrow(() -> {
             postService.delete(mockPost.getId(), mockUser);
         });
     }
-
 }
+
