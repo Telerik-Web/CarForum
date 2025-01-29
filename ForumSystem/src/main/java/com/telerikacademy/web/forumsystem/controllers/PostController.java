@@ -56,11 +56,14 @@ public class PostController {
         }
     }
 
+    @Operation(summary = "Returns the most recent post", description = "Returns the most recent post by timestamp")
     @GetMapping("/mostRecent")
     public List<Post> getMostRecentPosts() {
         return postService.getMostRecentPosts();
     }
 
+    @Operation(summary = "Returns the most commented post", description = "Returns the most commented post by analyzing " +
+            "the number of comments associated with each post.")
     @GetMapping("/mostCommented")
     public List<Post> getMostCommentedPosts() {
         return postService.getMostCommentedPosts();
