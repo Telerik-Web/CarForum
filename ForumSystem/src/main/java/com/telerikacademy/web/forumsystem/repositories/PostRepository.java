@@ -13,6 +13,10 @@ public interface PostRepository {
 
     Post getById(int id);
 
+    List<Post> getMostRecentPosts();
+
+    List<Post> getMostCommentedPosts();
+
     void alterPostLikes(Post post);
 
     void create(Post post);

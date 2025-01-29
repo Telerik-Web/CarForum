@@ -56,6 +56,16 @@ public class PostController {
         }
     }
 
+    @GetMapping("/mostRecent")
+    public List<Post> getMostRecentPosts() {
+        return postService.getMostRecentPosts();
+    }
+
+    @GetMapping("/mostCommented")
+    public List<Post> getMostCommentedPosts() {
+        return postService.getMostCommentedPosts();
+    }
+
     @Operation(summary = "Creates a post", description = "Create a post in the DB with all its required data.")
     @PostMapping
     public Post create(@RequestHeader HttpHeaders headers, @Valid @RequestBody PostDTO postDto) {

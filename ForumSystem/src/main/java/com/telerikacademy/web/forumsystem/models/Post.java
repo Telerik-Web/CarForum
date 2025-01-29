@@ -111,7 +111,7 @@ public class Post {
         return comments;
     }
 
-    public int getCommentsSize(){
+    public long getCommentsSize(){
         return comments.size();
     }
 

@@ -14,6 +14,10 @@ public interface PostService {
 
     Post getById(int id);
 
+    List<Post> getMostRecentPosts();
+
+    List<Post> getMostCommentedPosts();
+
     void alterPostLikes(int id, User user, boolean isLiked);
 
     void create(Post post, User user);
