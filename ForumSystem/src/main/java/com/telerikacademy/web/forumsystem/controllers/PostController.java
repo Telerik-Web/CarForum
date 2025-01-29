@@ -6,6 +6,8 @@ import com.telerikacademy.web.forumsystem.exceptions.UnauthorizedOperationExcept
 import com.telerikacademy.web.forumsystem.mappers.PostMapper;
 import com.telerikacademy.web.forumsystem.models.*;
 import com.telerikacademy.web.forumsystem.services.PostService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/posts")
+@Tag(name = "Post Controller", description = "APIs for managing posts")
 public class PostController {
 
     private final PostService postService;
@@ -30,6 +33,7 @@ public class PostController {
         this.postMapper = postMapper;
     }
 
+    @Operation(summary = "Returns all posts", description = "Returns all posts with their information")
     @GetMapping
     public List<PostDTOOut> getAll(
             @RequestParam(required = false) String title,
@@ -43,6 +47,7 @@ public class PostController {
         return postMapper.toDTOOut(postService.getAll(filterOptions));
     }
 
+    @Operation(summary = "Get post by ID", description = "Fetches a post by their unique ID")
     @GetMapping("/{id}")
     public Post getById(@PathVariable int id) {
         try {
@@ -52,6 +57,7 @@ public class PostController {
         }
     }
 
+    @Operation(summary = "Creates a post", description = "Create a post in the DB with all its required data.")
     @PostMapping
     public Post create(@RequestHeader HttpHeaders headers, @Valid @RequestBody PostDTO postDto) {
         try {
@@ -66,6 +72,7 @@ public class PostController {
         }
     }
 
+    @Operation(summary = "Updates a post by ID", description = "updates the defined fields of a post with the new values.")
     @PutMapping("/{id}")
     public Post update(@RequestHeader HttpHeaders headers,
                        @PathVariable int id,
@@ -82,6 +89,7 @@ public class PostController {
         }
     }
 
+    @Operation(summary = "Delete post by ID", description = "Deletes a post by it's unique ID")
     @DeleteMapping("/{id}")
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {

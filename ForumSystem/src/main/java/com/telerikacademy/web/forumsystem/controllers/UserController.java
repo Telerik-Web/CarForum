@@ -10,6 +10,8 @@ import com.telerikacademy.web.forumsystem.mappers.UserMapper;
 import com.telerikacademy.web.forumsystem.models.*;
 import com.telerikacademy.web.forumsystem.services.PhoneNumberService;
 import com.telerikacademy.web.forumsystem.services.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
+@Tag(name = "User Controller", description = "APIs for managing users")
+
 public class UserController {
 
     private final UserService userService;
@@ -37,6 +41,7 @@ public class UserController {
         this.phoneNumberMapper = phoneNumberMapper;
     }
 
+    @Operation(summary = "Returns all users", description = "Returns all users with their proper fields.")
     @GetMapping
     public List<UserDTOOut> getAll(@RequestParam(required = false) String firstName,
                                    @RequestParam(required = false) String lastName,
@@ -49,6 +54,7 @@ public class UserController {
         return userMapper.toDTOOut(userService.getAll(filterOptions));
     }
 
+    @Operation(summary = "Get user by ID", description = "Fetches a user by their unique ID")
     @GetMapping("/{id}")
     public User getById(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
@@ -115,6 +121,7 @@ public class UserController {
 //        }
 //    }
 
+    @Operation(summary = "Create a User", description = "Create a user with unique all its fields.")
     @PostMapping
     public UserDTOOut create(@RequestBody UserDTO userDto) {
         try {
@@ -128,6 +135,8 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "Create a PhoneNumber", description = "Creates a phoneNumber, for a user, while checking " +
+            "if the creator is an admin and if the user the phone is assigned to is an admin")
     @PostMapping("/{id}")
     public PhoneNumber createPhoneNumber(@RequestHeader HttpHeaders headers, @PathVariable int id,
                                          @RequestBody PhoneNumberDTO phoneNumberDto) {
@@ -145,6 +154,7 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "Updates user by an Id", description = "Updates the desired fields in an User")
     @PutMapping("/{id}")
     public UserDTOOut update(@RequestHeader HttpHeaders headers, @PathVariable int id,
                              @RequestBody UserDTO userDto) {
@@ -180,6 +190,7 @@ public class UserController {
 //        }
 //    }
 
+    @Operation(summary = "Deletes an user by Id", description = "Deletes an user by their unique ID")
     @DeleteMapping("/{id}")
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
