@@ -115,6 +115,15 @@ public class PostRepositoryImpl implements PostRepository{
         }
     }
 
+    @Override
+    public void alterPostLikes(Post post) {
+        try(Session session = sessionFactory.openSession()){
+            session.beginTransaction();
+            session.merge(post);
+            session.getTransaction().commit();
+        }
+    }
+
     private String createOrderBy(FilterPostOptions filterOptions) {
         if(filterOptions.getSortBy().isEmpty()){
             return "";

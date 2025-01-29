@@ -13,6 +13,8 @@ public interface PostRepository {
 
     Post getById(int id);
 
+    void alterPostLikes(Post post);
+
     void create(Post post);
 
     void update(Post post);

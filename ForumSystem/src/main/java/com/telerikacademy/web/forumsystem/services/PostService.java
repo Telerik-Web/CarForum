@@ -14,6 +14,8 @@ public interface PostService {
 
     Post getById(int id);
 
+    void alterPostLikes(int id, User user, boolean isLiked);
+
     void create(Post post, User user);
 
     void update(Post post, User user);

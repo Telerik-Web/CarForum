@@ -59,4 +59,19 @@ public class PostServiceImpl implements PostService{
 
         postRepository.delete(id);
     }
+
+    @Override
+    public void alterPostLikes(int id, User user, boolean isLiked) {
+        checkIfBlocked(user);
+
+        Post postToUpdate = postRepository.getById(id);
+
+        if (isLiked) {
+            postToUpdate.addToLikes(user);
+        }
+        if (!isLiked) {
+            postToUpdate.removeFromLikes(user);
+        }
+        postRepository.alterPostLikes(postToUpdate);
+    }
 }

@@ -1,6 +1,5 @@
 package com.telerikacademy.web.forumsystem.controllers;
 
-import com.telerikacademy.web.forumsystem.exceptions.AuthorizationException;
 import com.telerikacademy.web.forumsystem.exceptions.EntityNotFoundException;
 import com.telerikacademy.web.forumsystem.exceptions.UnauthorizedOperationException;
 import com.telerikacademy.web.forumsystem.mappers.PostMapper;
@@ -84,7 +83,23 @@ public class PostController {
             return post;
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (AuthorizationException e) {
+        } catch (UnauthorizedOperationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+    }
+
+    @Operation(summary = "Like or Dislike a post", description =
+                        "If isLiked is true, likes a post, else dislikes a post")
+    @PatchMapping("/{id}/like")
+    public void alterPostLikes(@PathVariable int id, @RequestHeader HttpHeaders headers, @RequestParam boolean isLiked) {
+        try{
+            User user = authenticationHelper.tryGetUser(headers);
+            postService.alterPostLikes(id, user, isLiked);
+        }
+        catch (EntityNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+        catch (UnauthorizedOperationException e){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
@@ -97,7 +112,7 @@ public class PostController {
             postService.delete(id, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (AuthorizationException e) {
+        } catch (UnauthorizedOperationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
