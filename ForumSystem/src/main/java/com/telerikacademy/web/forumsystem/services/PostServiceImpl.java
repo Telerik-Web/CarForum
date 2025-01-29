@@ -37,26 +37,26 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public void createPost(Post post, User user) {
+    public void create(Post post, User user) {
         checkIfBlocked(user);
 
         post.setCreatedBy(user);
-        postRepository.createPost(post);
+        postRepository.create(post);
     }
 
     @Override
-    public void updatePost(Post post, User user) {
+    public void update(Post post, User user) {
         checkIfCreatorOrAdmin(user, post);
         checkIfBlocked(user);
 
-        postRepository.updatePost(post);
+        postRepository.update(post);
     }
 
     @Override
-    public void deletePost(int id, User user) {
+    public void delete(int id, User user) {
         checkIfCreatorOrAdmin(id, user);
         checkIfBlocked(user);
 
-        postRepository.deletePost(id);
+        postRepository.delete(id);
     }
 }

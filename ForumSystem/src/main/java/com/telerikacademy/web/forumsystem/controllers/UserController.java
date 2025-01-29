@@ -38,22 +38,22 @@ public class UserController {
     }
 
     @GetMapping
-    public List<UserDTOOut> getAllUsers(@RequestParam(required = false) String firstName,
-                                        @RequestParam(required = false) String lastName,
-                                        @RequestParam(required = false) String username,
-                                        @RequestParam(required = false) String email,
-                                        @RequestParam(required = false) String sortBy,
-                                        @RequestParam(required = false) String orderBy) {
+    public List<UserDTOOut> getAll(@RequestParam(required = false) String firstName,
+                                   @RequestParam(required = false) String lastName,
+                                   @RequestParam(required = false) String username,
+                                   @RequestParam(required = false) String email,
+                                   @RequestParam(required = false) String sortBy,
+                                   @RequestParam(required = false) String orderBy) {
         FilterUserOptions filterOptions = new FilterUserOptions(firstName, lastName,
                 username, email, sortBy, orderBy);
-        return userMapper.toDTOOut(userService.findAll(filterOptions));
+        return userMapper.toDTOOut(userService.getAll(filterOptions));
     }
 
     @GetMapping("/{id}")
-    public User getUserById(@RequestHeader HttpHeaders headers, @PathVariable int id) {
+    public User getById(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
             User user = authorizationHelper.tryGetUser(headers);
-            return userService.findById(user, id);
+            return userService.getById(user, id);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (UnauthorizedOperationException e) {
@@ -116,10 +116,10 @@ public class UserController {
 //    }
 
     @PostMapping
-    public UserDTOOut createUser(@RequestBody UserDTO userDto) {
+    public UserDTOOut create(@RequestBody UserDTO userDto) {
         try {
             User user = userMapper.fromDto(userDto);
-            userService.createUser(user);
+            userService.create(user);
             return userMapper.fromDtoOut(userDto);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -135,7 +135,7 @@ public class UserController {
             PhoneNumber phoneNumber = phoneNumberMapper.map(phoneNumberDto);
             phoneNumber.setCreatedBy(authorizationHelper.tryGetUser(headers));
             User user = authorizationHelper.tryGetUser(headers);
-            User userToAddPhoneNumber = userService.findById(user, id);
+            User userToAddPhoneNumber = userService.getById(user, id);
             phoneNumberService.create(phoneNumber, user, userToAddPhoneNumber);
             return phoneNumber;
         } catch (EntityNotFoundException e) {
@@ -146,13 +146,13 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public UserDTOOut updateUser(@RequestHeader HttpHeaders headers, @PathVariable int id,
-                                 @RequestBody UserDTO userDto) {
+    public UserDTOOut update(@RequestHeader HttpHeaders headers, @PathVariable int id,
+                             @RequestBody UserDTO userDto) {
         try {
             User userFromHeader = authorizationHelper.tryGetUser(headers);
             User user = userMapper.fromDto(userDto, id);
-            user.setUsername(getUserById(headers, id).getUsername());
-            userService.updateUser(user, userFromHeader, id);
+            user.setUsername(getById(headers, id).getUsername());
+            userService.update(user, userFromHeader, id);
             return userMapper.fromDtoOut(userDto);
             //return userDto;
         } catch (EntityNotFoundException e) {
@@ -181,10 +181,10 @@ public class UserController {
 //    }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@RequestHeader HttpHeaders headers, @PathVariable int id) {
+    public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
             User userFromHeader = authorizationHelper.tryGetUser(headers);
-            userService.deleteUser(id, userFromHeader);
+            userService.delete(id, userFromHeader);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (UnauthorizedOperationException e) {

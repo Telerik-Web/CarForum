@@ -37,7 +37,7 @@ public class AuthenticationHelper {
 
         try {
 
-            User user = userService.findByUsername(username);
+            User user = userService.getByUsername(username);
 
             if(!user.getPassword().equals(password)){
                 throw new UnauthorizedOperationException(INVALID_AUTHENTICATION_ERROR);

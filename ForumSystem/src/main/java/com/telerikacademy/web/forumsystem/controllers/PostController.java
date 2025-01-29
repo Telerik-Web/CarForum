@@ -57,7 +57,7 @@ public class PostController {
         try {
             User user = authenticationHelper.tryGetUser(headers);
             Post post = postMapper.fromDto(postDto);
-            postService.createPost(post, user);
+            postService.create(post, user);
             return post;
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -73,7 +73,7 @@ public class PostController {
         try {
             User user = authenticationHelper.tryGetUser(headers);
             Post post = postMapper.fromDto(id, postDto);
-            postService.updatePost(post, user);
+            postService.update(post, user);
             return post;
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -86,7 +86,7 @@ public class PostController {
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
-            postService.deletePost(id, user);
+            postService.delete(id, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (AuthorizationException e) {

@@ -40,7 +40,7 @@ public class UserDTO {
 
     //findBy neshtata - DONE
 
-    //isAdmin & blocked remove from the DTO class
+    //isAdmin & blocked remove from the DTO class - DONE
 
     //name of everything must be same
 

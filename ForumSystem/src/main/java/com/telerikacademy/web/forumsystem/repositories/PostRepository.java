@@ -13,10 +13,10 @@ public interface PostRepository {
 
     Post getById(int id);
 
-    void createPost(Post post);
+    void create(Post post);
 
-    void updatePost(Post post);
+    void update(Post post);
 
-    void deletePost(int id);
+    void delete(int id);
 
 }

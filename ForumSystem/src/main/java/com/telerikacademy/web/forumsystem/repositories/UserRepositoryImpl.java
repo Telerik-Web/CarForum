@@ -34,7 +34,7 @@ public class UserRepositoryImpl implements UserRepository {
 //    }
 
     @Override
-    public List<User> findAll(FilterUserOptions filterOptions) {
+    public List<User> getAll(FilterUserOptions filterOptions) {
         try (Session session = sessionFactory.openSession()) {
             StringBuilder sb = new StringBuilder("FROM User");
             List<String> filters = new ArrayList<>();
@@ -74,7 +74,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User findById(int id) {
+    public User getById(int id) {
         try (Session session = sessionFactory.openSession()) {
             User user = session.get(User.class, id);
             if (user == null) {
@@ -85,7 +85,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User findByUsername(String username) {
+    public User getByUsername(String username) {
         try (Session session = sessionFactory.openSession()) {
             Query<User> user = session.createQuery("From User Where username = :username", User.class);
             user.setParameter("username", username);
@@ -97,7 +97,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User findByEmail(String email) {
+    public User getByEmail(String email) {
         try (Session session = sessionFactory.openSession()) {
             Query<User> user = session.createQuery("From User where email = :email", User.class);
             user.setParameter("email", email);
@@ -121,7 +121,7 @@ public class UserRepositoryImpl implements UserRepository {
 //    }
 
     @Override
-    public void createUser(User user) {
+    public void create(User user) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.persist(user);
@@ -130,7 +130,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void updateUser(User user, int id) {
+    public void update(User user, int id) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.merge(user);
@@ -139,10 +139,10 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void deleteUser(int id) {
+    public void delete(int id) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.remove(findById(id));
+            session.remove(getById(id));
             session.getTransaction().commit();
         }
     }

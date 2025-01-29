@@ -9,7 +9,6 @@ import com.telerikacademy.web.forumsystem.models.Post;
 import com.telerikacademy.web.forumsystem.models.User;
 import com.telerikacademy.web.forumsystem.services.CommentService;
 import com.telerikacademy.web.forumsystem.services.PostService;
-import com.telerikacademy.web.forumsystem.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -35,7 +34,7 @@ public class CommentController {
     }
 
     @GetMapping("/{id}")
-    public Comment getCommentById(@PathVariable int id) {
+    public Comment getById(@PathVariable int id) {
         try{
             return commentService.getById(id);
         }

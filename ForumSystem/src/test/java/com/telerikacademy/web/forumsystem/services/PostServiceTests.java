@@ -47,7 +47,7 @@ public class PostServiceTests {
     }
 
     @Test
-    public void getPostById_Should_ReturnPost_When_Valid() {
+    public void getById_Should_ReturnPost_When_Valid() {
         Post mockPost = createMockPost();
         Mockito.when(postRepository.getById(1))
                 .thenReturn(mockPost);
@@ -57,22 +57,22 @@ public class PostServiceTests {
     }
 
     @Test
-    public void createPost_Should_Throw_When_UserIsBlocked() {
+    public void create_Should_Throw_When_UserIsBlocked() {
         User mockUser = createMockUser();
         mockUser.setBlocked(true);
         Post mockPost = createMockPost();
         Assertions.assertThrows(UnauthorizedOperationException.class, () -> {
-            postService.createPost(mockPost, mockUser);
+            postService.create(mockPost, mockUser);
         });
     }
 
     @Test
-    public void createPost_Should_Create_When_ValidParameters() {
+    public void create_Should_Create_When_ValidParameters() {
         User mockUser = createMockUser();
         mockUser.setAdmin(true);
         Post mockPost = createMockPost();
         Assertions.assertDoesNotThrow(() -> {
-            postService.createPost(mockPost, mockUser);
+            postService.create(mockPost, mockUser);
         });
     }
 
@@ -81,7 +81,7 @@ public class PostServiceTests {
         User mockUser = createMockUser();
         Post mockPost = createMockPost();
         Assertions.assertThrows(UnauthorizedOperationException.class, () -> {
-            postService.updatePost(mockPost, mockUser);
+            postService.update(mockPost, mockUser);
         });
     }
 
@@ -93,7 +93,7 @@ public class PostServiceTests {
         Post mockPost = createMockPost();
 
         Assertions.assertThrows(UnauthorizedOperationException.class, () -> {
-            postService.updatePost(mockPost, mockUser);
+            postService.update(mockPost, mockUser);
         });
     }
 
@@ -103,13 +103,13 @@ public class PostServiceTests {
         mockUser.setAdmin(true);
         Post mockPost = createMockPost();
         Assertions.assertDoesNotThrow(() ->
-                postService.updatePost(mockPost, mockUser)
+                postService.update(mockPost, mockUser)
         );
     }
 
     //Виж с лъчо
     @Test
-    public void deletePost_Should_Throw_When_UserIsNotAnAdmin() {
+    public void delete_Should_Throw_When_UserIsNotAnAdmin() {
         User mockUser = createMockUser();
         mockUser.setId(2);
         mockUser.setAdmin(false);
@@ -117,29 +117,29 @@ public class PostServiceTests {
         //mockPost.setId(1);
 
         Assertions.assertThrows(UnauthorizedOperationException.class, () -> {
-            postService.deletePost(mockPost.getId(), mockUser);
+            postService.delete(mockPost.getId(), mockUser);
         });
     }
 
     @Test
-    public void deletePost_Should_Throw_When_UserIsBlocked() {
+    public void delete_Should_Throw_When_UserIsBlocked() {
         User mockUser = createMockUser();
         mockUser.setAdmin(true);
         mockUser.setBlocked(true);
         Post mockPost = createMockPost();
         Assertions.assertThrows(UnauthorizedOperationException.class, () -> {
-            postService.deletePost(mockPost.getId(), mockUser);
+            postService.delete(mockPost.getId(), mockUser);
         });
     }
 
     @Test
-    public void deletePost_Should_Delete_When_ValidInput() {
+    public void delete_Should_Delete_When_ValidInput() {
         User mockUser = createMockUser();
         mockUser.setAdmin(true);
         Post mockPost = createMockPost();
 
         Assertions.assertDoesNotThrow(() -> {
-            postService.deletePost(mockPost.getId(), mockUser);
+            postService.delete(mockPost.getId(), mockUser);
         });
     }
 

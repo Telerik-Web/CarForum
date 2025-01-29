@@ -88,7 +88,7 @@ public class PostRepositoryImpl implements PostRepository{
     }
 
     @Override
-    public void createPost(Post post) {
+    public void create(Post post) {
         try(Session session = sessionFactory.openSession()){
             session.beginTransaction();
             session.persist(post);
@@ -97,7 +97,7 @@ public class PostRepositoryImpl implements PostRepository{
     }
 
     @Override
-    public void updatePost(Post post) {
+    public void update(Post post) {
         try(Session session = sessionFactory.openSession()){
             session.beginTransaction();
             session.merge(post);
@@ -106,7 +106,7 @@ public class PostRepositoryImpl implements PostRepository{
     }
 
     @Override
-    public void deletePost(int id) {
+    public void delete(int id) {
         Post post = getById(id);
         try(Session session = sessionFactory.openSession()){
             session.beginTransaction();

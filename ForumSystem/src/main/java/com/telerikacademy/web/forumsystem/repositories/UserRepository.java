@@ -7,19 +7,19 @@ import jakarta.validation.Valid;
 import java.util.List;
 
 public interface UserRepository {
-    List<User> findAll(FilterUserOptions filterOptions);
+    List<User> getAll(FilterUserOptions filterOptions);
 
-    User findById(int id);
+    User getById(int id);
 
-    User findByUsername(String username);
+    User getByUsername(String username);
 
-    User findByEmail(String email);
+    User getByEmail(String email);
 //
 //    User findByFirstname(String firstName);
 
-    void createUser(@Valid User user);
+    void create(@Valid User user);
 
-    void updateUser(@Valid User user, int id);
+    void update(@Valid User user, int id);
 
-    void deleteUser(int id);
+    void delete(int id);
 }

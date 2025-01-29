@@ -25,19 +25,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAll(FilterUserOptions filterOptions) {
-        return userRepository.findAll(filterOptions);
+    public List<User> getAll(FilterUserOptions filterOptions) {
+        return userRepository.getAll(filterOptions);
     }
 
     @Override
-    public User findById(User user, int id) {
+    public User getById(User user, int id) {
         checkIfAdmin(user);
-        return userRepository.findById(id);
+        return userRepository.getById(id);
     }
 
     @Override
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public User getByUsername(String username) {
+        return userRepository.getByUsername(username);
     }
 
 //    @Override
@@ -59,11 +59,11 @@ public class UserServiceImpl implements UserService {
 //    }
 
     @Override
-    public void createUser(User user) {
+    public void create(User user) {
         boolean exists = true;
 
         try {
-            userRepository.findByEmail(user.getEmail());
+            userRepository.getByEmail(user.getEmail());
         } catch (EntityNotFoundException e) {
             exists = false;
         }
@@ -74,15 +74,15 @@ public class UserServiceImpl implements UserService {
 //        user.setBlocked(false);
 //        user.setAdmin(false);
 
-        userRepository.createUser(user);
+        userRepository.create(user);
     }
 
     @Override
-    public void updateUser(User user, User userFromHeader, int id) {
+    public void update(User user, User userFromHeader, int id) {
         boolean exists = true;
         checkIfCreatorOrAdminForUser(userFromHeader, user);
         try {
-            User newUser = userRepository.findByEmail(user.getEmail());
+            User newUser = userRepository.getByEmail(user.getEmail());
             if (newUser.getId() == user.getId()) {
                 exists = false;
             }
@@ -94,13 +94,13 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateEntityException("User", "username", user.getUsername());
         }
 
-        userRepository.updateUser(user, id);
+        userRepository.update(user, id);
     }
 
     @Override
-    public void deleteUser(int id, User userFromHeader) {
-        User user = userRepository.findById(id);
+    public void delete(int id, User userFromHeader) {
+        User user = userRepository.getById(id);
         checkIfCreatorOrAdminForUser(userFromHeader, user);
-        userRepository.deleteUser(id);
+        userRepository.delete(id);
     }
 }
