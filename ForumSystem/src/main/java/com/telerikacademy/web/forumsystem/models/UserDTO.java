@@ -42,7 +42,7 @@ public class UserDTO {
 
     //isAdmin & blocked remove from the DTO class - DONE
 
-    //name of everything must be same
+    //name of everything must be same - DONE
 
     //return phone number if the user is an admin
 
