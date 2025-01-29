@@ -38,7 +38,7 @@ public class UserDTO {
 
     //comment test - DONE
 
-    //findBy neshtata
+    //findBy neshtata - DONE
 
     //isAdmin & blocked remove from the DTO class
 
@@ -48,12 +48,12 @@ public class UserDTO {
 
     @NotNull
     private String password;
-
-    @NotNull
-    private Boolean isAdmin;
-
-    @NotNull
-    private Boolean isBlocked;
+//
+//    @NotNull
+//    private Boolean isAdmin;
+//
+//    @NotNull
+//    private Boolean isBlocked;
 
     @NotNull
     private String username;
@@ -68,15 +68,14 @@ public class UserDTO {
         this.password = password;
     }
 
-    public UserDTO(String firstName, String lastName, String email, String password,
-                   Boolean isAdmin, Boolean isBlocked) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.isAdmin = isAdmin;
-        this.isBlocked = isBlocked;
-    }
+//    public UserDTO(String firstName, String lastName, String email, String password) {
+//        this.firstName = firstName;
+//        this.lastName = lastName;
+//        this.email = email;
+//        this.password = password;
+//        this.isAdmin = isAdmin;
+//        this.isBlocked = isBlocked;
+//    }
 
     public String getFirstName() {
         return firstName;
@@ -110,21 +109,21 @@ public class UserDTO {
         this.password = password;
     }
 
-    public Boolean isAdmin() {
-        return isAdmin;
-    }
-
-    public void setAdmin(Boolean admin) {
-        isAdmin = admin;
-    }
-
-    public Boolean isBlocked() {
-        return isBlocked;
-    }
-
-    public void setBlocked(Boolean blocked) {
-        isBlocked = blocked;
-    }
+//    public Boolean isAdmin() {
+//        return isAdmin;
+//    }
+//
+//    public void setAdmin(Boolean admin) {
+//        isAdmin = admin;
+//    }
+//
+//    public Boolean isBlocked() {
+//        return isBlocked;
+//    }
+//
+//    public void setBlocked(Boolean blocked) {
+//        isBlocked = blocked;
+//    }
 
     public String getUsername() {
         return username;

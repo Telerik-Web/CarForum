@@ -63,7 +63,7 @@ public class UserRepositoryImpl implements UserRepository {
             if(!filters.isEmpty()) {
                 sb.append(" WHERE ").append(String.join(" AND ", filters));
             } else {
-                sb.append(" order by username desc");
+                sb.append(" order by id asc");
             }
 
             sb.append(createOrderBy(filterOptions));

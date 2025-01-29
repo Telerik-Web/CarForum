@@ -53,8 +53,8 @@ public class UserMapper {
         user.setUsername(userDto.getUsername());
         user.setEmail(userDto.getEmail());
         user.setPassword(userDto.getPassword());
-        user.setAdmin(userDto.isAdmin());
-        user.setBlocked(userDto.isBlocked());
+        user.setAdmin(false);
+        user.setBlocked(false);
         return user;
     }
 
@@ -64,8 +64,8 @@ public class UserMapper {
         user.setLastName(userDto.getLastName());
         user.setUsername(userDto.getUsername());
         user.setEmail(userDto.getEmail());
-        user.setAdmin(userDto.isAdmin());
-        user.setBlocked(userDto.isBlocked());
+//        user.setAdmin(userDto.isAdmin());
+//        user.setBlocked(userDto.isBlocked());
         return user;
     }
 
@@ -78,8 +78,8 @@ public class UserMapper {
             userDtoOut.setLastName(user.getLastName());
             userDtoOut.setUsername(user.getUsername());
             userDtoOut.setEmail(user.getEmail());
-            userDtoOut.setBlocked(user.isBlocked());
-            userDtoOut.setAdmin(user.isAdmin());
+//            userDtoOut.setBlocked(user.isBlocked());
+//            userDtoOut.setAdmin(user.isAdmin());
             userDto.add(userDtoOut);
         }
 
