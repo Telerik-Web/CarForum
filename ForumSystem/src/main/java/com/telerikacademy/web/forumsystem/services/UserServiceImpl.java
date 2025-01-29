@@ -114,10 +114,7 @@ public class UserServiceImpl implements UserService {
         boolean exists = true;
         checkIfCreatorOrAdminForUser(userFromHeader, user);
         try {
-            User newUser = userRepository.getByEmail(user.getEmail());
-            if (newUser.getId() == user.getId()) {
-                exists = false;
-            }
+            userRepository.getByEmail(user.getEmail());
         } catch (EntityNotFoundException e) {
             exists = false;
         }
