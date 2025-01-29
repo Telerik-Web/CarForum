@@ -6,7 +6,9 @@ import com.telerikacademy.web.forumsystem.models.User;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 public class Helpers {
@@ -23,6 +25,18 @@ public class Helpers {
         mockUser.setBlocked(false);
         //mockUser.setRoles(Set.of(createMockRole()));
         return mockUser;
+    }
+
+    public static User createMockAdmin(){
+        var mockAdmin = createMockUser();
+        mockAdmin.setAdmin(true);
+        return mockAdmin;
+    }
+
+    public static User createMockBlockedUser(){
+        var mockBlockedUser = createMockUser();
+        mockBlockedUser.setBlocked(true);
+        return mockBlockedUser;
     }
 
     public static Post createMockPost() {
@@ -48,4 +62,16 @@ public class Helpers {
         mockComment.setPost(createMockPost());
         return mockComment;
     }
+
+    public static List<User> createMockUserList(){
+        var mockUserList = new ArrayList<User>();
+        mockUserList.add(createMockUser());
+        User anotherUser = createMockUser();
+        anotherUser.setId(2);
+        anotherUser.setUsername("MockUsername2");
+        mockUserList.add(anotherUser);
+
+        return mockUserList;
+    }
+
 }
