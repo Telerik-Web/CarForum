@@ -171,19 +171,6 @@ public class UserController {
 //        }
 //    }
 
-    @Operation(summary = "Deletes an user by Id", description = "Deletes an user by their unique ID")
-    @DeleteMapping("/{id}")
-    public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
-        try {
-            User userFromHeader = authorizationHelper.tryGetUser(headers);
-            userService.delete(id, userFromHeader);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (UnauthorizedOperationException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
-    }
-
     @Operation(summary = "Alter admin permissions", description = "Changes user permissions " +
             "if isAdmin is true, promotes the user to admin, else removes admin permissions")
     @PatchMapping("/{id}/admin")
@@ -200,6 +187,8 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "Block or unblock user", description =
+            "If isBlocked is true, blocks user from interaction, else unblocks an user")
     @PatchMapping("/{id}/block")
     public void alterBlock(@PathVariable int id, @RequestHeader HttpHeaders headers, @RequestParam boolean isBlocked){
         try{
@@ -213,6 +202,20 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
+
+    @Operation(summary = "Deletes an user by Id", description = "Deletes an user by their unique ID")
+    @DeleteMapping("/{id}")
+    public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
+        try {
+            User userFromHeader = authorizationHelper.tryGetUser(headers);
+            userService.delete(id, userFromHeader);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (UnauthorizedOperationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+    }
+
 
     @Operation(summary = "Create a PhoneNumber", description = "Creates a phoneNumber, for a user, while checking " +
             "if the creator is an admin and if the user the phone is assigned to is an admin")

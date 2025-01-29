@@ -49,12 +49,11 @@ public class UserServiceImpl implements UserService {
 
         if(isAdmin){
             userToUpdate.setAdmin(true);
-            userRepository.alterAdminPermissions(userToUpdate);
         }
         if(!isAdmin){
             userToUpdate.setAdmin(false);
-            userRepository.alterAdminPermissions(userToUpdate);
         }
+        userRepository.alterAdminPermissions(userToUpdate);
     }
 
     @Override
@@ -66,12 +65,11 @@ public class UserServiceImpl implements UserService {
 
         if(isBlocked){
             userToUpdate.setBlocked(true);
-            userRepository.alterBlock(userToUpdate);
         }
         if(!isBlocked){
             userToUpdate.setBlocked(false);
-            userRepository.alterBlock(userToUpdate);
         }
+        userRepository.alterBlock(userToUpdate);
     }
 
 //    @Override
