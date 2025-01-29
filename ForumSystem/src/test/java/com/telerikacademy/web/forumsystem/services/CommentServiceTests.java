@@ -34,6 +34,7 @@ public class CommentServiceTests {
         List<Comment> comments = new ArrayList<>();
         Comment comment = createMockComment();
         comments.add(comment);
+
         Mockito.when(commentService.getByUser(user))
                 .thenReturn(comments);
 
@@ -49,6 +50,7 @@ public class CommentServiceTests {
 
         Mockito.when(commentService.getByPost(post))
                 .thenReturn(comments);
+
         Assertions.assertEquals(comments, commentService.getByPost(post));
     }
 
@@ -123,10 +125,12 @@ public class CommentServiceTests {
     @Test
     public void delete_Should_Throw_When_UserIsNotAnAdmin() {
         Comment comment = createMockComment();
+
         Mockito.when(commentService.getById(comment.getId()))
                 .thenReturn(comment);
+
         User user = createMockUser();
-        //user.setId(2);
+
         Assertions.assertThrows(UnauthorizedOperationException.class, () ->
                 commentService.delete(comment.getId(), user)
         );
@@ -142,6 +146,7 @@ public class CommentServiceTests {
         User user = createMockUser();
         comment.setCreatedBy(user);
         user.setAdmin(true);
+
         Assertions.assertDoesNotThrow(() ->
                 commentService.delete(comment.getId(), user)
         );

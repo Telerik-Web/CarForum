@@ -27,10 +27,12 @@ public class Helpers {
 
     public static Post createMockPost() {
         var mockPost = new Post();
+        User user = createMockUser();
+        user.setId(2);
         mockPost.setId(1);
         mockPost.setTitle("Mock Title");
         mockPost.setContent("Mock Content");
-        mockPost.setCreatedBy(new User());
+        mockPost.setCreatedBy(user);
         mockPost.setLikes(Set.copyOf(Collections.emptySet()));
         mockPost.setTimestamp(Timestamp.from(Instant.now()));
         return mockPost;
@@ -39,6 +41,7 @@ public class Helpers {
     public static Comment createMockComment() {
         var mockComment = new Comment();
         User user = createMockUser();
+        user.setId(2);
         mockComment.setId(1);
         mockComment.setContent("Mock Content");
         mockComment.setCreatedBy(user);
