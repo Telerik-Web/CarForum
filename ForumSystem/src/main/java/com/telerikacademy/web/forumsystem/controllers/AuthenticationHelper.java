@@ -1,6 +1,5 @@
 package com.telerikacademy.web.forumsystem.controllers;
 
-import com.telerikacademy.web.forumsystem.exceptions.AuthorizationException;
 import com.telerikacademy.web.forumsystem.exceptions.UnauthorizedOperationException;
 import com.telerikacademy.web.forumsystem.models.User;
 import com.telerikacademy.web.forumsystem.services.UserService;
@@ -54,7 +53,7 @@ public class AuthenticationHelper {
         int firstSpace = userInfo.indexOf(" ");
 
         if (firstSpace == -1) {
-            throw new AuthorizationException(AUTHENTICATION_ERROR);
+            throw new UnauthorizedOperationException(AUTHENTICATION_ERROR);
         }
         return userInfo.substring(0, firstSpace);
 
@@ -64,7 +63,7 @@ public class AuthenticationHelper {
         int firstSpace = userInfo.indexOf(" ");
 
         if (firstSpace == -1) {
-            throw new AuthorizationException(AUTHENTICATION_ERROR);
+            throw new UnauthorizedOperationException(AUTHENTICATION_ERROR);
         }
         return userInfo.substring(firstSpace + 1);
 
