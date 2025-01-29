@@ -148,6 +148,7 @@ public class UserController {
         try {
             User userFromHeader = authorizationHelper.tryGetUser(headers);
             User user = userMapper.fromDto(userDto, id);
+            user.setUsername(getUserById(headers, id).getUsername());
             userService.updateUser(user, userFromHeader, id);
             return userMapper.fromDtoOut(userDto);
             //return userDto;
