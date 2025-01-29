@@ -95,8 +95,24 @@ public class Post {
         this.likes = likes;
     }
 
+    public int getLikesSize(){
+        return likes.size();
+    }
+
+    public void addToLikes(User user){
+        likes.add(user);
+    }
+
+    public void removeFromLikes(User user){
+        likes.remove(user);
+    }
+
     public Set<Comment> getComments() {
         return comments;
+    }
+
+    public int getCommentsSize(){
+        return comments.size();
     }
 
     public void setComments(Set<Comment> comments) {
