@@ -135,25 +135,6 @@ public class UserController {
         }
     }
 
-    @Operation(summary = "Create a PhoneNumber", description = "Creates a phoneNumber, for a user, while checking " +
-            "if the creator is an admin and if the user the phone is assigned to is an admin")
-    @PostMapping("/{id}")
-    public PhoneNumber createPhoneNumber(@RequestHeader HttpHeaders headers, @PathVariable int id,
-                                         @RequestBody PhoneNumberDTO phoneNumberDto) {
-        try {
-            PhoneNumber phoneNumber = phoneNumberMapper.map(phoneNumberDto);
-            phoneNumber.setCreatedBy(authorizationHelper.tryGetUser(headers));
-            User user = authorizationHelper.tryGetUser(headers);
-            User userToAddPhoneNumber = userService.getById(user, id);
-            phoneNumberService.create(phoneNumber, user, userToAddPhoneNumber);
-            return phoneNumber;
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (UnauthorizedOperationException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
-    }
-
     @Operation(summary = "Updates user by an Id", description = "Updates the desired fields in an User")
     @PutMapping("/{id}")
     public UserDTOOut update(@RequestHeader HttpHeaders headers, @PathVariable int id,
@@ -196,6 +177,55 @@ public class UserController {
         try {
             User userFromHeader = authorizationHelper.tryGetUser(headers);
             userService.delete(id, userFromHeader);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (UnauthorizedOperationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+    }
+
+    @Operation(summary = "Alter admin permissions", description = "Changes user permissions " +
+            "if isAdmin is true, promotes the user to admin, else removes admin permissions")
+    @PatchMapping("/{id}/admin")
+    public void alterAdminPermissions(@PathVariable int id, @RequestHeader HttpHeaders headers, @RequestParam boolean isAdmin){
+        try{
+            User user = authorizationHelper.tryGetUser(headers);
+            userService.alterAdminPermissions(id, user, isAdmin);
+        }
+        catch (EntityNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+        catch (UnauthorizedOperationException e){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+    }
+
+    @PatchMapping("/{id}/block")
+    public void alterBlock(@PathVariable int id, @RequestHeader HttpHeaders headers, @RequestParam boolean isBlocked){
+        try{
+            User user = authorizationHelper.tryGetUser(headers);
+            userService.alterBlock(id, user, isBlocked);
+        }
+        catch (EntityNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+        catch (UnauthorizedOperationException e){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+    }
+
+    @Operation(summary = "Create a PhoneNumber", description = "Creates a phoneNumber, for a user, while checking " +
+            "if the creator is an admin and if the user the phone is assigned to is an admin")
+    @PostMapping("/{id}")
+    public PhoneNumber createPhoneNumber(@RequestHeader HttpHeaders headers, @PathVariable int id,
+                                         @RequestBody PhoneNumberDTO phoneNumberDto) {
+        try {
+            PhoneNumber phoneNumber = phoneNumberMapper.map(phoneNumberDto);
+            phoneNumber.setCreatedBy(authorizationHelper.tryGetUser(headers));
+            User user = authorizationHelper.tryGetUser(headers);
+            User userToAddPhoneNumber = userService.getById(user, id);
+            phoneNumberService.create(phoneNumber, user, userToAddPhoneNumber);
+            return phoneNumber;
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (UnauthorizedOperationException e) {

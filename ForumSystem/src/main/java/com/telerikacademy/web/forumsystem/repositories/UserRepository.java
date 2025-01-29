@@ -17,6 +17,10 @@ public interface UserRepository {
 //
 //    User findByFirstname(String firstName);
 
+    void alterAdminPermissions(User user);
+
+    void alterBlock(User user);
+
     void create(@Valid User user);
 
     void update(@Valid User user, int id);

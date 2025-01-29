@@ -107,6 +107,8 @@ public class UserRepositoryImpl implements UserRepository {
                     .orElseThrow(() -> new EntityNotFoundException("User", "email", email));
         }
     }
+
+
 //
 //    @Override
 //    public User findByFirstname(String firstName) {
@@ -119,6 +121,24 @@ public class UserRepositoryImpl implements UserRepository {
 //                    .orElseThrow(() -> new EntityNotFoundException("User", "firstname", firstName));
 //        }
 //    }
+
+    @Override
+    public void alterAdminPermissions(User user) {
+        try(Session session = sessionFactory.openSession()){
+            session.beginTransaction();
+            session.merge(user);
+            session.getTransaction().commit();
+        }
+    }
+
+    @Override
+    public void alterBlock(User user) {
+        try(Session session = sessionFactory.openSession()){
+            session.beginTransaction();
+            session.merge(user);
+            session.getTransaction().commit();
+        }
+    }
 
     @Override
     public void create(User user) {
@@ -146,6 +166,8 @@ public class UserRepositoryImpl implements UserRepository {
             session.getTransaction().commit();
         }
     }
+
+
 
     private String createOrderBy(FilterUserOptions filterOptions) {
         if(filterOptions.getSortBy().isEmpty()){

@@ -40,6 +40,40 @@ public class UserServiceImpl implements UserService {
         return userRepository.getByUsername(username);
     }
 
+    @Override
+    public void alterAdminPermissions(int id, User user, boolean isAdmin) {
+        checkIfAdmin(user);
+        checkIfBlocked(user);
+
+        User userToUpdate = userRepository.getById(id);
+
+        if(isAdmin){
+            userToUpdate.setAdmin(true);
+            userRepository.alterAdminPermissions(userToUpdate);
+        }
+        if(!isAdmin){
+            userToUpdate.setAdmin(false);
+            userRepository.alterAdminPermissions(userToUpdate);
+        }
+    }
+
+    @Override
+    public void alterBlock(int id, User user, boolean isBlocked) {
+        checkIfAdmin(user);
+        checkIfBlocked(user);
+
+        User userToUpdate = userRepository.getById(id);
+
+        if(isBlocked){
+            userToUpdate.setBlocked(true);
+            userRepository.alterBlock(userToUpdate);
+        }
+        if(!isBlocked){
+            userToUpdate.setBlocked(false);
+            userRepository.alterBlock(userToUpdate);
+        }
+    }
+
 //    @Override
 //    public User findByUsername(User user, String username) {
 //        checkIfAdmin(user);
@@ -103,4 +137,6 @@ public class UserServiceImpl implements UserService {
         checkIfCreatorOrAdminForUser(userFromHeader, user);
         userRepository.delete(id);
     }
+
+
 }

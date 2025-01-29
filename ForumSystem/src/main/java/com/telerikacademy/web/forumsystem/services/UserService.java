@@ -18,6 +18,10 @@ public interface UserService {
 //
 //    User findByFirstname(User user, String firstName);
 
+    void alterAdminPermissions(int id, User user, boolean isAdmin);
+
+    void alterBlock(int id, User user, boolean isBlocked);
+
     void create(User user);
 
     void update(User user, User userFromHeader, int id);
