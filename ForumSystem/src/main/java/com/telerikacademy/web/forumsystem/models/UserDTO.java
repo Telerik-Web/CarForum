@@ -48,13 +48,13 @@ public class UserDTO {
 
     //test for postService new method - getMost recent post & get most commented post & the last method - DONE
 
-    //create to check if the user has a phone
+    //create to check if the user has a phone - DONE
 
     //update & delete for phoneNumber
 
     //act arrange & assert for the tests - DONE
 
-    //return phone number if the user is an admin
+    //return phone number if the user is an admin - DONE
 
     @NotNull
     private String password;

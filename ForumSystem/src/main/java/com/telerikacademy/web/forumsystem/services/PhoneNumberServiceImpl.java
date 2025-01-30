@@ -41,8 +41,13 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
     }
 
     @Override
-    public void update(PhoneNumber phoneNumber, User user) {
+    public void update(PhoneNumber existingPhoneNumber, PhoneNumber phoneNumber, User user, User userToUpdatePhoneNumber) {
+        checkIfAdmin(userToUpdatePhoneNumber);
         checkIfAdmin(user);
+
+        phoneNumber.setCreatedBy(existingPhoneNumber.getCreatedBy());
+        phoneNumber.setId(existingPhoneNumber.getId());
+
         phoneNumberRepository.update(phoneNumber);
     }
 

@@ -23,13 +23,11 @@ public class PhoneNumberRepositoryImpl implements PhoneNumberRepository {
     public PhoneNumber getByUser(User user) {
         try (Session session = sessionFactory.openSession()) {
             Query<PhoneNumber> phone = session.createQuery(
-                    "From PhoneNumber Where createdBy = :user_id", PhoneNumber.class);
-            phone.setParameter("user_id", user.getId());
-            return phone
-                    .stream()
+                    "FROM PhoneNumber WHERE createdBy.id = :userId", PhoneNumber.class);
+            phone.setParameter("userId", user.getId());
+            return phone.stream()
                     .findFirst()
-                    .orElseThrow(() -> new EntityNotFoundException("Phone", "userId",
-                            String.valueOf(user.getId())));
+                    .orElseThrow(() -> new EntityNotFoundException("Phone", "userId", String.valueOf(user.getId())));
         }
     }
 

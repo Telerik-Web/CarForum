@@ -173,7 +173,8 @@ public class UserController {
     @Operation(summary = "Alter admin permissions", description = "Changes user permissions " +
             "if isAdmin is true, promotes the user to admin, else removes admin permissions")
     @PatchMapping("/{id}/admin")
-    public void alterAdminPermissions(@PathVariable int id, @RequestHeader HttpHeaders headers, @RequestParam boolean isAdmin) {
+    public void alterAdminPermissions(@PathVariable int id, @RequestHeader HttpHeaders headers,
+                                      @RequestParam boolean isAdmin) {
         try {
             User user = authorizationHelper.tryGetUser(headers);
             userService.alterAdminPermissions(id, user, isAdmin);
@@ -214,13 +215,13 @@ public class UserController {
 
     @Operation(summary = "Create a PhoneNumber", description = "Creates a phoneNumber, for a user, while checking " +
             "if the creator is an admin and if the user the phone is assigned to is an admin")
-    @PostMapping("/{id}")
+    @PostMapping("/number/{id}")
     public PhoneNumber createPhoneNumber(@RequestHeader HttpHeaders headers, @PathVariable int id,
                                          @RequestBody PhoneNumberDTO phoneNumberDto) {
         try {
             PhoneNumber phoneNumber = phoneNumberMapper.map(phoneNumberDto);
-            phoneNumber.setCreatedBy(authorizationHelper.tryGetUser(headers));
             User user = authorizationHelper.tryGetUser(headers);
+            phoneNumber.setCreatedBy(user);
             User userToAddPhoneNumber = userService.getById(user, id);
             phoneNumberService.create(phoneNumber, user, userToAddPhoneNumber);
             return phoneNumber;
@@ -232,4 +233,43 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, e.getMessage());
         }
     }
+
+    @Operation(summary = "Update a PhoneNumber", description = "Updates a phone number for a user, " +
+            "while checking if the user is an admin.")
+    @PutMapping("/number/{id}")
+    public PhoneNumber updatePhoneNumber(@RequestHeader HttpHeaders headers, @PathVariable int id,
+                                         @RequestBody PhoneNumberDTO phoneNumberDto) {
+        try {
+            PhoneNumber phoneNumber = phoneNumberMapper.map(phoneNumberDto);
+            User user = authorizationHelper.tryGetUser(headers);
+            phoneNumber.setCreatedBy(user);
+            User userToUpdatePhoneNumber = userService.getById(user, id);
+            PhoneNumber existingPhoneNumber = phoneNumberService.getByUser(userToUpdatePhoneNumber);
+            phoneNumberService.update(existingPhoneNumber, phoneNumber, user, userToUpdatePhoneNumber);
+            return phoneNumber;
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (UnauthorizedOperationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        } catch (UnsupportedOperationException e) {
+            throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, e.getMessage());
+        }
+    }
+
+    @Operation(summary = "Delete a PhoneNumber", description = "Deletes a phone number for a user, while " +
+            "checking if the user is an admin.")
+    @DeleteMapping("/number/{id}")
+    public void deletePhoneNumber(@RequestHeader HttpHeaders headers, @PathVariable int id) {
+        try {
+            User user = authorizationHelper.tryGetUser(headers);
+            User userToDeletePhoneNumber = userService.getById(user, id);
+            PhoneNumber phoneNumber = phoneNumberService.getByUser(userToDeletePhoneNumber);
+            phoneNumberService.delete(phoneNumber, userToDeletePhoneNumber);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (UnauthorizedOperationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+    }
+
 }
