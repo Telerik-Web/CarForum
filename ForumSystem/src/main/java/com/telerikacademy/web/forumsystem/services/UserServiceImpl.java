@@ -47,10 +47,10 @@ public class UserServiceImpl implements UserService {
 
         User userToUpdate = userRepository.getById(id);
 
-        if(isAdmin){
+        if (isAdmin) {
             userToUpdate.setAdmin(true);
         }
-        if(!isAdmin){
+        if (!isAdmin) {
             userToUpdate.setAdmin(false);
         }
         userRepository.alterAdminPermissions(userToUpdate);
@@ -63,10 +63,10 @@ public class UserServiceImpl implements UserService {
 
         User userToUpdate = userRepository.getById(id);
 
-        if(isBlocked){
+        if (isBlocked) {
             userToUpdate.setBlocked(true);
         }
-        if(!isBlocked){
+        if (!isBlocked) {
             userToUpdate.setBlocked(false);
         }
         userRepository.alterBlock(userToUpdate);
@@ -114,13 +114,21 @@ public class UserServiceImpl implements UserService {
         boolean exists = true;
         checkIfCreatorOrAdminForUser(userFromHeader, user);
         try {
-            userRepository.getByEmail(user.getEmail());
+            userRepository.getByUsername(user.getUsername());
         } catch (EntityNotFoundException e) {
             exists = false;
         }
 
-        if (exists) {
-            throw new DuplicateEntityException("User", "username", user.getUsername());
+        User user2 = userRepository.getById(id);
+        user.setAdmin(user2.isAdmin());
+        user.setBlocked(user2.isBlocked());
+        user.setPassword(user2.getPassword());
+        if (user2.getPhoneNumber() != null) {
+            user.setPhoneNumber(user2.getPhoneNumber());
+        }
+
+        if (!exists) {
+            throw new EntityNotFoundException("User", "username", user.getUsername());
         }
 
         userRepository.update(user, id);

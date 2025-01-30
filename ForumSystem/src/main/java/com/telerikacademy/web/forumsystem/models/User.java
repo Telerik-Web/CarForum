@@ -39,7 +39,8 @@ public class User {
     @Column(name = "isBlocked")
     private Boolean isBlocked;
 
-    @OneToOne(mappedBy = "createdBy", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "createdBy", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+
     //@NotNull
     @JsonManagedReference
     private PhoneNumber phoneNumber;

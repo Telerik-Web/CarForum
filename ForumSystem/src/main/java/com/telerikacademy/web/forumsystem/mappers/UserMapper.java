@@ -53,8 +53,6 @@ public class UserMapper {
         user.setUsername(userDto.getUsername());
         user.setEmail(userDto.getEmail());
         user.setPassword(userDto.getPassword());
-        user.setAdmin(false);
-        user.setBlocked(false);
         return user;
     }
 
