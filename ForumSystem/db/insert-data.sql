@@ -4,9 +4,7 @@ INSERT INTO users (first_name, last_name, email, username, password, isAdmin, is
  ('Michael', 'Brown', 'michael.brown@example.com', 'mikebrown', 'securepass', 0, 0);
 
 INSERT INTO phone_numbers (phone_number, user_id) VALUES
-('0885783123', 1),
-('0899450256', 2),
-('0889712748', 3);
+('0885783123', 1);
 
 INSERT INTO posts (title, content, user_id, timestamp) VALUES
 ('Top 5 Cars of 2025', 'Let\'s discuss the best cars of 2025. What are your top picks?', 1, CURRENT_TIMESTAMP),
