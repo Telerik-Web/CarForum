@@ -1,6 +1,7 @@
 package com.telerikacademy.web.forumsystem;
 
 import com.telerikacademy.web.forumsystem.models.Comment;
+import com.telerikacademy.web.forumsystem.models.PhoneNumber;
 import com.telerikacademy.web.forumsystem.models.Post;
 import com.telerikacademy.web.forumsystem.models.User;
 
@@ -73,6 +74,14 @@ public class Helpers {
         mockUserList.add(anotherUser);
 
         return mockUserList;
+    }
+
+    public static PhoneNumber createMockPhoneNumber() {
+        var mockPhoneNumber = new PhoneNumber();
+        mockPhoneNumber.setId(1);
+        mockPhoneNumber.setNumber("0888888888");
+        mockPhoneNumber.setCreatedBy(createMockAdmin());
+        return mockPhoneNumber;
     }
 
 }
