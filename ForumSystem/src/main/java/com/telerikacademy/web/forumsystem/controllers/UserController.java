@@ -143,7 +143,7 @@ public class UserController {
             User user = userMapper.fromDto(userDto, id);
             user.setUsername(getById(headers, id).getUsername());
             userService.update(user, userFromHeader, id);
-            return userMapper.fromDtoOut(userDto);
+            return userMapper.fromDtoOut(getById(headers, id));
             //return userDto;
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());

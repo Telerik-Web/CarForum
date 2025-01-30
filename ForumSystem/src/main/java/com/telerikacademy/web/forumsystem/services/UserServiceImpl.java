@@ -120,6 +120,8 @@ public class UserServiceImpl implements UserService {
         }
 
         User user2 = userRepository.getById(id);
+        user.setId(user2.getId());
+        user.setUsername(user2.getUsername());
         user.setAdmin(user2.isAdmin());
         user.setBlocked(user2.isBlocked());
         user.setPassword(user2.getPassword());

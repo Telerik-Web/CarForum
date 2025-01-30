@@ -21,17 +21,6 @@ public class UserMapper {
         return dtoToObject(userDto);
     }
 
-    public UserDTOOut fromDtoOut(UserDTO userDto) {
-        return dtoOutToObject(userDto);
-    }
-
-    //update
-    public User fromDto(UserDTO userDto, int id) {
-        User user = dtoToObjectUpdate(userDto);
-        user.setId(id);
-        return user;
-    }
-
     //create
     private User dtoToObject(UserDTO userDto) {
         User user = new User();
@@ -46,14 +35,24 @@ public class UserMapper {
     }
 
     //update
+    public User fromDto(UserDTO userDto, int id) {
+        User user = dtoToObjectUpdate(userDto);
+        user.setId(id);
+        return user;
+    }
+
+    //update
     private User dtoToObjectUpdate(UserDTO userDto) {
         User user = new User();
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
-        user.setUsername(userDto.getUsername());
         user.setEmail(userDto.getEmail());
         user.setPassword(userDto.getPassword());
         return user;
+    }
+
+    public UserDTOOut fromDtoOut(UserDTO userDto) {
+        return dtoOutToObject(userDto);
     }
 
     private UserDTOOut dtoOutToObject(UserDTO userDto) {
@@ -62,8 +61,20 @@ public class UserMapper {
         user.setLastName(userDto.getLastName());
         user.setUsername(userDto.getUsername());
         user.setEmail(userDto.getEmail());
-//        user.setAdmin(userDto.isAdmin());
-//        user.setBlocked(userDto.isBlocked());
+        return user;
+    }
+
+    public UserDTOOut fromDtoOut(User user) {
+        return dtoOutToObject(user);
+    }
+
+    private UserDTOOut dtoOutToObject(User user2) {
+        UserDTOOut user = new UserDTOOut();
+        user.setId(user2.getId());
+        user.setFirstName(user2.getFirstName());
+        user.setLastName(user2.getLastName());
+        user.setUsername(user2.getUsername());
+        user.setEmail(user2.getEmail());
         return user;
     }
 
@@ -76,8 +87,6 @@ public class UserMapper {
             userDtoOut.setLastName(user.getLastName());
             userDtoOut.setUsername(user.getUsername());
             userDtoOut.setEmail(user.getEmail());
-//            userDtoOut.setBlocked(user.isBlocked());
-//            userDtoOut.setAdmin(user.isAdmin());
             userDto.add(userDtoOut);
         }
 
