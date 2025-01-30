@@ -215,34 +215,33 @@ public class UserController {
 
     @Operation(summary = "Create a PhoneNumber", description = "Creates a phoneNumber, for a user, while checking " +
             "if the creator is an admin and if the user the phone is assigned to is an admin")
-    @PostMapping("/number/{id}")
+    @PostMapping("/phone/{id}")
     public PhoneNumber createPhoneNumber(@RequestHeader HttpHeaders headers, @PathVariable int id,
                                          @RequestBody PhoneNumberDTO phoneNumberDto) {
         try {
             PhoneNumber phoneNumber = phoneNumberMapper.map(phoneNumberDto);
             User user = authorizationHelper.tryGetUser(headers);
-            phoneNumber.setCreatedBy(user);
             User userToAddPhoneNumber = userService.getById(user, id);
             phoneNumberService.create(phoneNumber, user, userToAddPhoneNumber);
             return phoneNumber;
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (UnauthorizedOperationException e) {
+        } catch (DuplicateEntityException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
+        catch (UnauthorizedOperationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        } catch (UnsupportedOperationException e) {
-            throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, e.getMessage());
         }
     }
 
     @Operation(summary = "Update a PhoneNumber", description = "Updates a phone number for a user, " +
             "while checking if the user is an admin.")
-    @PutMapping("/number/{id}")
+    @PutMapping("/phone/{id}")
     public PhoneNumber updatePhoneNumber(@RequestHeader HttpHeaders headers, @PathVariable int id,
                                          @RequestBody PhoneNumberDTO phoneNumberDto) {
         try {
             PhoneNumber phoneNumber = phoneNumberMapper.map(phoneNumberDto);
             User user = authorizationHelper.tryGetUser(headers);
-            phoneNumber.setCreatedBy(user);
             User userToUpdatePhoneNumber = userService.getById(user, id);
             PhoneNumber existingPhoneNumber = phoneNumberService.getByUser(userToUpdatePhoneNumber);
             phoneNumberService.update(existingPhoneNumber, phoneNumber, user, userToUpdatePhoneNumber);
@@ -251,14 +250,12 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (UnauthorizedOperationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        } catch (UnsupportedOperationException e) {
-            throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, e.getMessage());
         }
     }
 
     @Operation(summary = "Delete a PhoneNumber", description = "Deletes a phone number for a user, while " +
             "checking if the user is an admin.")
-    @DeleteMapping("/number/{id}")
+    @DeleteMapping("/phone/{id}")
     public void deletePhoneNumber(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
             User user = authorizationHelper.tryGetUser(headers);

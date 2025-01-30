@@ -1,5 +1,6 @@
 package com.telerikacademy.web.forumsystem.services;
 
+import com.telerikacademy.web.forumsystem.exceptions.DuplicateEntityException;
 import com.telerikacademy.web.forumsystem.models.PhoneNumber;
 import com.telerikacademy.web.forumsystem.models.User;
 import com.telerikacademy.web.forumsystem.repositories.PhoneNumberRepository;
@@ -31,7 +32,7 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
         checkIfAdmin(userToAddPhoneNumber);
 
         if (!isEmpty(userToAddPhoneNumber.getPhoneNumber())) {
-            throw new UnsupportedOperationException();
+            throw new DuplicateEntityException("This user already has a phone number");
         }
 
         phoneNumber.setCreatedBy(userToAddPhoneNumber);
