@@ -114,7 +114,7 @@ public class UserServiceImpl implements UserService {
         boolean exists = true;
         checkIfCreatorOrAdminForUser(userFromHeader, user);
         try {
-            userRepository.getByUsername(user.getUsername());
+            userRepository.getByEmail(user.getEmail());
         } catch (EntityNotFoundException e) {
             exists = false;
         }
@@ -123,14 +123,14 @@ public class UserServiceImpl implements UserService {
         user.setId(user2.getId());
         user.setUsername(user2.getUsername());
         user.setAdmin(user2.isAdmin());
+        user.setEmail(user2.getEmail());
         user.setBlocked(user2.isBlocked());
-        user.setPassword(user2.getPassword());
         if (user2.getPhoneNumber() != null) {
             user.setPhoneNumber(user2.getPhoneNumber());
         }
 
-        if (!exists) {
-            throw new EntityNotFoundException("User", "username", user.getUsername());
+        if (exists) {
+            throw new DuplicateEntityException("User", "email", user.getEmail());
         }
 
         userRepository.update(user, id);

@@ -225,6 +225,9 @@ public class UserServiceTests {
         Mockito.when(userRepository.getByEmail(Mockito.anyString()))
                 .thenThrow(EntityNotFoundException.class);
 
+        Mockito.when(userRepository.getById(Mockito.anyInt()))
+                .thenReturn(mockUserToUpdate);
+
         // Act
         userService.update(mockUser, mockUserToUpdate, 1);
 
@@ -234,13 +237,16 @@ public class UserServiceTests {
     }
 
     @Test
-    public void update_Should_Throw_When_EmailExists(){
+    public void update_Should_Throw_When_UsernameExists(){
         // Arrange
         User mockUser = createMockUser();
         User anotherUser = createMockUser();
 
 
         Mockito.when(userRepository.getByEmail(Mockito.anyString()))
+                .thenReturn(mockUser);
+
+        Mockito.when(userRepository.getById(Mockito.anyInt()))
                 .thenReturn(mockUser);
 
         // Act, Assert
@@ -278,4 +284,6 @@ public class UserServiceTests {
         Assertions.assertThrows(UnauthorizedOperationException.class,
                 () -> userService.delete(Mockito.anyInt(), anotherUser));
     }
+
+
 }
