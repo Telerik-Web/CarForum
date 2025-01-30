@@ -52,7 +52,7 @@ public class UserDTO {
 
     //update & delete for phoneNumber
 
-    //act arrange & assert for the tests
+    //act arrange & assert for the tests - DONE
 
     //return phone number if the user is an admin
 

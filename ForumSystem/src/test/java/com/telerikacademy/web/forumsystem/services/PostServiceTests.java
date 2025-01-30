@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.telerikacademy.web.forumsystem.Helpers.createMockPost;
@@ -65,6 +66,37 @@ public class PostServiceTests {
         // Assert
         Assertions.assertEquals(1, result.getId());
     }
+
+    @Test
+    public void getMostRecentPosts_ShouldReturnMostRecentPosts_WhenValid() {
+        // Arrange
+        Post mockPost = createMockPost();
+        List<Post> expectedPosts = new ArrayList<>();
+        expectedPosts.add(mockPost);
+        Mockito.when(postService.getMostRecentPosts()).thenReturn(expectedPosts);
+
+        // Act
+        List<Post> actualPosts = postService.getMostRecentPosts();
+
+        // Assert
+        Assertions.assertEquals(expectedPosts, actualPosts);
+    }
+
+    @Test
+    public void getMostCommentedPosts_ShouldReturnMostCommentedPosts_WhenValid() {
+        // Arrange
+        Post mockPost = createMockPost();
+        List<Post> expectedPosts = new ArrayList<>();
+        expectedPosts.add(mockPost);
+        Mockito.when(postService.getMostCommentedPosts()).thenReturn(expectedPosts);
+
+        // Act
+        List<Post> actualPosts = postService.getMostCommentedPosts();
+
+        // Assert
+        Assertions.assertEquals(expectedPosts, actualPosts);
+    }
+
 
     @Test
     public void create_ShouldThrowException_WhenUserIsBlocked() {
@@ -169,5 +201,52 @@ public class PostServiceTests {
             postService.delete(mockPost.getId(), mockUser);
         });
     }
+
+    @Test
+    public void alterPostLikes_Should_Throw_When_UserIsBlocked() {
+        User mockUser = createMockUser();
+        mockUser.setBlocked(true);
+        Assertions.assertThrows(UnauthorizedOperationException.class, () -> {
+            postService.alterPostLikes(1, mockUser, false);
+        });
+    }
+
+    @Test
+    public void alterPostLikes_ShouldAddToLikes_WhenIsLikedTrue() {
+        // Arrange
+        int postId = 1;
+        boolean isLiked = true;
+        User mockUser = createMockUser();
+        Post mockPost = Mockito.spy(createMockPost());
+
+        Mockito.when(postRepository.getById(postId)).thenReturn(mockPost);
+
+        // Act
+        postService.alterPostLikes(postId, mockUser, isLiked);
+
+        // Assert
+        Mockito.verify(mockPost, Mockito.times(1)).addToLikes(mockUser);
+        Mockito.verify(postRepository, Mockito.times(1)).alterPostLikes(mockPost);
+    }
+
+    @Test
+    public void alterPostLikes_ShouldRemoveFromLikes_WhenIsLikedFalse() {
+        // Arrange
+        int postId = 1;
+        boolean isLiked = false;
+        User mockUser = createMockUser();
+        Post mockPost = Mockito.spy(createMockPost());
+
+        Mockito.when(postRepository.getById(postId)).thenReturn(mockPost);
+
+        // Act
+        postService.alterPostLikes(postId, mockUser, isLiked);
+
+        // Assert
+        Mockito.verify(mockPost, Mockito.times(1)).removeFromLikes(mockUser);
+        Mockito.verify(postRepository, Mockito.times(1)).alterPostLikes(mockPost);
+    }
+
+
 }
 

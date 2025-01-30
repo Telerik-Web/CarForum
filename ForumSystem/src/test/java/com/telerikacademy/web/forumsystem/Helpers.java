@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -47,7 +48,7 @@ public class Helpers {
         mockPost.setTitle("Mock Title");
         mockPost.setContent("Mock Content");
         mockPost.setCreatedBy(user);
-        mockPost.setLikes(Set.copyOf(Collections.emptySet()));
+        mockPost.setLikes(new HashSet<>());
         mockPost.setTimestamp(Timestamp.from(Instant.now()));
         return mockPost;
     }
