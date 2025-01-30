@@ -1,7 +1,9 @@
 package com.telerikacademy.web.forumsystem.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Objects;
 
@@ -36,6 +38,11 @@ public class User {
 
     @Column(name = "isBlocked")
     private Boolean isBlocked;
+
+    @OneToOne(mappedBy = "createdBy", cascade = CascadeType.ALL, orphanRemoval = true)
+    //@NotNull
+    @JsonManagedReference
+    private PhoneNumber phoneNumber;
 
     public User() {
     }
@@ -112,6 +119,14 @@ public class User {
 
     public void setBlocked(boolean blocked) {
         isBlocked = blocked;
+    }
+
+    public PhoneNumber getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(PhoneNumber phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     @Override

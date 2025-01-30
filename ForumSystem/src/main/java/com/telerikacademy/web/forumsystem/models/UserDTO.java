@@ -46,7 +46,7 @@ public class UserDTO {
 
     //swagger postController - DONE
 
-    //test for postService new method - getMost recent post & get most commented post & the last method
+    //test for postService new method - getMost recent post & get most commented post & the last method - DONE
 
     //create to check if the user has a phone
 

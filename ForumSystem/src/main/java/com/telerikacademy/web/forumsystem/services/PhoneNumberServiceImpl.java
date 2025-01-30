@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import static com.telerikacademy.web.forumsystem.helpers.PermissionHelper.*;
+import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Service
 public class PhoneNumberServiceImpl implements PhoneNumberService {
@@ -28,6 +29,14 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
     public void create(PhoneNumber phoneNumber, User user, User userToAddPhoneNumber) {
         checkIfAdmin(user);
         checkIfAdmin(userToAddPhoneNumber);
+
+        if (!isEmpty(userToAddPhoneNumber.getPhoneNumber())) {
+            throw new UnsupportedOperationException();
+        }
+
+        phoneNumber.setCreatedBy(userToAddPhoneNumber);
+        userToAddPhoneNumber.setPhoneNumber(phoneNumber);
+
         phoneNumberRepository.create(phoneNumber);
     }
 

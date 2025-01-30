@@ -23,7 +23,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/users")
 @Tag(name = "User Controller", description = "APIs for managing users")
-
 public class UserController {
 
     private final UserService userService;
@@ -174,15 +173,13 @@ public class UserController {
     @Operation(summary = "Alter admin permissions", description = "Changes user permissions " +
             "if isAdmin is true, promotes the user to admin, else removes admin permissions")
     @PatchMapping("/{id}/admin")
-    public void alterAdminPermissions(@PathVariable int id, @RequestHeader HttpHeaders headers, @RequestParam boolean isAdmin){
-        try{
+    public void alterAdminPermissions(@PathVariable int id, @RequestHeader HttpHeaders headers, @RequestParam boolean isAdmin) {
+        try {
             User user = authorizationHelper.tryGetUser(headers);
             userService.alterAdminPermissions(id, user, isAdmin);
-        }
-        catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
-        catch (UnauthorizedOperationException e){
+        } catch (UnauthorizedOperationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
@@ -190,15 +187,13 @@ public class UserController {
     @Operation(summary = "Block or unblock user", description =
             "If isBlocked is true, blocks user from interaction, else unblocks an user")
     @PatchMapping("/{id}/block")
-    public void alterBlock(@PathVariable int id, @RequestHeader HttpHeaders headers, @RequestParam boolean isBlocked){
-        try{
+    public void alterBlock(@PathVariable int id, @RequestHeader HttpHeaders headers, @RequestParam boolean isBlocked) {
+        try {
             User user = authorizationHelper.tryGetUser(headers);
             userService.alterBlock(id, user, isBlocked);
-        }
-        catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
-        catch (UnauthorizedOperationException e){
+        } catch (UnauthorizedOperationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
@@ -233,6 +228,8 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (UnauthorizedOperationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        } catch (UnsupportedOperationException e) {
+            throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, e.getMessage());
         }
     }
 }

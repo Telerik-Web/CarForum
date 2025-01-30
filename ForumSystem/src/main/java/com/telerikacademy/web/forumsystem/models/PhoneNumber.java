@@ -1,5 +1,6 @@
 package com.telerikacademy.web.forumsystem.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -16,6 +17,7 @@ public class PhoneNumber {
 
     @OneToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User createdBy;
 
     public PhoneNumber() {
