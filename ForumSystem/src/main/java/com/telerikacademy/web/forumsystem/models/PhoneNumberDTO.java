@@ -2,10 +2,12 @@ package com.telerikacademy.web.forumsystem.models;
 
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 public class PhoneNumberDTO {
 
     @NotNull
+    @Size(min = 10, message = "Phone number length can't be less than 10 digits")
     private String number;
 
     @NotNull

@@ -53,8 +53,9 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
     }
 
     @Override
-    public void delete(PhoneNumber phoneNumber, User user) {
+    public void delete(User user , User userToDeletePhoneNumber) {
         checkIfAdmin(user);
+        PhoneNumber phoneNumber = phoneNumberRepository.getByUser(userToDeletePhoneNumber);
         phoneNumberRepository.delete(phoneNumber);
     }
 }
