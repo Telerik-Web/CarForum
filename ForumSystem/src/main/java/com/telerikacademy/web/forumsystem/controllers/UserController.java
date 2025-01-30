@@ -212,6 +212,20 @@ public class UserController {
         }
     }
 
+    @GetMapping("/phone")
+    public PhoneNumber getByUser(@RequestHeader HttpHeaders headers) {
+        try{
+            User user = authorizationHelper.tryGetUser(headers);
+            return phoneNumberService.getByUser(user);
+        }
+        catch(EntityNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+        catch(UnauthorizedOperationException e){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+    }
+
 
     @Operation(summary = "Create a PhoneNumber", description = "Creates a phoneNumber, for a user, while checking " +
             "if the creator is an admin and if the user the phone is assigned to is an admin")
@@ -260,8 +274,7 @@ public class UserController {
         try {
             User user = authorizationHelper.tryGetUser(headers);
             User userToDeletePhoneNumber = userService.getById(user, id);
-            PhoneNumber phoneNumber = phoneNumberService.getByUser(userToDeletePhoneNumber);
-            phoneNumberService.delete(phoneNumber, userToDeletePhoneNumber);
+            phoneNumberService.delete(user, userToDeletePhoneNumber);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (UnauthorizedOperationException e) {

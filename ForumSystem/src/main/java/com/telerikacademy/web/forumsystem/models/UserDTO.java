@@ -21,12 +21,6 @@ public class UserDTO {
 
     @NotNull
     private String password;
-//
-//    @NotNull
-//    private Boolean isAdmin;
-//
-//    @NotNull
-//    private Boolean isBlocked;
 
     @NotNull
     private String username;
