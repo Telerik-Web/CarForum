@@ -1,27 +1,48 @@
-INSERT INTO users (first_name, last_name, email, username, password, isAdmin, isBlocked) VALUES
- ('John', 'Doe', 'john.doe@example.com', 'johndoe', 'password123', 1, 0),
- ('Jane', 'Smith', 'jane.smith@example.com', 'janesmith', 'password456', 0, 0),
- ('Michael', 'Brown', 'michael.brown@example.com', 'mikebrown', 'securepass', 0, 0);
+INSERT INTO forum.users (user_id, first_name, last_name, email, username, password, isAdmin, isBlocked)
+VALUES (1, 'Todor', 'Angelov', 'todor@example.com', 'todor', 'pass1', true, false);
+INSERT INTO forum.users (user_id, first_name, last_name, email, username, password, isAdmin, isBlocked)
+VALUES (2, 'Vladi', 'Venkov', 'vladi@example.com', 'vladi', 'pass2', true, false);
+INSERT INTO forum.users (user_id, first_name, last_name, email, username, password, isAdmin, isBlocked)
+VALUES (3, 'Petar', 'Raykov', 'pesho@example.com', 'pesho', 'pass3', true, false);
 
-INSERT INTO phone_numbers (phone_number, user_id) VALUES
-('0885783123', 1),
-('0899450256', 2),
-('0889712748', 3);
+INSERT INTO forum.phone_numbers (phone_number_id, phone_number, user_id)
+VALUES (1, '0888 202330', 1);
+INSERT INTO forum.phone_numbers (phone_number_id, phone_number, user_id)
+VALUES (2, '0888 202430', 2);
+INSERT INTO forum.phone_numbers (phone_number_id, phone_number, user_id)
+VALUES (3, '0888 202530', 3);
 
-INSERT INTO posts (title, content, user_id, timestamp) VALUES
-('Top 5 Cars of 2025', 'Let\'s discuss the best cars of 2025. What are your top picks?', 1, CURRENT_TIMESTAMP),
-('Electric Cars vs Gasoline Cars', 'Do you think electric cars will completely replace gasoline cars?', 2, CURRENT_TIMESTAMP),
-('Tips for Maintaining Your Car', 'Here are some tips to keep your car in top shape.', 3, CURRENT_TIMESTAMP);
+INSERT INTO forum.posts (post_id, title, content, user_id, timestamp)
+VALUES (1, 'BMW M2', 'The best M2', 2, '2025-01-27 16:32:00');
+INSERT INTO forum.posts (post_id, title, content, user_id, timestamp)
+VALUES (2, 'BMW M3', 'The best M3', 1, '2025-01-27 16:32:00');
+INSERT INTO forum.posts (post_id, title, content, user_id, timestamp)
+VALUES (3, 'BMW M4', 'The best M4', 3, '2025-01-27 16:32:00');
+INSERT INTO forum.posts (post_id, title, content, user_id, timestamp)
+VALUES (4, 'BMW M5', 'The best M5', 3, '2025-01-27 16:32:00');
+INSERT INTO forum.posts (post_id, title, content, user_id, timestamp)
+VALUES (5, 'BMW M6', 'The best M6', 1, '2025-01-27 16:32:00');
+INSERT INTO forum.posts (post_id, title, content, user_id, timestamp)
+VALUES (6, 'BMW M8', 'The best M8', 2, '2025-01-27 16:32:00');
+INSERT INTO forum.posts (post_id, title, content, user_id, timestamp)
+VALUES (7, 'BMW M1', 'The best for last!', 2, '2025-01-27 16:32:00');
 
+INSERT INTO forum.comments (comment_id, content, post_id, user_id)
+VALUES (1, 'Mercedes is better', 1, 1);
+INSERT INTO forum.comments (comment_id, content, post_id, user_id)
+VALUES (2, 'Jaag - by Jeremy', 2, 1);
+INSERT INTO forum.comments (comment_id, content, post_id, user_id)
+VALUES (3, 'C63 is better', 3, 1);
+INSERT INTO forum.comments (comment_id, content, post_id, user_id)
+VALUES (4, 'Glue Sniffer', 3, 2);
 
-INSERT INTO comments (content, post_id, user_id) VALUES
-('I think the Tesla Model S is still the best!', 1, 2),
-('Electric cars are the future, but we still need better infrastructure.', 2, 3),
-('Great tips! I also recommend checking tire pressure regularly.', 3, 1);
-
-
-INSERT INTO likes (like_id, post_id, user_id) VALUES
-(1, 1, 2),
-(2, 1, 3),
-(3, 2, 1),
-(4, 3, 2);
+INSERT INTO forum.likes (like_id, post_id, user_id)
+VALUES (1, 2, 1);
+INSERT INTO forum.likes (like_id, post_id, user_id)
+VALUES (2, 2, 2);
+INSERT INTO forum.likes (like_id, post_id, user_id)
+VALUES (3, 2, 3);
+INSERT INTO forum.likes (like_id, post_id, user_id)
+VALUES (4, 3, 1);
+INSERT INTO forum.likes (like_id, post_id, user_id)
+VALUES (5, 3, 3);

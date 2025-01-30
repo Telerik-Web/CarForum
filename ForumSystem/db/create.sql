@@ -6,8 +6,8 @@ create table users
     email      varchar(50) not null unique,
     username   varchar(32) not null,
     password   varchar(32) not null,
-    isAdmin    boolean  not null,
-    isBlocked  boolean  not null
+    isAdmin    Boolean     not null,
+    isBlocked  boolean     not null
 );
 
 create table phone_numbers
@@ -16,7 +16,8 @@ create table phone_numbers
     phone_number    varchar(32) not null,
     user_id         int         not null,
     constraint phone_numbers_users_user_id_fk
-        foreign key (user_id) references users (user_id) ON DELETE CASCADE
+        foreign key (user_id) references users (user_id)
+            ON DELETE CASCADE
 );
 
 create table posts
@@ -25,9 +26,10 @@ create table posts
     title     varchar(128)  not null,
     content   varchar(8192) not null,
     user_id   int           not null,
-    timestamp timestamp     default current_timestamp,
+    timestamp timestamp default current_timestamp,
     constraint posts_users_user_id_fk
-        foreign key (user_id) references users (user_id) ON DELETE CASCADE
+        foreign key (user_id) references users (user_id)
+            ON DELETE CASCADE
 );
 
 create table comments
@@ -37,9 +39,11 @@ create table comments
     post_id    int           not null,
     user_id    int           not null,
     constraint comments_posts_post_id_fk
-        foreign key (post_id) references posts (post_id) ON DELETE CASCADE,
+        foreign key (post_id) references posts (post_id)
+            ON DELETE CASCADE,
     constraint comments_users_user_id_fk
-        foreign key (user_id) references users (user_id) ON DELETE CASCADE
+        foreign key (user_id) references users (user_id)
+            ON DELETE CASCADE
 );
 
 create table likes
@@ -48,8 +52,10 @@ create table likes
     post_id int not null,
     user_id int not null,
     constraint likes_posts_post_id_fk
-        foreign key (post_id) references posts (post_id) ON DELETE CASCADE,
+        foreign key (post_id) references posts (post_id)
+            ON DELETE CASCADE,
     constraint likes_users_user_id_fk
-        foreign key (user_id) references users (user_id) ON DELETE CASCADE
+        foreign key (user_id) references users (user_id)
+            ON DELETE CASCADE
 );
 
