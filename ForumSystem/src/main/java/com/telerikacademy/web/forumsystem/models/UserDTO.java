@@ -16,45 +16,8 @@ public class UserDTO {
     private String lastName;
 
     @Email
-    //move the unique check to the service - DONE
     @NotNull
     private String email;
-
-    //make userDtoOut - DONE
-
-    //na lacho premissionhelper go vkarai w user - DONE
-
-    //do the admin and the block update in the user - DONE
-
-    //phone number repository and service - DONE
-
-    //filterOptions for the user - DONE
-
-    //username na user da se adwa nqkyde - DONE
-
-    //phone number for admin/ and delete the username and password - DONE
-
-    //update i crate of user allow for the user to be created as an admin. fix it - DONE
-
-    //comment test - DONE
-
-    //findBy neshtata - DONE
-
-    //isAdmin & blocked remove from the DTO class - DONE
-
-    //name of everything must be same - DONE
-
-    //swagger postController - DONE
-
-    //test for postService new method - getMost recent post & get most commented post & the last method - DONE
-
-    //create to check if the user has a phone - DONE
-
-    //update & delete for phoneNumber
-
-    //act arrange & assert for the tests - DONE
-
-    //return phone number if the user is an admin - DONE
 
     @NotNull
     private String password;
