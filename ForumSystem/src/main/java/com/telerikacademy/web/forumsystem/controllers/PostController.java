@@ -6,6 +6,7 @@ import com.telerikacademy.web.forumsystem.mappers.PostMapper;
 import com.telerikacademy.web.forumsystem.models.*;
 import com.telerikacademy.web.forumsystem.services.PostService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +72,7 @@ public class PostController {
 
     @Operation(summary = "Creates a post", description = "Create a post in the DB with all its required data.")
     @PostMapping
+    @SecurityRequirement(name = "authHeader")
     public Post create(@RequestHeader HttpHeaders headers, @Valid @RequestBody PostDTO postDto) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
@@ -86,6 +88,7 @@ public class PostController {
 
     @Operation(summary = "Updates a post by ID", description = "updates the defined fields of a post with the new values.")
     @PutMapping("/{id}")
+    @SecurityRequirement(name = "authHeader")
     public Post update(@RequestHeader HttpHeaders headers,
                        @PathVariable int id,
                        @Valid @RequestBody PostDTO postDto) {
@@ -104,6 +107,7 @@ public class PostController {
     @Operation(summary = "Like or Dislike a post", description =
                         "If isLiked is true, likes a post, else dislikes a post")
     @PatchMapping("/{id}/like")
+    @SecurityRequirement(name = "authHeader")
     public void alterPostLikes(@PathVariable int id, @RequestHeader HttpHeaders headers, @RequestParam boolean isLiked) {
         try{
             User user = authenticationHelper.tryGetUser(headers);
@@ -119,6 +123,7 @@ public class PostController {
 
     @Operation(summary = "Delete post by ID", description = "Deletes a post by it's unique ID")
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "authHeader")
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
             User user = authenticationHelper.tryGetUser(headers);

@@ -11,6 +11,7 @@ import com.telerikacademy.web.forumsystem.models.*;
 import com.telerikacademy.web.forumsystem.services.PhoneNumberService;
 import com.telerikacademy.web.forumsystem.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -55,6 +56,7 @@ public class UserController {
 
     @Operation(summary = "Get user by ID", description = "Fetches a user by their unique ID")
     @GetMapping("/{id}")
+    @SecurityRequirement(name = "authHeader")
     public User getById(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
             User user = authorizationHelper.tryGetUser(headers);
@@ -136,6 +138,7 @@ public class UserController {
 
     @Operation(summary = "Updates user by an Id", description = "Updates the desired fields in an User")
     @PutMapping("/{id}")
+    @SecurityRequirement(name = "authHeader")
     public UserDTOOut update(@RequestHeader HttpHeaders headers, @PathVariable int id,
                              @RequestBody UserDTO userDto) {
         try {
@@ -173,6 +176,7 @@ public class UserController {
     @Operation(summary = "Alter admin permissions", description = "Changes user permissions " +
             "if isAdmin is true, promotes the user to admin, else removes admin permissions")
     @PatchMapping("/{id}/admin")
+    @SecurityRequirement(name = "authHeader")
     public void alterAdminPermissions(@PathVariable int id, @RequestHeader HttpHeaders headers,
                                       @RequestParam boolean isAdmin) {
         try {
@@ -188,6 +192,7 @@ public class UserController {
     @Operation(summary = "Block or unblock user", description =
             "If isBlocked is true, blocks user from interaction, else unblocks an user")
     @PatchMapping("/{id}/block")
+    @SecurityRequirement(name = "authHeader")
     public void alterBlock(@PathVariable int id, @RequestHeader HttpHeaders headers, @RequestParam boolean isBlocked) {
         try {
             User user = authorizationHelper.tryGetUser(headers);
@@ -201,6 +206,7 @@ public class UserController {
 
     @Operation(summary = "Deletes an user by Id", description = "Deletes an user by their unique ID")
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "authHeader")
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
             User userFromHeader = authorizationHelper.tryGetUser(headers);
@@ -213,6 +219,7 @@ public class UserController {
     }
 
     @GetMapping("/phone")
+    @SecurityRequirement(name = "authHeader")
     public PhoneNumber getByUser(@RequestHeader HttpHeaders headers) {
         try{
             User user = authorizationHelper.tryGetUser(headers);
@@ -230,6 +237,7 @@ public class UserController {
     @Operation(summary = "Create a PhoneNumber", description = "Creates a phoneNumber, for a user, while checking " +
             "if the creator is an admin and if the user the phone is assigned to is an admin")
     @PostMapping("/phone/{id}")
+    @SecurityRequirement(name = "authHeader")
     public PhoneNumber createPhoneNumber(@RequestHeader HttpHeaders headers, @PathVariable int id,
                                          @RequestBody PhoneNumberDTO phoneNumberDto) {
         try {
@@ -251,6 +259,7 @@ public class UserController {
     @Operation(summary = "Update a PhoneNumber", description = "Updates a phone number for a user, " +
             "while checking if the user is an admin.")
     @PutMapping("/phone/{id}")
+    @SecurityRequirement(name = "authHeader")
     public PhoneNumber updatePhoneNumber(@RequestHeader HttpHeaders headers, @PathVariable int id,
                                          @RequestBody PhoneNumberDTO phoneNumberDto) {
         try {
@@ -270,6 +279,7 @@ public class UserController {
     @Operation(summary = "Delete a PhoneNumber", description = "Deletes a phone number for a user, while " +
             "checking if the user is an admin.")
     @DeleteMapping("/phone/{id}")
+    @SecurityRequirement(name = "authHeader")
     public void deletePhoneNumber(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
             User user = authorizationHelper.tryGetUser(headers);
