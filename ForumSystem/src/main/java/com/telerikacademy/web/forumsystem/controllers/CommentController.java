@@ -10,6 +10,7 @@ import com.telerikacademy.web.forumsystem.models.User;
 import com.telerikacademy.web.forumsystem.services.CommentService;
 import com.telerikacademy.web.forumsystem.services.PostService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -48,6 +49,7 @@ public class CommentController {
     @Operation(summary = "Creates a comment using the postId", description = "Creates a comment for a post, by getting " +
             "the post from it's Id")
     @PostMapping("/{id}")
+    @SecurityRequirement(name = "authHeader")
     public Comment create(@RequestHeader HttpHeaders headers, @PathVariable int id, @RequestBody CommentDTO commentDTO) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
@@ -65,6 +67,7 @@ public class CommentController {
     @Operation(summary = "Updates a comment using the commentId", description = "Updates a comment for a post, by getting " +
             "comments from it's Id")
     @PutMapping("/{id}")
+    @SecurityRequirement(name = "authHeader")
     public Comment update(@RequestHeader HttpHeaders headers, @PathVariable int id, @RequestBody CommentDTO commentDTO) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
@@ -81,6 +84,7 @@ public class CommentController {
     @Operation(summary = "Deletes a comment by getting it's unique Id.", description = "Deletes a comment by getting the " +
             "Id for the comment, fetching the comment and removing it from the post the comment is in.")
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "authHeader")
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
             User user = authenticationHelper.tryGetUser(headers);

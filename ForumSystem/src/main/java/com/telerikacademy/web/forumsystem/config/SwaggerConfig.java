@@ -2,6 +2,7 @@ package com.telerikacademy.web.forumsystem.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,6 +16,11 @@ public class SwaggerConfig {
                         .version("1.0")
                         .description("Forum System for everything automotive. With users who are able to create a post, " +
                                 "update a post and delete a post. With some users being admins and thus allowing them to " +
-                                "update other users posts and promote, block or delete other users."));
+                                "update other users posts and promote, block or delete other users."))
+                .components(new io.swagger.v3.oas.models.Components()
+                        .addSecuritySchemes("authHeader", new SecurityScheme()
+                            .type(SecurityScheme.Type.APIKEY)
+                                .in(SecurityScheme.In.HEADER)
+                                .name("Authorization")));
     }
 }
