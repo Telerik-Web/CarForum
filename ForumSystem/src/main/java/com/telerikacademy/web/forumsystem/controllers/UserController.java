@@ -56,12 +56,12 @@ public class UserController {
     }
 
     @Operation(summary = "Get user by ID", description = "Fetches a user by their unique ID")
-    @GetMapping("/{id}")
+    @GetMapping("/{userId}")
     @SecurityRequirement(name = "authHeader")
-    public User getById(@RequestHeader HttpHeaders headers, @PathVariable int id) {
+    public User getById(@RequestHeader HttpHeaders headers, @PathVariable int userId) {
         try {
             User user = authorizationHelper.tryGetUser(headers);
-            return userService.getById(user, id);
+            return userService.getById(user, userId);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (UnauthorizedOperationException e) {
@@ -138,16 +138,16 @@ public class UserController {
     }
 
     @Operation(summary = "Updates user by an Id", description = "Updates the desired fields in an User")
-    @PutMapping("/{id}")
+    @PutMapping("/{userId}")
     @SecurityRequirement(name = "authHeader")
-    public UserDTOOut update(@RequestHeader HttpHeaders headers, @PathVariable int id,
+    public UserDTOOut update(@RequestHeader HttpHeaders headers, @PathVariable int userId,
                              @RequestBody UserDTO userDto) {
         try {
             User userFromHeader = authorizationHelper.tryGetUser(headers);
-            User user = userMapper.fromDto(userDto, id);
-            user.setUsername(getById(headers, id).getUsername());
-            userService.update(user, userFromHeader, id);
-            return userMapper.fromDtoOut(getById(headers, id));
+            User user = userMapper.fromDto(userDto, userId);
+            user.setUsername(getById(headers, userId).getUsername());
+            userService.update(user, userFromHeader, userId);
+            return userMapper.fromDtoOut(getById(headers, userId));
             //return userDto;
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -176,13 +176,13 @@ public class UserController {
 
     @Operation(summary = "Alter admin permissions", description = "Changes user permissions " +
             "if isAdmin is true, promotes the user to admin, else removes admin permissions")
-    @PatchMapping("/{id}/admin")
+    @PatchMapping("/{userId}/admin")
     @SecurityRequirement(name = "authHeader")
-    public void alterAdminPermissions(@PathVariable int id, @RequestHeader HttpHeaders headers,
+    public void alterAdminPermissions(@PathVariable int userId, @RequestHeader HttpHeaders headers,
                                       @RequestParam boolean isAdmin) {
         try {
             User user = authorizationHelper.tryGetUser(headers);
-            userService.alterAdminPermissions(id, user, isAdmin);
+            userService.alterAdminPermissions(userId, user, isAdmin);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (UnauthorizedOperationException e) {
@@ -192,12 +192,12 @@ public class UserController {
 
     @Operation(summary = "Block or unblock user", description =
             "If isBlocked is true, blocks user from interaction, else unblocks an user")
-    @PatchMapping("/{id}/block")
+    @PatchMapping("/{userId}/block")
     @SecurityRequirement(name = "authHeader")
-    public void alterBlock(@PathVariable int id, @RequestHeader HttpHeaders headers, @RequestParam boolean isBlocked) {
+    public void alterBlock(@PathVariable int userId, @RequestHeader HttpHeaders headers, @RequestParam boolean isBlocked) {
         try {
             User user = authorizationHelper.tryGetUser(headers);
-            userService.alterBlock(id, user, isBlocked);
+            userService.alterBlock(userId, user, isBlocked);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (UnauthorizedOperationException e) {
@@ -206,12 +206,12 @@ public class UserController {
     }
 
     @Operation(summary = "Deletes an user by Id", description = "Deletes an user by their unique ID")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{userId}")
     @SecurityRequirement(name = "authHeader")
-    public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
+    public void delete(@RequestHeader HttpHeaders headers, @PathVariable int userId) {
         try {
             User userFromHeader = authorizationHelper.tryGetUser(headers);
-            userService.delete(id, userFromHeader);
+            userService.delete(userId, userFromHeader);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (UnauthorizedOperationException e) {
@@ -237,14 +237,14 @@ public class UserController {
 
     @Operation(summary = "Create a PhoneNumber", description = "Creates a phoneNumber, for a user, while checking " +
             "if the creator is an admin and if the user the phone is assigned to is an admin")
-    @PostMapping("/phone/{id}")
+    @PostMapping("/phone/{userId}")
     @SecurityRequirement(name = "authHeader")
-    public PhoneNumber createPhoneNumber(@RequestHeader HttpHeaders headers, @PathVariable int id,
+    public PhoneNumber createPhoneNumber(@RequestHeader HttpHeaders headers, @PathVariable int userId,
                                          @RequestBody PhoneNumberDTO phoneNumberDto) {
         try {
             PhoneNumber phoneNumber = phoneNumberMapper.map(phoneNumberDto);
             User user = authorizationHelper.tryGetUser(headers);
-            User userToAddPhoneNumber = userService.getById(user, id);
+            User userToAddPhoneNumber = userService.getById(user, userId);
             phoneNumberService.create(phoneNumber, user, userToAddPhoneNumber);
             return phoneNumber;
         } catch (EntityNotFoundException e) {
@@ -259,14 +259,14 @@ public class UserController {
 
     @Operation(summary = "Update a PhoneNumber", description = "Updates a phone number for a user, " +
             "while checking if the user is an admin.")
-    @PutMapping("/phone/{id}")
+    @PutMapping("/phone/{userId}")
     @SecurityRequirement(name = "authHeader")
-    public PhoneNumber updatePhoneNumber(@RequestHeader HttpHeaders headers, @PathVariable int id,
+    public PhoneNumber updatePhoneNumber(@RequestHeader HttpHeaders headers, @PathVariable int userId,
                                          @RequestBody PhoneNumberDTO phoneNumberDto) {
         try {
             PhoneNumber phoneNumber = phoneNumberMapper.map(phoneNumberDto);
             User user = authorizationHelper.tryGetUser(headers);
-            User userToUpdatePhoneNumber = userService.getById(user, id);
+            User userToUpdatePhoneNumber = userService.getById(user, userId);
             PhoneNumber existingPhoneNumber = phoneNumberService.getByUser(userToUpdatePhoneNumber);
             phoneNumberService.update(existingPhoneNumber, phoneNumber, user, userToUpdatePhoneNumber);
             return phoneNumber;
@@ -279,12 +279,12 @@ public class UserController {
 
     @Operation(summary = "Delete a PhoneNumber", description = "Deletes a phone number for a user, while " +
             "checking if the user is an admin.")
-    @DeleteMapping("/phone/{id}")
+    @DeleteMapping("/phone/{userId}")
     @SecurityRequirement(name = "authHeader")
-    public void deletePhoneNumber(@RequestHeader HttpHeaders headers, @PathVariable int id) {
+    public void deletePhoneNumber(@RequestHeader HttpHeaders headers, @PathVariable int userId) {
         try {
             User user = authorizationHelper.tryGetUser(headers);
-            User userToDeletePhoneNumber = userService.getById(user, id);
+            User userToDeletePhoneNumber = userService.getById(user, userId);
             phoneNumberService.delete(user, userToDeletePhoneNumber);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());

@@ -38,10 +38,10 @@ public class CommentController {
     }
 
     @Operation(summary = "Get comment by ID", description = "Fetches a comment by their unique ID")
-    @GetMapping("/{id}")
-    public Comment getById(@PathVariable int id) {
+    @GetMapping("/{commentId}")
+    public Comment getById(@PathVariable int commentId) {
         try {
-            return commentService.getById(id);
+            return commentService.getById(commentId);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -49,12 +49,12 @@ public class CommentController {
 
     @Operation(summary = "Creates a comment using the postId", description = "Creates a comment for a post, by getting " +
             "the post from it's Id")
-    @PostMapping("/{id}")
+    @PostMapping("/{postId}")
     @SecurityRequirement(name = "authHeader")
-    public Comment create(@RequestHeader HttpHeaders headers, @PathVariable int id, @RequestBody CommentDTO commentDTO) {
+    public Comment create(@RequestHeader HttpHeaders headers, @PathVariable int postId, @RequestBody CommentDTO commentDTO) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
-            Post post = postService.getById(id);
+            Post post = postService.getById(postId);
             Comment comment = commentMapper.fromDTO(commentDTO);
             commentService.create(comment, post, user);
             return comment;
@@ -67,12 +67,12 @@ public class CommentController {
 
     @Operation(summary = "Updates a comment using the commentId", description = "Updates a comment for a post, by getting " +
             "comments from it's Id")
-    @PutMapping("/{id}")
+    @PutMapping("/{commentId}")
     @SecurityRequirement(name = "authHeader")
-    public Comment update(@RequestHeader HttpHeaders headers, @PathVariable int id, @RequestBody CommentDTO commentDTO) {
+    public Comment update(@RequestHeader HttpHeaders headers, @PathVariable int commentId, @RequestBody CommentDTO commentDTO) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
-            Comment comment = commentMapper.fromDTO(id, commentDTO);
+            Comment comment = commentMapper.fromDTO(commentId, commentDTO);
             commentService.update(comment, user);
             return comment;
         } catch (EntityNotFoundException e) {
@@ -84,12 +84,12 @@ public class CommentController {
 
     @Operation(summary = "Deletes a comment by getting it's unique Id.", description = "Deletes a comment by getting the " +
             "Id for the comment, fetching the comment and removing it from the post the comment is in.")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{commentId}")
     @SecurityRequirement(name = "authHeader")
-    public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
+    public void delete(@RequestHeader HttpHeaders headers, @PathVariable int commentId) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
-            commentService.delete(id, user);
+            commentService.delete(commentId, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (UnauthorizedOperationException e) {

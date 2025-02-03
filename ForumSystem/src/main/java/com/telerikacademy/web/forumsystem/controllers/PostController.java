@@ -49,10 +49,10 @@ public class PostController {
     }
 
     @Operation(summary = "Get post by ID", description = "Fetches a post by their unique ID")
-    @GetMapping("/{id}")
-    public Post getById(@PathVariable int id) {
+    @GetMapping("/{postId}")
+    public Post getById(@PathVariable int postId) {
         try {
-            return postService.getById(id);
+            return postService.getById(postId);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -88,14 +88,14 @@ public class PostController {
     }
 
     @Operation(summary = "Updates a post by ID", description = "updates the defined fields of a post with the new values.")
-    @PutMapping("/{id}")
+    @PutMapping("/{postId}")
     @SecurityRequirement(name = "authHeader")
     public Post update(@RequestHeader HttpHeaders headers,
-                       @PathVariable int id,
+                       @PathVariable int postId,
                        @Valid @RequestBody PostDTO postDto) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
-            Post post = postMapper.fromDto(id, postDto);
+            Post post = postMapper.fromDto(postId, postDto);
             postService.update(post, user);
             return post;
         } catch (EntityNotFoundException e) {
@@ -107,12 +107,12 @@ public class PostController {
 
     @Operation(summary = "Like or Dislike a post", description =
                         "If isLiked is true, likes a post, else dislikes a post")
-    @PatchMapping("/{id}/like")
+    @PatchMapping("/{postId}/like")
     @SecurityRequirement(name = "authHeader")
-    public void alterPostLikes(@PathVariable int id, @RequestHeader HttpHeaders headers, @RequestParam boolean isLiked) {
+    public void alterPostLikes(@PathVariable int postId, @RequestHeader HttpHeaders headers, @RequestParam boolean isLiked) {
         try{
             User user = authenticationHelper.tryGetUser(headers);
-            postService.alterPostLikes(id, user, isLiked);
+            postService.alterPostLikes(postId, user, isLiked);
         }
         catch (EntityNotFoundException e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -123,12 +123,12 @@ public class PostController {
     }
 
     @Operation(summary = "Delete post by ID", description = "Deletes a post by it's unique ID")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{postId}")
     @SecurityRequirement(name = "authHeader")
-    public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
+    public void delete(@RequestHeader HttpHeaders headers, @PathVariable int postId) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
-            postService.delete(id, user);
+            postService.delete(postId, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (UnauthorizedOperationException e) {
