@@ -27,7 +27,8 @@ public class UserDTO {
 
     //big json
     //postdto where needed
-    //
+    //new dto for update only without username
+    //create in usercontroller should return from the database not the user input
 
     public UserDTO() {
     }
