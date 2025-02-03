@@ -1,4 +1,4 @@
-package com.telerikacademy.web.forumsystem.controllers;
+package com.telerikacademy.web.forumsystem.helpers;
 
 import com.telerikacademy.web.forumsystem.exceptions.UnauthorizedOperationException;
 import com.telerikacademy.web.forumsystem.models.User;
