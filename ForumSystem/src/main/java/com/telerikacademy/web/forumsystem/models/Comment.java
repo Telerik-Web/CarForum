@@ -1,5 +1,6 @@
 package com.telerikacademy.web.forumsystem.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -22,6 +23,7 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "post_id")
+    @JsonBackReference
     private Post post;
 
     public Comment() {

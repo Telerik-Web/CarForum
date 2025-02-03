@@ -1,5 +1,6 @@
 package com.telerikacademy.web.forumsystem.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -39,7 +40,8 @@ public class Post {
     )
     private Set<User> likes = new HashSet<>();
 
-    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "post", orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonManagedReference
     private Set<Comment> comments = new HashSet<>();
 
 

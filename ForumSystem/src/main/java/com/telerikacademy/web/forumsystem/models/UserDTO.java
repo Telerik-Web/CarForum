@@ -25,6 +25,10 @@ public class UserDTO {
     @NotNull
     private String username;
 
+    //big json
+    //postdto where needed
+    //
+
     public UserDTO() {
     }
 
