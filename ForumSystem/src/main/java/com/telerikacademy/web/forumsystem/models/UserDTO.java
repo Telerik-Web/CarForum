@@ -39,15 +39,6 @@ public class UserDTO {
         this.password = password;
     }
 
-//    public UserDTO(String firstName, String lastName, String email, String password) {
-//        this.firstName = firstName;
-//        this.lastName = lastName;
-//        this.email = email;
-//        this.password = password;
-//        this.isAdmin = isAdmin;
-//        this.isBlocked = isBlocked;
-//    }
-
     public String getFirstName() {
         return firstName;
     }
@@ -79,22 +70,6 @@ public class UserDTO {
     public void setPassword(String password) {
         this.password = password;
     }
-
-//    public Boolean isAdmin() {
-//        return isAdmin;
-//    }
-//
-//    public void setAdmin(Boolean admin) {
-//        isAdmin = admin;
-//    }
-//
-//    public Boolean isBlocked() {
-//        return isBlocked;
-//    }
-//
-//    public void setBlocked(Boolean blocked) {
-//        isBlocked = blocked;
-//    }
 
     public String getUsername() {
         return username;

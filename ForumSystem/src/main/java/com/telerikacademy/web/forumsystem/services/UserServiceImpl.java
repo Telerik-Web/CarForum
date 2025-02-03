@@ -72,24 +72,6 @@ public class UserServiceImpl implements UserService {
         userRepository.alterBlock(userToUpdate);
     }
 
-//    @Override
-//    public User findByUsername(User user, String username) {
-//        checkIfAdmin(user);
-//        return userRepository.findByUsername(username);
-//    }
-//
-//    @Override
-//    public User findByEmail(User user, String email) {
-//        checkIfAdmin(user);
-//        return userRepository.findByEmail(email);
-//    }
-//
-//    @Override
-//    public User findByFirstname(User user, String firstName) {
-//        checkIfAdmin(user);
-//        return userRepository.findByFirstname(firstName);
-//    }
-
     @Override
     public void create(User user) {
         boolean exists = true;
@@ -103,8 +85,6 @@ public class UserServiceImpl implements UserService {
         if (exists) {
             throw new DuplicateEntityException("User", "email", user.getEmail());
         }
-//        user.setBlocked(false);
-//        user.setAdmin(false);
 
         userRepository.create(user);
     }

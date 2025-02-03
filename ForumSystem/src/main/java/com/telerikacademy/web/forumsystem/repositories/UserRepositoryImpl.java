@@ -26,13 +26,6 @@ public class UserRepositoryImpl implements UserRepository {
         this.sessionFactory = sessionFactory;
     }
 
-//    @Override
-//    public List<User> findAll() {
-//        try (Session session = sessionFactory.openSession()) {
-//            return session.createQuery("From User", User.class).list();
-//        }
-//    }
-
     @Override
     public List<User> getAll(FilterUserOptions filterOptions) {
         try (Session session = sessionFactory.openSession()) {
@@ -107,20 +100,6 @@ public class UserRepositoryImpl implements UserRepository {
                     .orElseThrow(() -> new EntityNotFoundException("User", "email", email));
         }
     }
-
-
-//
-//    @Override
-//    public User findByFirstname(String firstName) {
-//        try (Session session = sessionFactory.openSession()) {
-//            Query<User> user = session.createQuery("from User where firstName = :firstName", User.class);
-//            user.setParameter("firstName", firstName);
-//            return user
-//                    .stream()
-//                    .findFirst()
-//                    .orElseThrow(() -> new EntityNotFoundException("User", "firstname", firstName));
-//        }
-//    }
 
     @Override
     public void alterAdminPermissions(User user) {
