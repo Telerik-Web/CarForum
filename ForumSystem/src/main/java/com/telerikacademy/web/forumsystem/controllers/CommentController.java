@@ -2,6 +2,7 @@ package com.telerikacademy.web.forumsystem.controllers;
 
 import com.telerikacademy.web.forumsystem.exceptions.EntityNotFoundException;
 import com.telerikacademy.web.forumsystem.exceptions.UnauthorizedOperationException;
+import com.telerikacademy.web.forumsystem.helpers.AuthenticationHelper;
 import com.telerikacademy.web.forumsystem.mappers.CommentMapper;
 import com.telerikacademy.web.forumsystem.models.Comment;
 import com.telerikacademy.web.forumsystem.models.CommentDTO;
