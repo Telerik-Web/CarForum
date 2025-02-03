@@ -14,8 +14,6 @@ public interface UserRepository {
     User getByUsername(String username);
 
     User getByEmail(String email);
-//
-//    User findByFirstname(String firstName);
 
     void alterAdminPermissions(User user);
 
