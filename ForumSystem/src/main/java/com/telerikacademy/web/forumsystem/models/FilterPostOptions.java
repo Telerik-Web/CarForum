@@ -10,6 +10,10 @@ public class FilterPostOptions {
     private Optional<String> sortBy;
     private Optional<String> sortOrder;
 
+    public FilterPostOptions() {
+        this(null, null, null, null, null);
+    }
+
     public FilterPostOptions(
             String title,
             String content,
