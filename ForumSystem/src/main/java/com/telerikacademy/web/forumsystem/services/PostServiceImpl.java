@@ -32,6 +32,12 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
+    public List<Post> getPaginatedPosts(int page, int size) {
+        return postRepository.getPaginatedPosts(page, size);
+    }
+
+
+    @Override
     public Post getById(int id) {
         return postRepository.getById(id);
     }

@@ -107,6 +107,17 @@ public class PostRepositoryImpl implements PostRepository{
         }
     }
 
+
+    public List<Post> getPaginatedPosts(int page, int size) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Post> query = session.createQuery("FROM Post ORDER BY timestamp DESC", Post.class);
+            query.setFirstResult(page * size);
+            query.setMaxResults(size);
+            return query.list();
+        }
+    }
+
+
     @Override
     public Post getById(int id) {
         try(Session session = sessionFactory.openSession()){

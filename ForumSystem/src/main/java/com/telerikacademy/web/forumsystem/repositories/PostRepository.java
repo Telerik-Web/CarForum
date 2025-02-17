@@ -11,6 +11,8 @@ public interface PostRepository {
 
     List<Post> getAll(FilterPostOptions filterPostOptions);
 
+    public List<Post> getPaginatedPosts(int page, int size);
+
     Post getById(int id);
 
     List<Post> getMostRecentPosts();
