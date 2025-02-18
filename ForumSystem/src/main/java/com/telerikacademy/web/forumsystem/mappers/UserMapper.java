@@ -92,4 +92,14 @@ public class UserMapper {
         return userDto;
     }
 
+    public User fromDto(RegisterDto dto) {
+        User user = new User();
+        user.setUsername(dto.getUsername());
+        user.setPassword(dto.getPassword());
+        user.setEmail(dto.getEmail());
+        user.setFirstName(dto.getFirstName());
+        user.setLastName(dto.getLastName());
+        return user;
+    }
+
 }

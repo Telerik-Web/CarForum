@@ -1,0 +1,97 @@
+package com.telerikacademy.web.forumsystem.controllers.mvc;
+
+import com.telerikacademy.web.forumsystem.exceptions.AuthenticationFailureException;
+import com.telerikacademy.web.forumsystem.exceptions.DuplicateEntityException;
+import com.telerikacademy.web.forumsystem.helpers.AuthenticationHelper;
+import com.telerikacademy.web.forumsystem.mappers.UserMapper;
+import com.telerikacademy.web.forumsystem.models.LoginDto;
+import com.telerikacademy.web.forumsystem.models.RegisterDto;
+import com.telerikacademy.web.forumsystem.models.User;
+import com.telerikacademy.web.forumsystem.services.UserService;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequestMapping("/auth")
+public class AuthenticationController {
+
+    private final AuthenticationHelper authenticationHelper;
+    private final UserService userService;
+    private final UserMapper userMapper;
+
+    @Autowired
+    public AuthenticationController(AuthenticationHelper authenticationHelper,
+                                    UserService userService,
+                                    UserMapper userMapper) {
+        this.authenticationHelper = authenticationHelper;
+        this.userService = userService;
+        this.userMapper = userMapper;
+    }
+
+    @GetMapping("/login")
+    public String showLogin(Model model) {
+        model.addAttribute("login", new LoginDto());
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String processLogin(@Valid @ModelAttribute("login") LoginDto loginDto,
+                               BindingResult errors,
+                               HttpSession session) {
+        if (errors.hasErrors()) {
+            return "login";
+        }
+
+        try {
+            User user = authenticationHelper.verifyAuthentication(loginDto.getUsername(), loginDto.getPassword());
+            session.setAttribute("currentUser", user.getUsername());
+            session.setAttribute("isAdmin", user.isAdmin());
+            return "redirect:/home";
+        } catch (AuthenticationFailureException e) {
+            errors.rejectValue("username", e.getMessage());
+            return "login";
+        }
+    }
+
+    @GetMapping("/logout")
+    public String showLogout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/home";
+    }
+
+    @GetMapping("/register")
+    public String register(Model model) {
+        model.addAttribute("register", new RegisterDto());
+        return "register";
+    }
+
+    @PostMapping("/register")
+    public String processRegister(@Valid @ModelAttribute("register") RegisterDto registerDto,
+                                  BindingResult errors) {
+        if(errors.hasErrors()) {
+            return "register";
+        }
+
+        if(!registerDto.getPassword().equals(registerDto.getPasswordConfirm())) {
+            errors.rejectValue("passwordConfirm", "passwords do not match!");
+            return "register";
+        }
+
+        try {
+            User user = userMapper.fromDto(registerDto);
+            userService.create(user);
+            return "redirect:/auth/login";
+        } catch (DuplicateEntityException e) {
+            errors.rejectValue("username", e.getMessage());
+            return "register";
+        }
+    }
+}

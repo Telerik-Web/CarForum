@@ -1,5 +1,6 @@
 package com.telerikacademy.web.forumsystem.helpers;
 
+import com.telerikacademy.web.forumsystem.exceptions.AuthenticationFailureException;
 import com.telerikacademy.web.forumsystem.exceptions.UnauthorizedOperationException;
 import com.telerikacademy.web.forumsystem.models.User;
 import com.telerikacademy.web.forumsystem.services.UserService;
@@ -67,5 +68,17 @@ public class AuthenticationHelper {
         }
         return userInfo.substring(firstSpace + 1);
 
+    }
+
+    public User verifyAuthentication(String username, String password) {
+        try {
+            User user = userService.getByUsername(username);
+            if(!user.getPassword().equals(password)){
+                throw new AuthenticationFailureException(INVALID_AUTHENTICATION_ERROR);
+            }
+            return user;
+        } catch (EntityNotFoundException e) {
+            throw new AuthenticationFailureException(INVALID_AUTHENTICATION_ERROR);
+        }
     }
 }
