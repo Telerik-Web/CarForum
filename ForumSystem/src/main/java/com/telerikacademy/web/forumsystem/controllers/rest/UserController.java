@@ -1,6 +1,6 @@
 //presentation layer
 
-package com.telerikacademy.web.forumsystem.controllers;
+package com.telerikacademy.web.forumsystem.controllers.rest;
 
 import com.telerikacademy.web.forumsystem.exceptions.DuplicateEntityException;
 import com.telerikacademy.web.forumsystem.exceptions.EntityNotFoundException;

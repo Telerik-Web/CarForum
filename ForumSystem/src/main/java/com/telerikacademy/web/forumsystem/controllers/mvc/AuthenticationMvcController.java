@@ -21,16 +21,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/auth")
-public class AuthenticationController {
+public class AuthenticationMvcController {
 
     private final AuthenticationHelper authenticationHelper;
     private final UserService userService;
     private final UserMapper userMapper;
 
     @Autowired
-    public AuthenticationController(AuthenticationHelper authenticationHelper,
-                                    UserService userService,
-                                    UserMapper userMapper) {
+    public AuthenticationMvcController(AuthenticationHelper authenticationHelper,
+                                       UserService userService,
+                                       UserMapper userMapper) {
         this.authenticationHelper = authenticationHelper;
         this.userService = userService;
         this.userMapper = userMapper;
