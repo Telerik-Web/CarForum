@@ -39,7 +39,7 @@ public class AuthenticationController {
     @GetMapping("/login")
     public String showLogin(Model model) {
         model.addAttribute("login", new LoginDto());
-        return "login";
+        return "Login";
     }
 
     @PostMapping("/login")
@@ -47,7 +47,7 @@ public class AuthenticationController {
                                BindingResult errors,
                                HttpSession session) {
         if (errors.hasErrors()) {
-            return "login";
+            return "Login";
         }
 
         try {
@@ -57,7 +57,7 @@ public class AuthenticationController {
             return "redirect:/home";
         } catch (AuthenticationFailureException e) {
             errors.rejectValue("username", e.getMessage());
-            return "login";
+            return "Login";
         }
     }
 
@@ -70,19 +70,19 @@ public class AuthenticationController {
     @GetMapping("/register")
     public String register(Model model) {
         model.addAttribute("register", new RegisterDto());
-        return "register";
+        return "Register";
     }
 
     @PostMapping("/register")
     public String processRegister(@Valid @ModelAttribute("register") RegisterDto registerDto,
                                   BindingResult errors) {
         if(errors.hasErrors()) {
-            return "register";
+            return "Register";
         }
 
         if(!registerDto.getPassword().equals(registerDto.getPasswordConfirm())) {
             errors.rejectValue("passwordConfirm", "passwords do not match!");
-            return "register";
+            return "Register";
         }
 
         try {
@@ -91,7 +91,7 @@ public class AuthenticationController {
             return "redirect:/auth/login";
         } catch (DuplicateEntityException e) {
             errors.rejectValue("username", e.getMessage());
-            return "register";
+            return "Register";
         }
     }
 }
