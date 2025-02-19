@@ -5,6 +5,7 @@ import com.telerikacademy.web.forumsystem.exceptions.UnauthorizedOperationExcept
 import com.telerikacademy.web.forumsystem.models.User;
 import com.telerikacademy.web.forumsystem.services.UserService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -48,6 +49,16 @@ public class AuthenticationHelper {
         } catch (EntityNotFoundException e) {
             throw new UnauthorizedOperationException(INVALID_AUTHENTICATION_ERROR);
         }
+    }
+
+    public User tryGetUser(HttpSession session) {
+        String currentUser = (String) session.getAttribute("currentUser");
+
+        if(currentUser==null){
+            throw new AuthenticationFailureException(AUTHENTICATION_ERROR);
+        }
+
+        return userService.getByUsername(currentUser);
     }
 
     private String getUsername(String userInfo) {

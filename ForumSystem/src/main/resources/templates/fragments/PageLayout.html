@@ -28,7 +28,7 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
                 <li class="nav-item"><a class="nav-link" href="#" th:href="@{/posts}">Posts</a></li>
-                <li class="nav-item"><a class="nav-link" href="#" th:if="${isAuthenticated}">Create Post</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" th:href="@{/posts/new}" th:if="${isAuthenticated}">Create Post</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">About</a></li>
                 <li class="nav-item"><a class="nav-link" href="#" th:if="${isAuthenticated}">Account</a></li>
                 <li class="nav-item"><a class="nav-link" href="#" th:unless="${isAuthenticated}" th:href="@{/auth/login}">Login</a></li>

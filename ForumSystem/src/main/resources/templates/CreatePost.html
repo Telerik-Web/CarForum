@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/PageLayout.html :: head('Posts')}"></head>
+<body>
+
+<nav th:replace="~{fragments/PageLayout.html :: navbar}"></nav>
+
+<section class="container mt-5">
+    <div class="masthead vh-100 justify-content-center">
+        <div class="container d-flex align-items-center flex-column">
+            <form action="#" th:action="@{/posts/new}" th:object="${post}" method="post">
+
+                <h2 class="page-title">Create a Post</h2>
+
+                <label class="fieldName" th:text="#{post.title}">Post Title</label>
+                <br/>
+                <input class="input-group-text" type="text" th:field="*{title}"
+                       placeholder="Write your post title here..."/>
+                <label class="error" th:errors="*{title}">Title Error</label>
+
+                <div class="content-wrapper">
+                    <label class="fieldName" for="postDescription">Post</label>
+                    <textarea
+                        class="big-textarea"
+                        id="postDescription"
+                        name="description"
+                        placeholder="Write your post here..."></textarea>
+                </div>
+
+                <input class="btn btn-primary" type="submit" value="Create"/>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+<footer th:replace="~{fragments/PageLayout.html :: footer}"></footer>
+<div th:replace="~{/fragments/PageLayout.html :: scripts}"></div>
+
+</body>
+</html>
