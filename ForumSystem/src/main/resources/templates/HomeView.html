@@ -14,13 +14,68 @@
         <br/>
         <br/>
 
+
+        <section class="container mt-4">
+            <article class="row justify-content-center">
+
+                <!-- User Count Card -->
+                <aside class="col-md-5 mb-4">
+                    <figure class="card text-center shadow-lg">
+                        <figcaption class="card-body">
+                            <h4 class="card-title">Total Users</h4>
+                            <p class="display-4 fw-bold text-primary">
+                                <i class="fas fa-users"></i> <span th:text="${userCount}">0</span>
+                            </p>
+                            <p class="text-muted">People have joined our community</p>
+                        </figcaption>
+                    </figure>
+                </aside>
+
+                <!-- Post Count Card -->
+                <aside class="col-md-5 mb-4">
+                    <figure class="card text-center shadow-lg">
+                        <figcaption class="card-body">
+                            <h4 class="card-title">Total Posts</h4>
+                            <p class="display-4 fw-bold custom-blue-color">
+                                <i class="fas fa-pencil-alt"></i> <span th:text="${postCount}">0</span>
+                            </p>
+                            <p class="text-muted">Posts shared by our community</p>
+                        </figcaption>
+                    </figure>
+                </aside>
+
+            </article>
+        </section>
+
         <article>
             <div class="text-center">
-                <h2 class="section-heading text-uppercase">Most Recent Posts</h2>
+                <h2 class="section-heading text-uppercase my-3">Most Recent Posts</h2>
             </div>
             <div class="container mt-4">
                 <div class="row justify-content-center">
                     <div th:each="post : ${mostRecentPosts}" class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title" th:text="${post.title}">Post Title</h5>
+                                <p class="card-text" th:text="${post.content}">Post Content</p>
+                                <div class="mt-auto d-flex justify-content-between">
+                                    <a href="#" class="btn btn-primary">Read More</a>
+                                    <small class="text-muted">Posted on: <span th:text="${post.timestamp}"></span></small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <article>
+            <div class="text-center">
+                <h2 class="section-heading text-uppercase my-3 mt-5">Most Commented Posts</h2>
+            </div>
+            <div class="container mt-4">
+                <div class="row justify-content-center">
+                    <div th:each="post : ${mostCommentedPosts}" class="col-md-6 mb-3">
                         <div class="card h-100">
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title" th:text="${post.title}">Post Title</h5>

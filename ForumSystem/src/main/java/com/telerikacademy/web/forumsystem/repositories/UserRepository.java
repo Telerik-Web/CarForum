@@ -9,6 +9,8 @@ import java.util.List;
 public interface UserRepository {
     List<User> getAll(FilterUserOptions filterOptions);
 
+    long getUserCount();
+
     User getById(int id);
 
     User getByUsername(String username);
