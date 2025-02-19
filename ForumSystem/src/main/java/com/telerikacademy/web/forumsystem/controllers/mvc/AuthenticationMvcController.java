@@ -2,6 +2,7 @@ package com.telerikacademy.web.forumsystem.controllers.mvc;
 
 import com.telerikacademy.web.forumsystem.exceptions.AuthenticationFailureException;
 import com.telerikacademy.web.forumsystem.exceptions.DuplicateEntityException;
+import com.telerikacademy.web.forumsystem.exceptions.EntityNotFoundException;
 import com.telerikacademy.web.forumsystem.helpers.AuthenticationHelper;
 import com.telerikacademy.web.forumsystem.mappers.UserMapper;
 import com.telerikacademy.web.forumsystem.models.LoginDto;
@@ -10,6 +11,7 @@ import com.telerikacademy.web.forumsystem.models.User;
 import com.telerikacademy.web.forumsystem.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.hibernate.action.internal.EntityActionVetoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -61,7 +63,10 @@ public class AuthenticationMvcController {
             session.setAttribute("isAdmin", user.isAdmin());
             return "redirect:/";
         } catch (AuthenticationFailureException e) {
-            errors.rejectValue("username", e.getMessage());
+            errors.reject("Invalid authentication");
+            return "Login";
+        } catch (EntityNotFoundException e) {
+            errors.reject("invalid.credentials", "Invalid username or password");
             return "Login";
         }
     }
