@@ -11,7 +11,7 @@
     <div id="login">
         <h2>
             <a class="btn-primary" href="" th:href="@{/}">Home</a>
-<!--            <a class="btn-primary" href="" th:href="@{}"></a>-->
+            <!--            <a class="btn-primary" href="" th:href="@{}"></a>-->
         </h2>
     </div>
 </header>
@@ -20,18 +20,20 @@
     <div class="container d-flex align-items-center flex-column">
         <form action="#" th:action="@{/auth/login}" th:object="${login}" method="post">
 
-            <div th:if="${#fields.hasErrors()}">
+            <div th:if="${#fields.hasErrors() and login.username!='' and login.password!=''}">
                 <p class="error">Wrong username or password!</p>
             </div>
 
             <label class="fieldName" th:text="#{username}">Username</label>
             <br/>
             <input class="input" type="text" th:field="*{username}"/>
+            <label class="error" th:errors="*{username}">Username error</label>
             <br/><br/>
 
             <label class="fieldName" th:text="#{password}">Password</label>
             <br/>
             <input class="input" type="text" th:field="*{password}"/>
+            <label class="error" th:errors="*{password}">Password error</label>
             <br/><br/>
 
             <input type="submit" value="login"/>
