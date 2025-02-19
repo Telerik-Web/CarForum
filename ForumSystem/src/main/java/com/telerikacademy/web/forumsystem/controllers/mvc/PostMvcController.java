@@ -3,11 +3,13 @@ package com.telerikacademy.web.forumsystem.controllers.mvc;
 import com.telerikacademy.web.forumsystem.models.FilterPostOptions;
 import com.telerikacademy.web.forumsystem.models.Post;
 import com.telerikacademy.web.forumsystem.services.PostService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -22,6 +24,11 @@ public class PostMvcController {
     @Autowired
     public PostMvcController(PostService postService) {
         this.postService = postService;
+    }
+
+    @ModelAttribute("isAuthenticated")
+    public boolean populateIsAuthenticated(HttpSession session) {
+        return session.getAttribute("currentUser") != null;
     }
 
     @GetMapping
