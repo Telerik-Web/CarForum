@@ -99,6 +99,8 @@ public class UserMapper {
         user.setEmail(dto.getEmail());
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
+        user.setAdmin(false);
+        user.setBlocked(false);
         return user;
     }
 

@@ -20,38 +20,44 @@
     <div class="container d-flex align-items-center flex-column">
         <form action="#" th:action="@{/auth/register}" th:object="${register}" method="post">
 
-            <div th:if="${#fields.hasErrors()}">
-                <p class="error" th:text="*{#fields.errors()}">Error</p>
-            </div>
+<!--            <div th:if="${#fields.hasErrors()}">-->
+<!--                <p class="error">All fields are mandatory!</p>-->
+<!--            </div>-->
 
             <label class="fieldName" th:text="#{username}">Username</label>
             <br/>
             <input class="input" type="text" th:field="*{username}"/>
+            <label class="error" th:errors="*{username}">Username Error</label>
             <br/><br/>
 
             <label class="fieldName" th:text="#{password}">Password</label>
             <br/>
             <input class="input" type="text" th:field="*{password}"/>
+            <label class="error" th:errors="*{password}">Password Error</label>
             <br/><br/>
 
             <label class="fieldName" th:text="#{passwordConfirm}">Password Confirm</label>
             <br/>
             <input class="input" type="text" th:field="*{passwordConfirm}"/>
+            <label class="error" th:errors="*{passwordConfirm}">Password Confirm Error</label>
             <br/><br/>
 
             <label class="fieldName" th:text="#{firstName}">First Name</label>
             <br/>
             <input class="input" type="text" th:field="*{firstName}"/>
+            <label class="error" th:errors="*{firstName}">First Name Error</label>
             <br/><br/>
 
             <label class="lastName" th:text="#{lastName}">Last Name</label>
             <br/>
             <input class="input" type="text" th:field="*{lastName}"/>
+            <label class="error" th:errors="*{lastName}">Last Name Error</label>
             <br/><br/>
 
             <label class="lastName" th:text="#{email}">Last Name</label>
             <br/>
             <input class="input" type="text" th:field="*{email}"/>
+            <label class="error" th:errors="*{email}">Email Error</label>
             <br/><br/>
 
             <input class="btn-primary" type="submit" value="Register"/>

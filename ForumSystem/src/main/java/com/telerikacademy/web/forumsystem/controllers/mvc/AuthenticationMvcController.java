@@ -86,7 +86,7 @@ public class AuthenticationMvcController {
         }
 
         if(!registerDto.getPassword().equals(registerDto.getPasswordConfirm())) {
-            errors.rejectValue("passwordConfirm", "passwords do not match!");
+            errors.rejectValue("passwordConfirm", "passwords.mismatch");
             return "Register";
         }
 
@@ -95,7 +95,8 @@ public class AuthenticationMvcController {
             userService.create(user);
             return "redirect:/auth/login";
         } catch (DuplicateEntityException e) {
-            errors.rejectValue("username", e.getMessage());
+            errors.rejectValue("username", "duplicate.username",
+                    "Username is already taken!");
             return "Register";
         }
     }
