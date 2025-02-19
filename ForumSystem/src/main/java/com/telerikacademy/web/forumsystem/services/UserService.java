@@ -8,6 +8,8 @@ import java.util.List;
 public interface UserService {
     List<User> getAll(FilterUserOptions filterOptions);
 
+    long getUserCount();
+
     User getById(User user, int id);
 
     User getByUsername(String username);

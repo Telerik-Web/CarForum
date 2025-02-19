@@ -27,6 +27,17 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public long getUserCount() {
+        try (Session session = sessionFactory.openSession()) {
+            String hql = "Select count(*) from User";
+
+            Query<Long> query = session.createQuery(hql, Long.class);
+
+            return query.getSingleResult();
+        }
+    }
+
+    @Override
     public List<User> getAll(FilterUserOptions filterOptions) {
         try (Session session = sessionFactory.openSession()) {
             StringBuilder sb = new StringBuilder("FROM User");

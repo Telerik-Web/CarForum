@@ -25,6 +25,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public long getUserCount() {
+        return userRepository.getUserCount();
+    }
+
+    @Override
     public List<User> getAll(FilterUserOptions filterOptions) {
         return userRepository.getAll(filterOptions);
     }
