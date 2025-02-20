@@ -16,20 +16,20 @@
                 <p th:text="${post.content}">Content</p>
                 <br/><br/>
             </div>
-            <a th:if="${user.isAdmin() || post.getCreatedBy().getId() == (user.getId())}"
-               class="btn btn-danger" th:href="@{/posts/delete/{id} (id=${post.getId()})}">
-                Delete
-            </a>
+            <div class="mt-auto d-flex justify-content-between">
+                <a th:if="${user.isAdmin() || post.getCreatedBy().getId() == (user.getId())}"
+                   class="btn btn-primary me-4" th:href="@{/posts/update/{id} (id=${post.id})}">
+                    Update
+                </a>
+
+                <a th:if="${user.isAdmin() || post.getCreatedBy().getId() == (user.getId())}"
+                   class="btn btn-danger" th:href="@{/posts/delete/{id} (id=${post.getId()})}">
+                    Delete
+                </a>
+            </div>
         </div>
     </div>
 </section>
-
-<!--    <a th:if="${user.isAdmin() || post.getCreatedBy().getId() == (user.getId())}"-->
-<!--       class="btn-primary" th:href="@{/post/{id}/update (id=${beer.getId()})}">-->
-<!--        Update-->
-<!--    </a>-->
-
-
 
 </body>
 </html>
