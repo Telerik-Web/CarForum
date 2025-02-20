@@ -5,11 +5,49 @@
 
 <nav th:replace="~{fragments/PageLayout.html :: navbar}"></nav>
 
-<section class="container mt-4">
-  <h2 class="mb-4 text-center">Forum Posts</h2>
+<!-- Carousel Container -->
+<div class="container-fluid mt-1 no-margin p-xl-0" >
+  <div id="demo" class="carousel slide" data-bs-ride="carousel">
+
+    <!-- Indicators/dots -->
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+      <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+      <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+    </div>
+
+    <!-- The slideshow/carousel -->
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="../static/assets/img/carousel/mustang.jpg" th:src="@{/assets/img/carousel/mustang.jpg}" alt="Mustang" class="d-block w-100 custom-carousel-img">
+      </div>
+      <div class="carousel-item">
+        <img src="../static/assets/img/carousel/bmw.jpg" th:src="@{/assets/img/carousel/bmw.jpg}" alt="BMW" class="d-block w-100 custom-carousel-img">
+      </div>
+      <div class="carousel-item">
+        <img src="../static/assets/img/carousel/mercedes.jpg" th:src="@{/assets/img/carousel/mercedes.jpg}" alt="Mercedes" class="d-block w-100 custom-carousel-img">
+      </div>
+    </div>
+
+
+    <!-- Left and right controls/icons -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+  </div>
+</div>
+
+
+
+
+<section class="container">
+  <h1 class="mb-4 text-center">Forum Posts</h1>
 
   <article class="row justify-content-center">
-    <div class="col-md-8">
+    <div class="col-md-10">
       <div th:each="post : ${posts}" class="card mb-3">
         <div class="card">
           <div class="card-body">
@@ -32,7 +70,7 @@
 
   <!-- Pagination Controls -->
   <nav>
-    <ul class="pagination vh-100 justify-content-center">
+    <ul class="pagination justify-content-center">
       <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
         <a class="page-link" th:href="@{/posts(page=${currentPage - 1}, size=5)}">Previous</a>
       </li>

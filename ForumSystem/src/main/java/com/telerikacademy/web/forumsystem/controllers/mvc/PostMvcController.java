@@ -47,7 +47,7 @@ public class PostMvcController {
     @GetMapping
     public String listPosts(Model model,
                             @RequestParam(defaultValue = "0") int page,
-                            @RequestParam(defaultValue = "5") int size,
+                            @RequestParam(defaultValue = "9") int size,
                             HttpSession session) {
         List<Post> paginatedPosts = postService.getPaginatedPosts(page, size);
         long totalPosts = postService.getPostCount();
@@ -165,8 +165,8 @@ public class PostMvcController {
         User user;
         try {
             user = authenticationHelper.tryGetUser(session);
-            if(!user.isAdmin() && post.getCreatedBy().getId() != user.getId()) {
-                throw new UnauthorizedOperationException("You are not an admin!");
+            if(!populateIsAuthenticated(session)) {
+                return "redirect:/auth/login";
             }
         } catch (AuthenticationFailureException e) {
             return "redirect:/auth/login";
