@@ -11,6 +11,7 @@ import com.telerikacademy.web.forumsystem.models.Post;
 import com.telerikacademy.web.forumsystem.models.PostDTO;
 import com.telerikacademy.web.forumsystem.models.User;
 import com.telerikacademy.web.forumsystem.services.PostService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.hibernate.action.internal.EntityActionVetoException;
@@ -46,7 +47,8 @@ public class PostMvcController {
     @GetMapping
     public String listPosts(Model model,
                             @RequestParam(defaultValue = "0") int page,
-                            @RequestParam(defaultValue = "5") int size) {
+                            @RequestParam(defaultValue = "5") int size,
+                            HttpSession session) {
         List<Post> paginatedPosts = postService.getPaginatedPosts(page, size);
         long totalPosts = postService.getPostCount();
         int totalPages = (int) Math.ceil((double) totalPosts / size);
@@ -54,6 +56,15 @@ public class PostMvcController {
         model.addAttribute("posts", paginatedPosts);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("currentPage", page);
+
+        User user;
+        try {
+            user = authenticationHelper.tryGetUser(session);
+        } catch (AuthenticationFailureException e) {
+            user = null;
+        }
+
+        model.addAttribute("user", user);
 
         return "PostsView";
     }
