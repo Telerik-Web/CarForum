@@ -101,7 +101,55 @@ public class PostMvcController {
         postService.create(post, user);
         return "redirect:/posts";
     }
+    @GetMapping("/update/{id}")
+    public String showPostUpdatePage (Model model, HttpSession session, @PathVariable int id) {
+        Post post = postService.getById(id);
 
+        User user;
+        try {
+            user = authenticationHelper.tryGetUser(session);
+            if(!user.isAdmin() && post.getCreatedBy().getId() != user.getId()) {
+                throw new AuthenticationFailureException("You are not an admin!");
+            }
+        } catch (AuthenticationFailureException e) {
+            return "redirect:/auth/login";
+        } catch (UnauthorizedOperationException e) {
+            model.addAttribute("error", e.getMessage());
+            return "AccessDenied";
+        }
+        model.addAttribute("post", post);
+        return "UpdatePost";
+    }
+
+    @PostMapping("/update{id}")
+    public String updatePost(@Valid @ModelAttribute("post") PostDTO postDto,
+                             @PathVariable int id,
+                             HttpSession session,
+                             BindingResult errors,
+                             Model model) {
+        User user;
+        try {
+            user = authenticationHelper.tryGetUser(session);
+        } catch (AuthenticationFailureException e) {
+            return "redirect:/auth/login";
+        }
+
+        if(errors.hasErrors()) {
+            return "UpdatePost";
+        }
+
+        try {
+            Post post = postMapper.fromDto(postDto);
+            postService.update(post, user);
+            return "redirect:/posts";
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("error", e.getMessage());
+            return "NotFound";
+        } catch (UnauthorizedOperationException e) {
+            model.addAttribute("error", e.getMessage());
+            return "AccessDenied";
+        }
+    }
     @GetMapping("/delete/{id}")
     public String deletePost(@PathVariable int id, HttpSession session) {
         User user = authenticationHelper.tryGetUser(session);
