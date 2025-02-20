@@ -74,6 +74,10 @@ public class PostMvcController {
                                 BindingResult errors,
                                 HttpSession session) {
 
+        if(errors.hasErrors()) {
+            return "CreatePost";
+        }
+
         User user;
         try {
             user = authenticationHelper.tryGetUser(session);
