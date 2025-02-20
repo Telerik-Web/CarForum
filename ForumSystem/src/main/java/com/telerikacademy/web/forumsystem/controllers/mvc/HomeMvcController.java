@@ -1,5 +1,8 @@
 package com.telerikacademy.web.forumsystem.controllers.mvc;
 
+import com.telerikacademy.web.forumsystem.exceptions.AuthenticationFailureException;
+import com.telerikacademy.web.forumsystem.helpers.AuthenticationHelper;
+import com.telerikacademy.web.forumsystem.models.User;
 import com.telerikacademy.web.forumsystem.services.PostService;
 import com.telerikacademy.web.forumsystem.services.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -15,10 +18,12 @@ public class HomeMvcController {
 
     private final PostService postService;
     private final UserService userService;
+    private final AuthenticationHelper authenticationHelper;
 
-    public HomeMvcController(PostService postService, UserService userService) {
+    public HomeMvcController(PostService postService, UserService userService, AuthenticationHelper authenticationHelper) {
         this.postService = postService;
         this.userService = userService;
+        this.authenticationHelper = authenticationHelper;
     }
 
     @ModelAttribute("isAuthenticated")
@@ -37,5 +42,18 @@ public class HomeMvcController {
             model.addAttribute("currentUser", userService.getByUsername(currentUsername));
         }
         return "HomeView";
+    }
+
+    @GetMapping("/admin")
+    public String showAdminPage(HttpSession session) {
+        try{
+            User user = authenticationHelper.tryGetUser(session);
+            if(user.isAdmin()){
+                return "AdminPortal";
+            }
+            return "HomeView";
+        } catch (AuthenticationFailureException e){
+            return "redirect:/auth/login";
+        }
     }
 }
