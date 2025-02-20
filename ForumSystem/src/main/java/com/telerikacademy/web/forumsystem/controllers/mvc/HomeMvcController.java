@@ -27,11 +27,15 @@ public class HomeMvcController {
     }
 
     @GetMapping
-    public String showHomePage(Model model) {
+    public String showHomePage(Model model, HttpSession session) {
         model.addAttribute("mostRecentPosts", postService.getMostRecentPosts());
         model.addAttribute("mostCommentedPosts", postService.getMostCommentedPosts());
         model.addAttribute("userCount", userService.getUserCount());
         model.addAttribute("postCount", postService.getPostCount());
+        if (populateIsAuthenticated(session)) {
+            String currentUsername = (String) session.getAttribute("currentUser");
+            model.addAttribute("currentUser", userService.getByUsername(currentUsername));
+        }
         return "HomeView";
     }
 }
