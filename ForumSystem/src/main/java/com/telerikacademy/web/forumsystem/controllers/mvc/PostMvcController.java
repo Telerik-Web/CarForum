@@ -47,7 +47,7 @@ public class PostMvcController {
     @GetMapping
     public String listPosts(Model model,
                             @RequestParam(defaultValue = "0") int page,
-                            @RequestParam(defaultValue = "5") int size,
+                            @RequestParam(defaultValue = "9") int size,
                             HttpSession session) {
         List<Post> paginatedPosts = postService.getPaginatedPosts(page, size);
         long totalPosts = postService.getPostCount();
