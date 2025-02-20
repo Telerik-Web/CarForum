@@ -2,6 +2,8 @@ package com.telerikacademy.web.forumsystem.controllers.mvc;
 
 import com.telerikacademy.web.forumsystem.exceptions.AuthenticationFailureException;
 import com.telerikacademy.web.forumsystem.exceptions.DuplicateEntityException;
+import com.telerikacademy.web.forumsystem.exceptions.EntityNotFoundException;
+import com.telerikacademy.web.forumsystem.exceptions.UnauthorizedOperationException;
 import com.telerikacademy.web.forumsystem.helpers.AuthenticationHelper;
 import com.telerikacademy.web.forumsystem.mappers.PostMapper;
 import com.telerikacademy.web.forumsystem.models.FilterPostOptions;
@@ -11,6 +13,7 @@ import com.telerikacademy.web.forumsystem.models.User;
 import com.telerikacademy.web.forumsystem.services.PostService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.hibernate.action.internal.EntityActionVetoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -97,9 +100,27 @@ public class PostMvcController {
 
     @GetMapping("/{id}")
     public String showPost(@PathVariable int id,
-                           Model model) {
+                           Model model,
+                           HttpSession session) {
         Post post = postService.getById(id);
+        User user;
+        try {
+            user = authenticationHelper.tryGetUser(session);
+            if(!user.isAdmin() && post.getCreatedBy().getId() != user.getId()) {
+                throw new UnauthorizedOperationException("You are not an admin!");
+            }
+        } catch (AuthenticationFailureException e) {
+            return "redirect:/auth/login";
+        }
+//        } catch (EntityNotFoundException e) {
+//            model.addAttribute("error", e.getMessage());
+//            return "PostNotFound";
+//        } catch (UnauthorizedOperationException e) {
+//            model.addAttribute("error", e.getMessage());
+//            return "UnauthorizedOperation";
+//        }
         model.addAttribute("post", post);
+        model.addAttribute("user", user);
         return "PostDetailsView";
     }
 
