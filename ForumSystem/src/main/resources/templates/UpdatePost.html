@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/PageLayout.html :: head('Update Post')}"></head>
+<body>
+
+<nav th:replace="~{fragments/PageLayout.html :: navbar}"></nav>
+
+<section class="container mt-5">
+  <div class="masthead vh-100 justify-content-center">
+    <div class="container d-flex align-items-center flex-column">
+      <form action="#" th:action="@{/posts/update/{id} (id=${post.id})}" th:object="${post}" method="post">
+
+        <h2 class="page-title">Update a Post</h2>
+
+        <label class="fieldName" th:text="#{post.title}">Post Title</label>
+        <br/>
+        <input class="input-group-text" type="text" th:field="*{title}"/>
+
+        <label class="error" th:if="${#fields.hasErrors('title')} and ${post.title == null or
+                post.title.isEmpty()}">
+          Title can't be empty
+        </label>
+
+        <label class="error" th:if="${#fields.hasErrors('title')} and ${not #strings.isEmpty(post.title)}">
+          Title should be between 16 and 64 symbols
+        </label>
+
+        <div class="content-wrapper">
+          <label class="fieldName" for="content">Post</label>
+          <textarea
+                  class="big-textarea"
+                  id="content"
+                  th:field="*{content}"
+                  name="content"></textarea>
+          <label class="error" th:if="${#fields.hasErrors('content')} and ${post.content == null or
+                    post.content.isEmpty()}">
+            Content can't be empty
+          </label>
+
+          <label class="error" th:if="${#fields.hasErrors('content')} and ${not #strings.isEmpty(post.content)}">
+            Content should be between 31 and 8192 symbols
+          </label>
+        </div>
+
+        <input class="btn btn-primary" type="submit" value="Update"/>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+<footer th:replace="~{fragments/PageLayout.html :: footer}"></footer>
+<div th:replace="~{/fragments/PageLayout.html :: scripts}"></div>
+
+</body>
+</html>

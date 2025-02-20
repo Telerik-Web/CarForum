@@ -21,7 +21,7 @@ public class PostMapper {
 
     public Post fromDto(int id, PostDTO dto) {
         Post post = postService.getById(id);
-
+        post.setId(id);
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
 
@@ -35,6 +35,13 @@ public class PostMapper {
         post.setContent(dto.getContent());
 
         return post;
+    }
+
+    public PostDTO toDto(Post post) {
+        PostDTO postDto = new PostDTO();
+        postDto.setTitle(post.getTitle());
+        postDto.setContent(post.getContent());
+        return postDto;
     }
 
 

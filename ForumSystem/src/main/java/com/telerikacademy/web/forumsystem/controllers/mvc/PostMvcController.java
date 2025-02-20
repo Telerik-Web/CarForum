@@ -86,7 +86,7 @@ public class PostMvcController {
                                 BindingResult errors,
                                 HttpSession session) {
 
-        if(errors.hasErrors()) {
+        if (errors.hasErrors()) {
             return "CreatePost";
         }
 
@@ -101,14 +101,17 @@ public class PostMvcController {
         postService.create(post, user);
         return "redirect:/posts";
     }
+
     @GetMapping("/update/{id}")
-    public String showPostUpdatePage (Model model, HttpSession session, @PathVariable int id) {
+    public String showPostUpdatePage(@PathVariable int id,
+                                     Model model,
+                                     HttpSession session) {
         Post post = postService.getById(id);
 
         User user;
         try {
             user = authenticationHelper.tryGetUser(session);
-            if(!user.isAdmin() && post.getCreatedBy().getId() != user.getId()) {
+            if (!user.isAdmin() && post.getCreatedBy().getId() != user.getId()) {
                 throw new AuthenticationFailureException("You are not an admin!");
             }
         } catch (AuthenticationFailureException e) {
@@ -117,13 +120,14 @@ public class PostMvcController {
             model.addAttribute("error", e.getMessage());
             return "AccessDenied";
         }
+        PostDTO postDTO = postMapper.toDto(post);
         model.addAttribute("post", post);
         return "UpdatePost";
     }
 
-    @PostMapping("/update{id}")
-    public String updatePost(@Valid @ModelAttribute("post") PostDTO postDto,
-                             @PathVariable int id,
+    @PostMapping("/update/{id}")
+    public String updatePost(@PathVariable int id,
+                             @Valid @ModelAttribute("post") PostDTO postDto,
                              HttpSession session,
                              BindingResult errors,
                              Model model) {
@@ -134,13 +138,13 @@ public class PostMvcController {
             return "redirect:/auth/login";
         }
 
-        if(errors.hasErrors()) {
+        if (errors.hasErrors()) {
             return "UpdatePost";
         }
 
         try {
-            Post post = postMapper.fromDto(postDto);
-            postService.update(post, user);
+            Post newPost = postMapper.fromDto(id, postDto);
+            postService.update(newPost, user);
             return "redirect:/posts";
         } catch (EntityNotFoundException e) {
             model.addAttribute("error", e.getMessage());
@@ -150,6 +154,7 @@ public class PostMvcController {
             return "AccessDenied";
         }
     }
+
     @GetMapping("/delete/{id}")
     public String deletePost(@PathVariable int id, HttpSession session) {
         User user = authenticationHelper.tryGetUser(session);
@@ -165,7 +170,7 @@ public class PostMvcController {
         User user;
         try {
             user = authenticationHelper.tryGetUser(session);
-            if(!populateIsAuthenticated(session)) {
+            if (!populateIsAuthenticated(session)) {
                 return "redirect:/auth/login";
             }
         } catch (AuthenticationFailureException e) {
