@@ -16,7 +16,7 @@
             <h5 class="card-title" th:text="${post.title}">Post Title</h5>
             <p class="card-text" th:text="${post.content}">Post Content</p>
             <div class="mt-auto d-flex justify-content-between">
-              <a href="#" class="btn btn-primary">Read More</a>
+              <a href="#" th:href="@{/posts/{id}(id=${post.id})}" class="btn btn-primary">Read More</a>
               <small class="text-muted">Posted on: <span th:text="${post.timestamp}"></span></small>
             </div>
           </div>

@@ -1,10 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/PageLayout.html :: head('Posts')}"></head>
 <body>
+
+<nav th:replace="~{fragments/PageLayout.html :: navbar}"></nav>
+
+<section class="container mt-5">
+    <div class="masthead vh-100 justify-content-center">
+        <div class="container d-flex align-items-center flex-column">
+                <h1 class="beer-title" th:text="${post.getTitle()}">Beer Name</h1>
+                <table class="table">
+                    <thead class="header">
+                    <tr class="row">
+                        <th class="cell" th:text="#{post.title}">Title</th>
+                        <th class="cell" th:text="#{post.content}">Content</th>
+                        <th class="cell" th:text="#{post.creator}">Creator</th>
+                    </tr>
+                    </thead>
+                    <tbody class="rowGroup">
+                    <tr class="row">
+                        <td class="cell" th:text="${post.getTitle()}">Title</td>
+                        <td class="cell" th:text="${post.getContent()}">Content</td>
+                        <td class="cell" th:text="${post.getCreatedBy().username}">Creator</td>
+                    </tr>
+                    </tbody>
+                </table>
+        </div>
+    </div>
+</section>
+
+<!--    <a th:if="${user.isAdmin() || beer.getCreatedBy().getId() == (user.getId())}"-->
+<!--       class="btn-primary" th:href="@{/beers/{id}/update (id=${beer.getId()})}">-->
+<!--        Update-->
+<!--    </a>-->
+<!--    <a th:if="${user.isAdmin() || beer.getCreatedBy().getId() == (user.getId())}"-->
+<!--       class="btn-danger" th:href="@{/beers/{id}/delete (id=${beer.getId()})}">-->
+<!--        Delete-->
+<!--    </a>-->
+
 
 </body>
 </html>

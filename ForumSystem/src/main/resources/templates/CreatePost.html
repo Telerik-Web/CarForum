@@ -17,7 +17,8 @@
                 <input class="input-group-text" type="text" th:field="*{title}"
                        placeholder="Write your post title here..."/>
 
-                <label class="error" th:if="${#fields.hasErrors('title')} and ${post.title == null or post.title.isEmpty()}">
+                <label class="error" th:if="${#fields.hasErrors('title')} and ${post.title == null or
+                post.title.isEmpty()}">
                     Title can't be empty
                 </label>
 

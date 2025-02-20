@@ -55,8 +55,6 @@ public class PostMvcController {
         return "PostsView";
     }
 
-
-    //UNFINISHED
     @GetMapping("/new")
     public String showPostPage(Model model, HttpSession session) {
         try {
@@ -88,6 +86,21 @@ public class PostMvcController {
         Post post = postMapper.fromDto(postDTO);
         postService.create(post, user);
         return "redirect:/posts";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deletePost(@PathVariable int id, HttpSession session) {
+        User user = authenticationHelper.tryGetUser(session);
+        postService.delete(id, user);
+        return "redirect:/posts";
+    }
+
+    @GetMapping("/{id}")
+    public String showPost(@PathVariable int id,
+                           Model model) {
+        Post post = postService.getById(id);
+        model.addAttribute("post", post);
+        return "PostDetailsView";
     }
 
 }
