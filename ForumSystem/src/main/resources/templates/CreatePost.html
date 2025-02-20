@@ -19,11 +19,12 @@
                 <label class="error" th:errors="*{title}">Title Error</label>
 
                 <div class="content-wrapper">
-                    <label class="fieldName" for="postDescription">Post</label>
+                    <label class="fieldName" for="content">Post</label>
                     <textarea
                         class="big-textarea"
-                        id="postDescription"
-                        name="description"
+                        id="content"
+                        th:field="*{content}"
+                        name="content"
                         placeholder="Write your post here..."></textarea>
                 </div>
 

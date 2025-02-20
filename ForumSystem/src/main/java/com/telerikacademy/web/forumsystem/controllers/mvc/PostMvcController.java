@@ -81,18 +81,9 @@ public class PostMvcController {
             return "redirect:/auth/login";
         }
 
-        if (errors.hasErrors()) {
-            return "CreatePost";
-        }
-
-        try {
-            Post post = postMapper.fromDto(postDTO);
-            postService.create(post, user);
-            return "redirect:/posts";
-        } catch (DuplicateEntityException e) {
-            errors.rejectValue("name", "duplicate", e.getMessage());
-            return "CreatePost";
-        }
+        Post post = postMapper.fromDto(postDTO);
+        postService.create(post, user);
+        return "redirect:/posts";
     }
 
 }
