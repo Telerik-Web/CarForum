@@ -1,10 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/PageLayout.html :: head('AccessDenied')}"></head>
 <body>
+
+<nav th:replace="~{fragments/PageLayout.html :: navbar}"></nav>
+
+<section class="container mt-5">
+    <div class="masthead vh-100 justify-content-center">
+        <div class="container d-flex align-items-center flex-column">
+            <h1 class="page-title">Access Denied</h1>
+            <p class="fieldName">Oops! You're not authorized to view this page!</p>
+
+            <div th:if="${isAuthenticated}">
+                <a class="btn btn-primary" href="/" th:href="@{/}">Go Back Home</a>
+            </div>
+            <div th:unless="${isAuthenticated}">
+                <a class="btn btn-primary" href="/auth/login" th:href="@{/auth/login}">LogIn</a>
+            </div>
+        </div>
+    </div>
+</section>
 
 </body>
 </html>

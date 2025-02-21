@@ -74,7 +74,8 @@ public class PostMvcController {
         try {
             authenticationHelper.tryGetUser(session);
         } catch (AuthenticationFailureException e) {
-            return "redirect:/auth/login";
+            return "AccessDenied";
+//            return "redirect:/auth/login";
         }
 
         model.addAttribute("post", new PostDTO());
@@ -94,7 +95,8 @@ public class PostMvcController {
         try {
             user = authenticationHelper.tryGetUser(session);
         } catch (AuthenticationFailureException e) {
-            return "redirect:/auth/login";
+            return "AccessDenied";
+//            return "redirect:/auth/login";
         }
 
         Post post = postMapper.fromDto(postDTO);
@@ -115,7 +117,8 @@ public class PostMvcController {
                 throw new AuthenticationFailureException("You are not an admin!");
             }
         } catch (AuthenticationFailureException e) {
-            return "redirect:/auth/login";
+            return "AccessDenied";
+//            return "redirect:/auth/login";
         } catch (UnauthorizedOperationException e) {
             model.addAttribute("error", e.getMessage());
             return "AccessDenied";
@@ -136,7 +139,8 @@ public class PostMvcController {
         try {
             user = authenticationHelper.tryGetUser(session);
         } catch (AuthenticationFailureException e) {
-            return "redirect:/auth/login";
+            return "AccessDenied";
+//            return "redirect:/auth/login";
         }
 
         if (errors.hasErrors()) {
@@ -175,10 +179,12 @@ public class PostMvcController {
         try {
             user = authenticationHelper.tryGetUser(session);
             if (!populateIsAuthenticated(session)) {
-                return "redirect:/auth/login";
+                return "AccessDenied";
+//                return "redirect:/auth/login";
             }
         } catch (AuthenticationFailureException e) {
-            return "redirect:/auth/login";
+            return "AccessDenied";
+//            return "redirect:/auth/login";
         }
 //        } catch (EntityNotFoundException e) {
 //            model.addAttribute("error", e.getMessage());
