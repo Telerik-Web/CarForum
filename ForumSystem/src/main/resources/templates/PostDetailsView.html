@@ -27,7 +27,8 @@
                         <p><strong th:text="${comment.createdBy.username}">Username</strong></p>
                     </div>
                     <div class="comment-box">
-                        <a th:if="${user.isAdmin() || post.getCreatedBy().getId() == (user.getId())}"
+                        <a th:if="${user.isAdmin() || post.getCreatedBy().getId() == (user.getId()) ||
+                        comment.createdBy.getId() == (user.getId())}"
                            class="btn btn-danger" th:href="@{/posts/{id}/comment/delete/{commentId} (id=${post.id}, commentId=${comment.id})}">
                             Delete
                         </a>
