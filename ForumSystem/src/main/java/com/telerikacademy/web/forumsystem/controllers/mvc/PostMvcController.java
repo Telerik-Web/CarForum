@@ -5,8 +5,11 @@ import com.telerikacademy.web.forumsystem.exceptions.DuplicateEntityException;
 import com.telerikacademy.web.forumsystem.exceptions.EntityNotFoundException;
 import com.telerikacademy.web.forumsystem.exceptions.UnauthorizedOperationException;
 import com.telerikacademy.web.forumsystem.helpers.AuthenticationHelper;
+import com.telerikacademy.web.forumsystem.mappers.CommentMapper;
 import com.telerikacademy.web.forumsystem.mappers.PostMapper;
 import com.telerikacademy.web.forumsystem.models.*;
+import com.telerikacademy.web.forumsystem.services.CommentService;
+import com.telerikacademy.web.forumsystem.services.CommentServiceImpl;
 import com.telerikacademy.web.forumsystem.services.PostService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -29,12 +32,18 @@ public class PostMvcController {
     private final PostService postService;
     private final AuthenticationHelper authenticationHelper;
     private final PostMapper postMapper;
+    private final CommentService commentService;
+    private final CommentServiceImpl commentServiceImpl;
+    private final CommentMapper commentMapper;
 
     @Autowired
-    public PostMvcController(PostService postService, AuthenticationHelper authenticationHelper, PostMapper postMapper) {
+    public PostMvcController(PostService postService, AuthenticationHelper authenticationHelper, PostMapper postMapper, CommentService commentService, CommentServiceImpl commentServiceImpl, CommentMapper commentMapper) {
         this.postService = postService;
         this.authenticationHelper = authenticationHelper;
         this.postMapper = postMapper;
+        this.commentService = commentService;
+        this.commentServiceImpl = commentServiceImpl;
+        this.commentMapper = commentMapper;
     }
 
     @ModelAttribute("isAuthenticated")
@@ -73,7 +82,6 @@ public class PostMvcController {
             authenticationHelper.tryGetUser(session);
         } catch (AuthenticationFailureException e) {
             return "AccessDenied";
-//            return "redirect:/auth/login";
         }
 
         model.addAttribute("post", new PostDTO());
@@ -94,7 +102,6 @@ public class PostMvcController {
             user = authenticationHelper.tryGetUser(session);
         } catch (AuthenticationFailureException e) {
             return "AccessDenied";
-//            return "redirect:/auth/login";
         }
 
         Post post = postMapper.fromDto(postDTO);
@@ -116,7 +123,6 @@ public class PostMvcController {
             }
         } catch (AuthenticationFailureException e) {
             return "AccessDenied";
-//            return "redirect:/auth/login";
         } catch (UnauthorizedOperationException e) {
             model.addAttribute("error", e.getMessage());
             return "AccessDenied";
@@ -138,7 +144,6 @@ public class PostMvcController {
             user = authenticationHelper.tryGetUser(session);
         } catch (AuthenticationFailureException e) {
             return "AccessDenied";
-//            return "redirect:/auth/login";
         }
 
         if (errors.hasErrors()) {
@@ -179,18 +184,61 @@ public class PostMvcController {
             user = authenticationHelper.tryGetUser(session);
             if (!populateIsAuthenticated(session)) {
                 return "AccessDenied";
-//                return "redirect:/auth/login";
             }
         } catch (AuthenticationFailureException e) {
             return "AccessDenied";
-//            return "redirect:/auth/login";
         }
 
         model.addAttribute("post", post);
         model.addAttribute("user", user);
         model.addAttribute("comments", comments);
         return "PostDetailsView";
-
     }
 
+    @GetMapping("/{id}/comment")
+    public String addComment(@PathVariable int id,
+                             Model model,
+                             HttpSession session) {
+        Post post = postService.getById(id);
+        User user;
+        try {
+            user = authenticationHelper.tryGetUser(session);
+        } catch (AuthenticationFailureException e) {
+            return "AccessDenied";
+        }
+        model.addAttribute("user", user);
+        model.addAttribute("post", post);
+        model.addAttribute("comment", new CommentDTO());
+        return "Comment";
+    }
+
+    @PostMapping("/{id}/comment")
+    public String addCommentForm(@Valid @ModelAttribute("comment") CommentDTO commentDTO,
+                                 @ModelAttribute("post") Post post,
+                                 HttpSession session,
+                                 BindingResult errors,
+                                 Model model){
+        User user;
+        try {
+            user = authenticationHelper.tryGetUser(session);
+        } catch (AuthenticationFailureException e) {
+            return "AccessDenied";
+        }
+
+        if (errors.hasErrors()) {
+            return "Comment";
+        }
+
+        try {
+            Comment newComment = commentMapper.fromDTO(commentDTO);
+            commentService.create(newComment, post, user);
+            return "redirect:/posts/{id}";
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("error", e.getMessage());
+            return "NotFound";
+        } catch (UnauthorizedOperationException e) {
+            model.addAttribute("error", e.getMessage());
+            return "AccessDenied";
+        }
+    }
 }
