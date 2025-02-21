@@ -4,7 +4,28 @@
 <body>
 
 <nav th:replace="~{fragments/PageLayout.html :: navbar}"></nav>
+<section class="container mt-5">
+    <div class="masthead vh-100 justify-content-center">
+        <div class="container d-flex align-items-center flex-column">
+            <h1 class="page-title">Account Information</h1>
 
+            <h3>Username</h3>
+            <p th:text="${user.username}">Username</p>
+            <br/>
+            <h3>Email</h3>
+            <p th:text="${user.email}">Email</p>
+            <br/>
+            <h3>First Name</h3>
+            <p th:text="${user.firstName}">First Name</p>
+            <br/>
+            <h3>Last Name</h3>
+            <p th:text="${user.lastName}">Last Name</p>
+            <br/>
+
+            <a class="btn btn-primary" th:href="@{/account/update/{id} (id=${user.id})}">Update</a>
+        </div>
+    </div>
+</section>
 
 </body>
 </html>
