@@ -21,7 +21,7 @@
             <div class="comments-section">
                 <div th:each="comment : ${comments}" class="comment-box">
                     <div class="comment-content">
-                        <p th:text="${comment.content}">Comment</p>
+                        <p class="comment-text" th:text="${comment.content}">Comment</p>
                     </div>
                     <div class="comment-author">
                         <p><strong th:text="${comment.createdBy.username}">Username</strong></p>
