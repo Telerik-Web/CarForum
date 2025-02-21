@@ -6,10 +6,7 @@ import com.telerikacademy.web.forumsystem.exceptions.EntityNotFoundException;
 import com.telerikacademy.web.forumsystem.exceptions.UnauthorizedOperationException;
 import com.telerikacademy.web.forumsystem.helpers.AuthenticationHelper;
 import com.telerikacademy.web.forumsystem.mappers.PostMapper;
-import com.telerikacademy.web.forumsystem.models.FilterPostOptions;
-import com.telerikacademy.web.forumsystem.models.Post;
-import com.telerikacademy.web.forumsystem.models.PostDTO;
-import com.telerikacademy.web.forumsystem.models.User;
+import com.telerikacademy.web.forumsystem.models.*;
 import com.telerikacademy.web.forumsystem.services.PostService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -23,6 +20,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/posts")
@@ -175,6 +173,7 @@ public class PostMvcController {
                            Model model,
                            HttpSession session) {
         Post post = postService.getById(id);
+        Set<Comment> comments = post.getComments();
         User user;
         try {
             user = authenticationHelper.tryGetUser(session);
@@ -186,15 +185,10 @@ public class PostMvcController {
             return "AccessDenied";
 //            return "redirect:/auth/login";
         }
-//        } catch (EntityNotFoundException e) {
-//            model.addAttribute("error", e.getMessage());
-//            return "PostNotFound";
-//        } catch (UnauthorizedOperationException e) {
-//            model.addAttribute("error", e.getMessage());
-//            return "UnauthorizedOperation";
-//        }
+
         model.addAttribute("post", post);
         model.addAttribute("user", user);
+        model.addAttribute("comments", comments);
         return "PostDetailsView";
 
     }

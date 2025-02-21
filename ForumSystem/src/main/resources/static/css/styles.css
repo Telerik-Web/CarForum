@@ -11343,7 +11343,8 @@ section#contact form#contactForm :-ms-input-placeholder {
   min-height: 200px;
   padding: 1rem;
   background-color: #e9ecef;
-  border: 2px solid #ffc800;
+  border: 1px solid #ced4da;
+  /*border: 2px solid #ffc800;*/
   border-radius: 0.5rem;
   box-sizing: border-box;
 
@@ -11382,15 +11383,28 @@ section#contact form#contactForm :-ms-input-placeholder {
 .content {
   font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
-/*display: flex;*/
-/*align-items: center;*/
-/*padding: 0.375rem 0.75rem;*/
-/*font-size: 1rem;*/
-/*font-weight: 400;*/
-/*line-height: 1.5;*/
-/*color: #212529;*/
-/*text-align: center;*/
-/*white-space: nowrap;*/
-/*background-color: #e9ecef;*/
-/*border: 1px solid #ced4da;*/
-/*border-radius: 0.375rem;*/
+
+.comments-section {
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+.comment-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.comment-content {
+  flex-grow: 1;
+  text-align: left;
+}
+
+.comment-author {
+  min-width: 150px; /* Adjust to make sure the username doesn't shrink too much */
+  text-align: right;
+  font-weight: bold;
+}

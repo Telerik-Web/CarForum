@@ -16,6 +16,19 @@
                 <p th:text="${post.content}">Content</p>
                 <br/><br/>
             </div>
+
+            <h3>Comments</h3>
+            <div class="comments-section">
+                <div th:each="comment : ${comments}" class="comment-box">
+                    <div class="comment-content">
+                        <p th:text="${comment.content}">Comment</p>
+                    </div>
+                    <div class="comment-author">
+                        <p><strong th:text="${comment.createdBy.username}">Username</strong></p>
+                    </div>
+                </div>
+            </div>
+
             <div class="mt-auto d-flex justify-content-between">
                 <a th:if="${user.isAdmin() || post.getCreatedBy().getId() == (user.getId())}"
                    class="btn btn-primary me-4" th:href="@{/posts/update/{id} (id=${post.id})}">
