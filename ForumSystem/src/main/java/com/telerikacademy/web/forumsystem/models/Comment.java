@@ -21,7 +21,7 @@ public class Comment {
     @JoinColumn(name = "user_id")
     private User createdBy;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "post_id")
     @JsonBackReference
     private Post post;

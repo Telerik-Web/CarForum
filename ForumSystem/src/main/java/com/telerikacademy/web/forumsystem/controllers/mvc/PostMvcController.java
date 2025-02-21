@@ -245,8 +245,110 @@ public class PostMvcController {
     public String deleteComment(@PathVariable int id,
                                 @PathVariable int commentId,
                                 HttpSession session) {
-        User user = authenticationHelper.tryGetUser(session);
+        User user;
+        try {
+            user = authenticationHelper.tryGetUser(session);
+        } catch (AuthenticationFailureException e) {
+            return "AccessDenied";
+        }
         commentService.delete(commentId, user);
         return "redirect:/posts/" + id;
     }
+
+    @GetMapping("/{postId}/comment/update/{commentId}")
+    public String updateComment(@PathVariable int postId,
+                                @PathVariable int commentId,
+                                HttpSession session,
+                                Model model) {
+        try {
+            User user = authenticationHelper.tryGetUser(session);
+            Comment comment = commentService.getById(commentId);
+            Post post = postService.getById(postId);
+
+            model.addAttribute("user", user);
+            model.addAttribute("post", post);
+            model.addAttribute("comment", comment);
+
+            return "CommentUpdate";
+        } catch (AuthenticationFailureException e) {
+            return "AccessDenied";
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("error", e.getMessage());
+            return "NotFound";
+        }
+    }
+
+    @PostMapping("/{postId}/comment/update/{commentId}")
+    public String updateCommentForm(@PathVariable int postId,
+                                    @PathVariable int commentId,
+                                    @Valid @ModelAttribute("comment") Comment comment,
+                                    @ModelAttribute("user") User user,
+                                    @ModelAttribute("post") Post post,
+                                    BindingResult errors,
+                                    HttpSession session,
+                                    Model model) {
+        if (errors.hasErrors()) {
+            return "CommentUpdate";
+        }
+
+        try {
+            User loggedInUser = authenticationHelper.tryGetUser(session);
+            Comment existingComment = commentService.getById(commentId);
+
+            existingComment.setContent(comment.getContent());
+
+            commentService.update(existingComment, loggedInUser);
+
+            return "redirect:/posts/" + postId; // Redirect to post page
+        } catch (EntityNotFoundException | UnauthorizedOperationException e) {
+            model.addAttribute("error", e.getMessage());
+            return "NotFound";
+        }
+    }
+
+//    @GetMapping("/{id}/comment/update/{commentId}")
+//    public String updateComment(@PathVariable int id,
+//                                @PathVariable int commentId,
+//                                HttpSession session,
+//                                Model model) {
+//        User user;
+//        try {
+//            user = authenticationHelper.tryGetUser(session);
+//        } catch (AuthenticationFailureException e) {
+//            return "AccessDenied";
+//        }
+//        model.addAttribute("user", user);
+//        model.addAttribute("post", postService.getById(id));
+//        model.addAttribute("comment", commentService.getById(commentId));
+//        return "CommentUpdate";
+//    }
+
+//    @PostMapping("/{id}/comment/update/{commentId}")
+//    public String updateCommentForm(@PathVariable int postId,
+//                                    @PathVariable int commentId,
+//                                    @Valid @ModelAttribute("comment") Comment comment,
+//                                    @ModelAttribute("user") User user,
+//                                    @ModelAttribute("post") Post post,
+//                                    BindingResult errors,
+//                                    HttpSession session,
+//                                    Model model) {
+//
+//        if (errors.hasErrors()) {
+//            return "CommentUpdate";
+//        }
+//
+//        try {
+//            User loggedin = authenticationHelper.tryGetUser(session);
+//            Comment existingComment = commentService.getById(commentId);
+//            existingComment.setContent(comment.getContent());
+//            commentService.update(comment, user);
+//            return "redirect:/posts/" + post.getId();
+//        } catch (EntityNotFoundException e) {
+//            model.addAttribute("error", e.getMessage());
+//            return "NotFound";
+//        } catch (UnauthorizedOperationException e) {
+//            model.addAttribute("error", e.getMessage());
+//            return "AccessDenied";
+//        }
+//    }
 }

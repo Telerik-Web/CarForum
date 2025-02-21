@@ -27,9 +27,14 @@
                         <p><strong th:text="${comment.createdBy.username}">Username</strong></p>
                     </div>
                     <div class="comment-box">
+                        <a th:if="${comment.getCreatedBy().getId() == (user.getId())}" class="btn btn-primary me-4"
+                           th:href="@{/posts/{id}/comment/update/{commentId} (id=${post.id}, commentId=${comment.id})}">
+                            Update
+                        </a>
                         <a th:if="${user.isAdmin() || post.getCreatedBy().getId() == (user.getId()) ||
                         comment.createdBy.getId() == (user.getId())}"
-                           class="btn btn-danger" th:href="@{/posts/{id}/comment/delete/{commentId} (id=${post.id}, commentId=${comment.id})}">
+                           class="btn btn-danger" th:href="@{/posts/{id}/comment/delete/{commentId} (id=${post.id},
+                           commentId=${comment.id})}">
                             Delete
                         </a>
                     </div>
@@ -38,7 +43,8 @@
 
             <div class="mt-auto d-flex justify-content-between">
 
-                <a th:if="${isAuthenticated}" class="btn btn-primary me-4" th:href="@{/posts/{id}/comment (id=${post.id})}">Comment</a>
+                <a th:if="${isAuthenticated}" class="btn btn-primary me-4" th:href="@{/posts/{id}/comment
+                (id=${post.id})}">Comment</a>
 
                 <a th:if="${user.isAdmin() || post.getCreatedBy().getId() == (user.getId())}"
                    class="btn btn-primary me-4" th:href="@{/posts/update/{id} (id=${post.id})}">
