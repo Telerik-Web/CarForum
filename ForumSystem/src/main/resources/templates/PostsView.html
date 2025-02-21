@@ -57,12 +57,12 @@
               <a href="#" th:href="@{/posts/{id}(id=${post.id})}" class="btn btn-primary">Read More</a>
               <a th:if="${user != null and (user.isAdmin() or post.getCreatedBy().getId() == user.getId())}"
                  class="btn btn-primary"
-                 th:href="@{/post/update/{id} (id=${post.id})}">
+                 th:href="@{/posts/update/{id} (id=${post.id})}">
                 Update
               </a>
               <a th:if="${user != null and (user.isAdmin() or post.getCreatedBy().getId() == user.getId())}"
                  class="btn btn-danger"
-                 th:href="@{/post/delete/{id}(id=${post.getId()})}">
+                 th:href="@{/posts/delete/{id}(id=${post.getId()})}">
                 Delete
               </a>
               <small class="text-muted">Posted on: <span th:text="${post.timestamp}"></span></small>

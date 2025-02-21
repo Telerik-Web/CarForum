@@ -52,7 +52,7 @@ public class UserMapper {
     }
 
     //update
-    private User dtoToObjectUpdate(UserDTO userDto) {
+    public User dtoToObjectUpdate(UserDTO userDto) {
         User user = new User();
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());

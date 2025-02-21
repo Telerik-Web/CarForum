@@ -84,11 +84,11 @@ public class AuthenticationMvcController {
     @PostMapping("/register")
     public String processRegister(@Valid @ModelAttribute("register") RegisterDto registerDto,
                                   BindingResult errors) {
-        if(errors.hasErrors()) {
+        if (errors.hasErrors()) {
             return "Register";
         }
 
-        if(!registerDto.getPassword().equals(registerDto.getPasswordConfirm())) {
+        if (!registerDto.getPassword().equals(registerDto.getPasswordConfirm())) {
             errors.rejectValue("passwordConfirm", "passwords.mismatch");
             return "Register";
         }
@@ -107,33 +107,43 @@ public class AuthenticationMvcController {
     @GetMapping("/account")
     public String showAccountPage(Model model,
                                   HttpSession session) {
-        User user = authenticationHelper.tryGetUser(session);
-        UserDTO userDto = userMapper.toDto(user);
-        model.addAttribute("user", userDto);
-        return "Account";
+        try {
+            User user = authenticationHelper.tryGetUser(session);
+            UserDTO userDto = userMapper.toDto(user);
+            model.addAttribute("user", userDto);
+            return "Account";
+        } catch (AuthenticationFailureException e) {
+            return "AccessDenied";
+        }
     }
 
     @GetMapping("/account/update")
     public String showUpdatePage(Model model,
-                                  HttpSession session) {
-        User user = authenticationHelper.tryGetUser(session);
-        model.addAttribute("user", user);
-        return "UpdateUser";
+                                 HttpSession session) {
+        try {
+            User user = authenticationHelper.tryGetUser(session);
+           // UserDTO userDto = userMapper.toDto(user);
+            model.addAttribute("user", user);
+            return "UpdateUser";
+        } catch (AuthenticationFailureException e) {
+            return "AccessDenied";
+        }
     }
 
     @PostMapping("/account/update")
     public String showUserUpdateForm(@Valid @ModelAttribute("user") User user,
                                      BindingResult errors,
                                      HttpSession session) {
-        if(errors.hasErrors()) {
+        if (errors.hasErrors()) {
             return "UpdateUser";
         }
 
         try {
+            //User user = userMapper.dtoToObjectUpdate(userDto);
             userService.update(user, user, authenticationHelper.tryGetUser(session).getId());
             return "redirect:/auth/account";
         } catch (DuplicateEntityException e) {
-            errors.rejectValue("email", "email_error", e.getMessage());
+            errors.rejectValue("password", "password_error", e.getMessage());
             return "UpdateUser";
         }
     }

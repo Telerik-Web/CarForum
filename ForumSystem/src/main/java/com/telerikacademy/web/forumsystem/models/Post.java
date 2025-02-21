@@ -2,6 +2,8 @@ package com.telerikacademy.web.forumsystem.models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
@@ -19,10 +21,12 @@ public class Post {
     @Column(name = "post_id")
     private int id;
 
-    @Column(name = "title")
+    @NotEmpty(message = "Title can't be empty")
+    @Size(min = 16, max = 64, message = "Title should be between 16 and 64 symbols")
     private String title;
 
-    @Column(name = "content")
+    @NotEmpty(message = "Content can't be empty")
+    @Size(min = 32, max = 8192, message = "Content should be between 31 and 8192 symbols")
     private String content;
 
     @ManyToOne

@@ -2,16 +2,17 @@ package com.telerikacademy.web.forumsystem.models;
 
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class UserDTO {
 
-    @NotNull(message = "Firstname can't be empty.")
+    @NotEmpty(message = "Firstname can't be empty.")
     @Size(min = 4, max = 32, message = "Firstname should be between 4 and 32 symbols.")
     private String firstName;
 
-    @NotNull(message = "Lastname can't be empty.")
+    @NotEmpty(message = "Lastname can't be empty.")
     @Size(min = 4, max = 32, message = "Lastname should be between 4 and 32 symbols.")
     private String lastName;
 
@@ -19,16 +20,11 @@ public class UserDTO {
     @NotNull
     private String email;
 
-    @NotNull
+    @NotEmpty(message = "Password can't be empty.")
     private String password;
 
     @NotNull
     private String username;
-
-    //big json
-    //postdto where needed
-    //new dto for update only without username
-    //create in usercontroller should return from the database not the user input
 
     public UserDTO() {
     }

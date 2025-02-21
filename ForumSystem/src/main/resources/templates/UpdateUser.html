@@ -15,19 +15,25 @@
                 <label class="fieldName" th:text="#{firstName}">First Name</label>
                 <br/>
                 <input class="input-group-text" type="text" th:field="*{firstName}"/>
-                <label class="error" th:errors="*{firstName}">First Name Error</label>
+                <label class="error" th:if="${#fields.hasErrors('firstName')}">
+                    First name can't be empty
+                </label>
                 <br/><br/>
 
                 <label class="lastName" th:text="#{lastName}">Last Name</label>
                 <br/>
                 <input class="input-group-text" type="text" th:field="*{lastName}"/>
-                <label class="error" th:errors="*{lastName}">Last Name Error</label>
+                <label class="error" th:if="${#fields.hasErrors('lastName')}">
+                    Last name can't be empty
+                </label>
                 <br/><br/>
 
                 <label class="fieldName" th:text="#{password}">Password</label>
                 <br/>
                 <input class="input-group-text" type="password" th:field="*{password}"/>
-                <label class="error" th:errors="*{password}">Password Error</label>
+                <label class="error" th:if="${#fields.hasErrors('password')}" >
+                    Password can't be empty
+                </label>
                 <br/><br/>
 
                 <input class="btn btn-primary" type="submit" value="Update"/>

@@ -135,9 +135,9 @@ public class PostMvcController {
 
     @PostMapping("/update/{id}")
     public String updatePost(@PathVariable int id,
-                             @Valid @ModelAttribute("post") PostDTO postDto,
-                             HttpSession session,
+                             @Valid @ModelAttribute("post") Post post,
                              BindingResult errors,
+                             HttpSession session,
                              Model model) {
         User user;
         try {
@@ -151,8 +151,7 @@ public class PostMvcController {
         }
 
         try {
-            Post newPost = postMapper.fromDto(id, postDto);
-            postService.update(newPost, user);
+            postService.update(post, user);
             return "redirect:/posts";
         } catch (EntityNotFoundException e) {
             model.addAttribute("error", e.getMessage());

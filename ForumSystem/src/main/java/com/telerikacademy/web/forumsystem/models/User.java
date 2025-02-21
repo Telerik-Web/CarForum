@@ -3,6 +3,7 @@ package com.telerikacademy.web.forumsystem.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.Objects;
@@ -18,9 +19,11 @@ public class User {
     private int id;
 
     @Column(name = "first_name")
+    @NotEmpty
     private String firstName;
 
     @Column(name = "last_name")
+    @NotEmpty
     private String lastName;
 
     @Column(name = "email")
@@ -31,6 +34,7 @@ public class User {
 
     @JsonIgnore
     @Column(name = "password")
+    @NotEmpty
     private String password;
 
     @Column(name = "isAdmin")
