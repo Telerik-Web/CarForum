@@ -8,6 +8,7 @@ import com.telerikacademy.web.forumsystem.mappers.UserMapper;
 import com.telerikacademy.web.forumsystem.models.LoginDto;
 import com.telerikacademy.web.forumsystem.models.RegisterDto;
 import com.telerikacademy.web.forumsystem.models.User;
+import com.telerikacademy.web.forumsystem.models.UserDTO;
 import com.telerikacademy.web.forumsystem.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -103,20 +104,39 @@ public class AuthenticationMvcController {
         }
     }
 
-
-
     @GetMapping("/account")
     public String showAccountPage(Model model,
                                   HttpSession session) {
         User user = authenticationHelper.tryGetUser(session);
-        model.addAttribute("user", user);
+        UserDTO userDto = userMapper.toDto(user);
+        model.addAttribute("user", userDto);
         return "Account";
     }
 
-    @GetMapping("/account/update/{id}")
-    public String showUserUpdateForm(@PathVariable int id,
-                                     Model model,
-                                     HttpSession session) {
+    @GetMapping("/account/update")
+    public String showUpdatePage(Model model,
+                                  HttpSession session) {
+        User user = authenticationHelper.tryGetUser(session);
+        UserDTO userDto = userMapper.toDto(user);
+        model.addAttribute("user", userDto);
         return "UpdateUser";
+    }
+
+    @PostMapping("/account/update")
+    public String showUserUpdateForm(@Valid @ModelAttribute("user") UserDTO userDto,
+                                     BindingResult errors,
+                                     HttpSession session) {
+        if(errors.hasErrors()) {
+            return "UpdateUser";
+        }
+
+        try {
+            User user = userMapper.fromDto(userDto);
+            userService.update(user, authenticationHelper.tryGetUser(session), user.getId());
+            return "redirect:/auth/account/update";
+        } catch (DuplicateEntityException e) {
+            errors.rejectValue("email", "email_error", e.getMessage());
+            return "UpdateUser";
+        }
     }
 }

@@ -1,10 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title><!DOCTYPE html>
         <html lang="en" xmlns:th="http://www.thymeleaf.org">
-        <head th:replace="~{fragments/PageLayout.html :: head('Register')}"></head>
+        <head th:replace="~{fragments/PageLayout.html :: head('Update')}"></head>
         <body>
 
         <nav th:replace="~{fragments/PageLayout.html :: navbar}"></nav>
@@ -12,9 +8,9 @@
         <section class="container mt-5">
         <div class="masthead vh-100 justify-content-center">
         <div class="container d-flex align-items-center flex-column">
-        <form action="#" th:action="@{/auth/register}" th:object="${register}" method="post">
+        <form action="#" th:action="@{/auth/account/update}" th:object="${user}" method="post">
 
-        <h2 class="page-title">Create an Account</h2>
+        <h2 class="page-title">Update an Account</h2>
 
         <label class="fieldName" th:text="#{username}">Username</label>
         <br/>
@@ -63,9 +59,4 @@
         <div th:replace="~{/fragments/PageLayout.html :: scripts}"></div>
 
         </body>
-        </html></title>
-</head>
-<body>
-
-</body>
-</html>
+        </html>

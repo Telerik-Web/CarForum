@@ -41,6 +41,16 @@ public class UserMapper {
         return user;
     }
 
+    public UserDTO toDto(User user) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUsername(user.getUsername());
+        userDTO.setFirstName(user.getFirstName());
+        userDTO.setLastName(user.getLastName());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setPassword(user.getPassword());
+        return userDTO;
+    }
+
     //update
     private User dtoToObjectUpdate(UserDTO userDto) {
         User user = new User();
