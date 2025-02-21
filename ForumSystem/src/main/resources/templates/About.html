@@ -43,8 +43,8 @@
                 you’ll find your place here.
             </p>
 
-            <p class="content">📢 <strong> <a href="/auth/register" th:href="@{/auth/register}">Sign up today</a></strong> and
-                become part of the fastest-growing car community online!</p>
+            <p class="content" th:unless="${isAuthenticated}">📢 <strong> <a href="/auth/register" th:href="@{/auth/register}">
+                Sign up today</a></strong> and become part of the fastest-growing car community online!</p>
             <br/>
             <p class="content">Let’s keep the passion for cars alive – one post, one ride, and one burnout at a time! 🚗💨</p>
         </div>
