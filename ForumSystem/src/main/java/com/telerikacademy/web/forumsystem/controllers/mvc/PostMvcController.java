@@ -165,8 +165,7 @@ public class PostMvcController {
 
     @GetMapping("/delete/{id}")
     public String deletePost(@PathVariable int id,
-                             HttpSession session,
-                             Model model) {
+                             HttpSession session) {
         User user = authenticationHelper.tryGetUser(session);
         postService.delete(id, user);
         return "redirect:/posts";
@@ -217,7 +216,7 @@ public class PostMvcController {
                                  @ModelAttribute("post") Post post,
                                  HttpSession session,
                                  BindingResult errors,
-                                 Model model){
+                                 Model model) {
         User user;
         try {
             user = authenticationHelper.tryGetUser(session);
@@ -240,5 +239,14 @@ public class PostMvcController {
             model.addAttribute("error", e.getMessage());
             return "AccessDenied";
         }
+    }
+
+    @GetMapping("/{id}/comment/delete/{commentId}")
+    public String deleteComment(@PathVariable int id,
+                                @PathVariable int commentId,
+                                HttpSession session) {
+        User user = authenticationHelper.tryGetUser(session);
+        commentService.delete(commentId, user);
+        return "redirect:/posts/" + id;
     }
 }
