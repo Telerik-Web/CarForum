@@ -123,6 +123,7 @@ public class PostMvcController {
         PostDTO postDTO = postMapper.toDto(post);
         model.addAttribute("post", post);
         return "UpdatePost";
+
     }
 
     @PostMapping("/update/{id}")
@@ -156,10 +157,13 @@ public class PostMvcController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deletePost(@PathVariable int id, HttpSession session) {
+    public String deletePost(@PathVariable int id,
+                             HttpSession session,
+                             Model model) {
         User user = authenticationHelper.tryGetUser(session);
         postService.delete(id, user);
         return "redirect:/posts";
+
     }
 
     @GetMapping("/{id}")
@@ -186,6 +190,7 @@ public class PostMvcController {
         model.addAttribute("post", post);
         model.addAttribute("user", user);
         return "PostDetailsView";
+
     }
 
 }
