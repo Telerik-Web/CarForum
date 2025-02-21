@@ -1,10 +1,55 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/PageLayout.html :: head('AccessDenied')}"></head>
+<head th:replace="~{fragments/PageLayout.html :: head('About')}"></head>
 <body>
 
 <nav th:replace="~{fragments/PageLayout.html :: navbar}"></nav>
+<section class="container mt-5">
+    <div class="masthead vh-100 justify-content-center">
+        <div class="container d-flex align-items-center flex-column">
+            <h1 class="page-title">About Us</h1>
+            <p class="content">Welcome to <strong>RevNation</strong>, the ultimate online community for car enthusiasts,
+                gearheads, and automotive lovers from all around the world! </p>
+            <br/>
 
+            <h2>Our Mission</h2>
+            <p class="content">At RevNation, we strive to create an inclusive and engaging environment where car enthusiasts of all
+                levels
+                can come together. Our goal is to provide a space where members can share knowledge, discuss trends,
+                showcase their rides, and seek advice on everything from performance upgrades to maintenance tips.
+            </p>
+
+            <h2>What We Offer</h2>
+            <ul>
+                <li class="content">✅ <strong>Forums & Discussions</strong> – Chat about everything car-related, from new model releases
+                    and industry news to DIY
+                    projects and technical troubleshooting.
+                </li>
+                <li class="content">✅ <strong>Build Threads</strong> – Share the progress of your car projects and get feedback from the
+                    community.
+                </li>
+                <li class="content">✅ <strong>Events & Meetups</strong> – Stay updated on local and international car meets, track days,
+                    and car shows.
+                </li>
+                <li class="content">✅ <strong>Marketplace</strong> – Buy, sell, and trade car parts, accessories, and vehicles.</li>
+                <li class="content">✅ <strong>Guides & Resources</strong> – Learn from detailed guides, expert opinions, and
+                    community-driven advice.
+                </li>
+            </ul>
+            <h2>Join the Community</h2>
+
+            <p class="content">RevNation isn’t just a forum; it’s a family of car lovers who support and inspire one another. Whether
+                you’re a seasoned mechanic, a first-time car owner, or just someone who appreciates beautiful machines,
+                you’ll find your place here.
+            </p>
+
+            <p class="content">📢 <strong> <a href="/auth/register" th:href="@{/auth/register}">Sign up today</a></strong> and
+                become part of the fastest-growing car community online!</p>
+            <br/>
+            <p class="content">Let’s keep the passion for cars alive – one post, one ride, and one burnout at a time! 🚗💨</p>
+        </div>
+    </div>
+</section>
 
 </body>
 </html>
