@@ -4,6 +4,8 @@ INSERT INTO forum.users (user_id, first_name, last_name, email, username, passwo
 VALUES (2, 'Vladi', 'Venkov', 'vladi@example.com', 'vladi', 'pass2', true, false);
 INSERT INTO forum.users (user_id, first_name, last_name, email, username, password, isAdmin, isBlocked)
 VALUES (3, 'Petar', 'Raykov', 'pesho@example.com', 'pesho', 'pass3', true, false);
+INSERT INTO forum.users (user_id, first_name, last_name, email, username, password, isAdmin, isBlocked)
+VALUES (4, 'Gosho', 'Goshev', 'gosho@gmail.com', 'gosho', 'gosho123', false, false );
 
 INSERT INTO forum.phone_numbers (phone_number_id, phone_number, user_id)
 VALUES (1, '0888 202330', 1);
