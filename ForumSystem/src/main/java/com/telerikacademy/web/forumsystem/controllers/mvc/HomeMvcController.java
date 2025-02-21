@@ -56,4 +56,14 @@ public class HomeMvcController {
             return "redirect:/auth/login";
         }
     }
+
+    @GetMapping("/about")
+    public String showAboutPage() {
+        return "About";
+    }
+
+    @GetMapping("/account")
+    public String showAccountPage() {
+        return "Account";
+    }
 }
