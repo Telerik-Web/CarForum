@@ -117,13 +117,12 @@ public class AuthenticationMvcController {
     public String showUpdatePage(Model model,
                                   HttpSession session) {
         User user = authenticationHelper.tryGetUser(session);
-        UserDTO userDto = userMapper.toDto(user);
-        model.addAttribute("user", userDto);
+        model.addAttribute("user", user);
         return "UpdateUser";
     }
 
     @PostMapping("/account/update")
-    public String showUserUpdateForm(@Valid @ModelAttribute("user") UserDTO userDto,
+    public String showUserUpdateForm(@Valid @ModelAttribute("user") User user,
                                      BindingResult errors,
                                      HttpSession session) {
         if(errors.hasErrors()) {
@@ -131,9 +130,8 @@ public class AuthenticationMvcController {
         }
 
         try {
-            User user = userMapper.fromDto(userDto);
-            userService.update(user, authenticationHelper.tryGetUser(session), user.getId());
-            return "redirect:/auth/account/update";
+            userService.update(user, user, authenticationHelper.tryGetUser(session).getId());
+            return "redirect:/auth/account";
         } catch (DuplicateEntityException e) {
             errors.rejectValue("email", "email_error", e.getMessage());
             return "UpdateUser";
