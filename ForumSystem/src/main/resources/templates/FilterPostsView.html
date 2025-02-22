@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/PageLayout :: head('FilterPosts')}"></head>
+<body>
+<nav th:replace="~{fragments/PageLayout :: navbar}"></nav>
+
+    <br/><br/><br/><br/><br/>
+<div class="container d-flex justify-content-center align-items-center">
+    <form class="filter-form p-4 border rounded bg-light shadow"
+          action="#" th:action="@{/posts/filter}" method="get" th:object="${filterOptions}">
+
+        <h4 class="text-center" th:text="#{posts.filter.label}">Filter Options</h4>
+        <br/>
+
+        <div class="mb-3">
+            <input type="text" class="form-control" placeholder="Post title" th:field="*{title}"/>
+        </div>
+
+        <div class="mb-3">
+            <input type="text" class="form-control" placeholder="Content" th:field="*{content}"/>
+        </div>
+
+        <div class="mb-3">
+            <input type="text" class="form-control" placeholder="Username" th:field="*{createdBy}"/>
+        </div>
+
+        <div class="mb-3">
+            <select class="form-select" th:field="*{sortBy}">
+                <option value="title">Title</option>
+                <option value="content">Content</option>
+                <option value="username">Username</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <select class="form-select" th:field="*{sortOrder}">
+                <option value="asc">Ascending</option>
+                <option value="DESC">Descending</option>
+            </select>
+        </div>
+
+        <div class="d-grid">
+            <input type="submit" class="btn btn-primary" value="Search"/>
+        </div>
+    </form>
+</div>
+
+
+    <div th:if="${isFilterEmpty}">
+        <article>
+            <div class="container mt-4">
+                <div class="row justify-content-center">
+                    <div th:each="post : ${mostRecentPosts}" class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title" th:text="${post.title}">Post Title</h5>
+                                <p class="card-text" th:text="${post.content}">Post Content</p>
+                                <div class="mt-auto d-flex justify-content-between">
+                                    <a href="#" class="btn btn-primary">Read More</a>
+                                    <div class="comment-author">
+                                        <p><strong th:text="${post.createdBy.username}">Username</strong></p>
+                                    </div>
+                                    <small class="text-muted">Posted on: <span th:text="${post.timestamp}"></span></small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+    <div class="justify-content-center align-content-center" th:unless="${isFilterEmpty}">
+        <h2 class="text-center mt-5" th:text="#{posts.filter.title}">Filtered Posts</h2>
+
+        <article>
+            <div class="container mt-4 vh-75">
+                <div class="row justify-content-center">
+                    <div th:each="post : ${posts}" class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title" th:text="${post.title}">Post Title</h5>
+                                <p class="card-text" th:text="${post.content}">Post Content</p>
+                                <div class="mt-auto d-flex justify-content-between">
+                                    <a href="#" class="btn btn-primary">Read More</a>
+                                    <div class="comment-author">
+                                        <p><strong th:text="${post.createdBy.username}">Username</strong></p>
+                                    </div>
+                                    <small class="text-muted">Posted on: <span th:text="${post.timestamp}"></span></small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+    <br/><br/>
+
+
+<footer th:replace="~{fragments/PageLayout :: footer}"></footer>
+<div th:replace="~{fragments/PageLayout :: scripts}"></div>
+</body>
+</html>

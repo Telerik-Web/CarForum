@@ -11,6 +11,7 @@ import com.telerikacademy.web.forumsystem.models.*;
 import com.telerikacademy.web.forumsystem.services.CommentService;
 import com.telerikacademy.web.forumsystem.services.CommentServiceImpl;
 import com.telerikacademy.web.forumsystem.services.PostService;
+import com.telerikacademy.web.forumsystem.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -23,32 +24,44 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+
+import static com.telerikacademy.web.forumsystem.models.FilterPostDTO.checkIfFilterIsEmpty;
 
 @Controller
 @RequestMapping("/posts")
 public class PostMvcController {
 
     private final PostService postService;
+    private final UserService userService;
     private final AuthenticationHelper authenticationHelper;
     private final PostMapper postMapper;
     private final CommentService commentService;
-    private final CommentServiceImpl commentServiceImpl;
     private final CommentMapper commentMapper;
 
     @Autowired
-    public PostMvcController(PostService postService, AuthenticationHelper authenticationHelper, PostMapper postMapper, CommentService commentService, CommentServiceImpl commentServiceImpl, CommentMapper commentMapper) {
+    public PostMvcController(PostService postService, UserService userService, AuthenticationHelper authenticationHelper, PostMapper postMapper, CommentService commentService, CommentServiceImpl commentServiceImpl, CommentMapper commentMapper) {
         this.postService = postService;
+        this.userService = userService;
         this.authenticationHelper = authenticationHelper;
         this.postMapper = postMapper;
         this.commentService = commentService;
-        this.commentServiceImpl = commentServiceImpl;
         this.commentMapper = commentMapper;
     }
 
     @ModelAttribute("isAuthenticated")
     public boolean populateIsAuthenticated(HttpSession session) {
         return session.getAttribute("currentUser") != null;
+    }
+
+    @ModelAttribute("currentUser")
+    public Optional<User> populateCurrentUser(HttpSession session) {
+        if (populateIsAuthenticated(session)) {
+            String currentUsername = (String) session.getAttribute("currentUser");
+            return Optional.ofNullable(userService.getByUsername(currentUsername));
+        }
+        return Optional.empty();
     }
 
     @GetMapping
@@ -74,6 +87,32 @@ public class PostMvcController {
         model.addAttribute("user", user);
 
         return "PostsView";
+    }
+
+    @GetMapping("/filter")
+    public String showFilteredPosts(@ModelAttribute("filterOptions") FilterPostDTO filterDto, Model model, HttpSession session) {
+        try {
+            FilterPostOptions filterPostOptions = new FilterPostOptions(
+                    filterDto.getTitle(),
+                    filterDto.getContent(),
+                    filterDto.getCreatedBy(),
+                    filterDto.getSortBy(),
+                    filterDto.getSortOrder()
+            );
+            List<Post> posts = postService.getAll(filterPostOptions);
+            User user = authenticationHelper.tryGetUser(session);
+            model.addAttribute("posts", posts);
+            model.addAttribute("mostRecentPosts", postService.getMostRecentPosts());
+            model.addAttribute("isFilterEmpty", checkIfFilterIsEmpty(filterDto));
+            model.addAttribute("filterOptions", filterDto);
+            if(user.isAdmin()){
+                return "FilterPostsView";
+            }
+            return "AccessDenied";
+        } catch (AuthenticationFailureException e) {
+            return "redirect:/auth/login";
+        }
+
     }
 
     @GetMapping("/new")

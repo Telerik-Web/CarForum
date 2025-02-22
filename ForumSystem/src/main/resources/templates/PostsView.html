@@ -46,6 +46,14 @@
 <section class="container">
   <h1 class="mb-4 text-center">Forum Posts</h1>
 
+  <div class="d-flex justify-content-center mb-5">
+    <a th:if="${isAuthenticated && session.isAdmin}"
+       class="btn btn-primary me-4"
+       th:href="@{/posts/filter}">
+      Filter Posts
+    </a>
+  </div>
+
   <article class="row justify-content-center">
     <div class="col-md-10">
       <div th:each="post : ${posts}" class="card mb-3">
