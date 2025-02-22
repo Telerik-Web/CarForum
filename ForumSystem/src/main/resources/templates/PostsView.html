@@ -61,9 +61,14 @@
           <div class="card-body">
             <h5 class="card-title" th:text="${post.title}">Post Title</h5>
             <p class="card-text" th:text="${post.content}">Post Content</p>
-            <div class="mt-auto d-flex justify-content-between">
+
+            <div class="mt-auto d-flex justify-content-between align-items-end">
               <a href="#" th:href="@{/posts/{id}(id=${post.id})}" class="btn btn-primary">Read More</a>
-              <small class="text-muted">Posted on: <span th:text="${post.timestamp}"></span></small>
+
+              <div class="d-flex flex-column align-items-end">
+                <p class="mb-0"><strong th:text="${post.createdBy.username}">Username</strong></p>
+                <small class="text-muted">Posted on: <span th:text="${post.timestamp}"></span></small>
+              </div>
             </div>
           </div>
         </div>

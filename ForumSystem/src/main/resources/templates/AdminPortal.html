@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/PageLayout :: head('Admin Portal')}"></head>
 <body>
-<h1>Hi!</h1>
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet culpa dolore dolorem eius eos eum ex expedita fugiat id, illum itaque labore libero magnam minima minus nam nisi nostrum porro quaerat quas quia quod recusandae reprehenderit rerum temporibus tenetur totam.</p>
+<nav th:replace="~{fragments/PageLayout :: navbar}"></nav>
+
+
 </body>
 </html>
