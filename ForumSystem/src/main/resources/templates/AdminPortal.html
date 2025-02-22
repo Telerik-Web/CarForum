@@ -4,6 +4,68 @@
 <body>
 <nav th:replace="~{fragments/PageLayout :: navbar}"></nav>
 
+<br/><br/><br/><br/><br/>
+<div class="container d-flex justify-content-center align-items-center">
+    <form class="filter-form p-4 border rounded bg-light shadow"
+          action="#" th:action="@{/users/admin}" method="get" th:object="${filterUserOptions}">
 
+        <h4 class="text-center" th:text="#{users.list}">User List</h4>
+        <br/>
+
+        <div class="mb-3">
+            <input type="text" class="form-control" placeholder="Username" th:field="*{username}"/>
+        </div>
+
+        <div class="mb-3">
+            <input type="text" class="form-control" placeholder="Email" th:field="*{email}"/>
+        </div>
+
+        <div class="mb-3">
+            <input type="text" class="form-control" placeholder="First Name" th:field="*{firstName}"/>
+        </div>
+
+
+        <div class="d-grid">
+            <input type="submit" class="btn btn-primary" value="Search"/>
+        </div>
+    </form>
+</div>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Full Name</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.firstName} + ' ' + ${user.lastName}"></td>
+        <td>
+            <form th:action="@{/users/{id}/promote(id=${user.id})}" method="post">
+                <button type="submit" class="btn"
+                        th:classappend="${user.isAdmin() == false} ? 'btn-info' : 'btn-danger'"
+                        th:text="${user.isAdmin() == false} ? 'Promote To Admin' : 'Demote To User'">
+                </button>
+            </form>
+        </td>
+        <td>
+            <form th:action="@{/users/{id}/block(id=${user.id})}" method="post">
+                <button type="submit" class="btn"
+                        th:classappend="${user.isBlocked() == false} ? 'btn-danger' : 'btn-success'"
+                        th:text="${user.isBlocked() == false} ? 'Block' : 'Unblock'">
+                </button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<footer th:replace="~{fragments/PageLayout.html :: footer}"></footer>
+<div th:replace="~{/fragments/PageLayout.html :: scripts}"></div>
 </body>
 </html>

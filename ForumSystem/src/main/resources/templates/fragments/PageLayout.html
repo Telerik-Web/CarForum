@@ -32,7 +32,7 @@
                 <li class="nav-item"><a class="nav-link" href="#" th:href="@{/posts/new}" th:if="${isAuthenticated}">Create Post</a></li>
                 <li class="nav-item"><a class="nav-link" href="#" th:href="@{/about}">About</a></li>
                 <li class="nav-item"><a class="nav-link" href="#" th:href="@{/auth/account}" th:if="${isAuthenticated}">Account</a></li>
-                <li class="nav-item"><a class="nav-link" href="#" th:if="${isAuthenticated && session.isAdmin}" th:href="@{/admin}">Admin Portal</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" th:if="${isAuthenticated && session.isAdmin}" th:href="@{/users/admin}">Admin Portal</a></li>
                 <li class="nav-item"><a class="nav-link" href="#" th:unless="${isAuthenticated}" th:href="@{/auth/login}">Login</a></li>
                 <li class="nav-item"><a class="nav-link" href="#" th:unless="${isAuthenticated}" th:href="@{/auth/register}">Register</a></li>
                 <li class="nav-item"><a class="nav-link" href="#" th:if="${isAuthenticated}" th:href="@{/auth/logout}">Logout</a></li>

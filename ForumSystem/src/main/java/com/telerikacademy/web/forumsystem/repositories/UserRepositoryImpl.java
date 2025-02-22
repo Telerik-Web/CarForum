@@ -168,6 +168,7 @@ public class UserRepositoryImpl implements UserRepository {
             case "firstName" -> "firstName";
             case "lastName" -> "lastName";
             case "username" -> "username";
+            case "email" -> "email";
             default -> "";
         };
 
