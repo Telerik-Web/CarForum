@@ -141,10 +141,17 @@ public class PostMvcController {
             user = authenticationHelper.tryGetUser(session);
         } catch (AuthenticationFailureException e) {
             return "AccessDenied";
+        } catch (UnauthorizedOperationException e){
+            return "BlockedView";
         }
 
         Post post = postMapper.fromDto(postDTO);
-        postService.create(post, user);
+        try{
+            postService.create(post, user);
+        } catch (UnauthorizedOperationException e){
+            return "BlockedView";
+        }
+
         return "redirect:/posts";
     }
 
@@ -164,7 +171,7 @@ public class PostMvcController {
             return "AccessDenied";
         } catch (UnauthorizedOperationException e) {
             model.addAttribute("error", e.getMessage());
-            return "AccessDenied";
+            return "BlockedView";
         }
         PostDTO postDTO = postMapper.toDto(post);
         model.addAttribute("post", post);
@@ -242,6 +249,8 @@ public class PostMvcController {
             user = authenticationHelper.tryGetUser(session);
         } catch (AuthenticationFailureException e) {
             return "AccessDenied";
+        } catch (UnauthorizedOperationException e) {
+            return "BlockedView";
         }
         model.addAttribute("user", user);
         model.addAttribute("post", post);
@@ -260,6 +269,8 @@ public class PostMvcController {
             user = authenticationHelper.tryGetUser(session);
         } catch (AuthenticationFailureException e) {
             return "AccessDenied";
+        } catch (UnauthorizedOperationException e) {
+            return "BlockedView";
         }
 
         if (errors.hasErrors()) {
@@ -275,7 +286,7 @@ public class PostMvcController {
             return "NotFound";
         } catch (UnauthorizedOperationException e) {
             model.addAttribute("error", e.getMessage());
-            return "AccessDenied";
+            return "BlockedView";
         }
     }
 
@@ -313,6 +324,8 @@ public class PostMvcController {
         } catch (EntityNotFoundException e) {
             model.addAttribute("error", e.getMessage());
             return "NotFound";
+        } catch (UnauthorizedOperationException e) {
+            return "BlockedView";
         }
     }
 
@@ -338,9 +351,11 @@ public class PostMvcController {
             commentService.update(existingComment, loggedInUser);
 
             return "redirect:/posts/" + postId; // Redirect to post page
-        } catch (EntityNotFoundException | UnauthorizedOperationException e) {
+        } catch (EntityNotFoundException e) {
             model.addAttribute("error", e.getMessage());
             return "NotFound";
+        } catch (UnauthorizedOperationException e){
+            return "BlockedView";
         }
     }
 
