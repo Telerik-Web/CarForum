@@ -17,6 +17,16 @@
                 <br/><br/>
             </div>
 
+
+            <form th:action="@{/posts/{id}/like(id=${post.id})}" method="post">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-thumbs-up" th:classappend="${post.getLikes().contains(user) ? 'text-success' : ''}"></i>
+                    <span th:text="${post.getLikesSize()}"></span>
+                </button>
+            </form>
+
+
+
             <h3>Comments</h3>
             <div class="comments-section">
                 <div th:each="comment : ${comments}" class="comment-box">

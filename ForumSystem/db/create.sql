@@ -48,7 +48,7 @@ create table comments
 
 create table likes
 (
-    like_id int not null primary key,
+    like_id int auto_increment primary key,
     post_id int not null,
     user_id int not null,
     constraint likes_posts_post_id_fk

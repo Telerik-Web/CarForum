@@ -359,6 +359,21 @@ public class PostMvcController {
         }
     }
 
+    @PostMapping("/{id}/like")
+    public String likeAPost(@PathVariable int id, HttpSession httpSession) {
+        User user;
+        Post post;
+        try {
+            user = authenticationHelper.tryGetUser(httpSession);
+            post = postService.getById(id);
+            postService.alterPostLikes(id, user, !post.getLikes().contains(user));
+            return "redirect:/posts/{id}";
+        } catch (UnauthorizedOperationException e) {
+            return "BlockedView";
+        }
+
+    }
+
 //    @GetMapping("/{id}/comment/update/{commentId}")
 //    public String updateComment(@PathVariable int id,
 //                                @PathVariable int commentId,
