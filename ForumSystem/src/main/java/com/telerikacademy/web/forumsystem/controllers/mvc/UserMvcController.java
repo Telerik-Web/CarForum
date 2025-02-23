@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.telerikacademy.web.forumsystem.models.FilterUserDTO.checkIfUserFilterIsEmpty;
 
@@ -30,6 +31,15 @@ public class UserMvcController {
     @ModelAttribute("isAuthenticated")
     public boolean populateIsAuthenticated(HttpSession session) {
         return session.getAttribute("currentUser") != null;
+    }
+
+    @ModelAttribute("currentUser")
+    public Optional<User> populateCurrentUser(HttpSession session) {
+        if (populateIsAuthenticated(session)) {
+            String currentUsername = (String) session.getAttribute("currentUser");
+            Optional.ofNullable(userService.getByUsername(currentUsername));
+        }
+        return Optional.empty();
     }
 
     @GetMapping("/admin")
