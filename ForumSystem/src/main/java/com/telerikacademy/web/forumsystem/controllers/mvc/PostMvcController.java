@@ -127,7 +127,6 @@ public class PostMvcController {
             model.addAttribute("error", e.getMessage());
             return "AccessDenied";
         }
-        PostDTO postDTO = postMapper.toDto(post);
         model.addAttribute("post", post);
         return "UpdatePost";
 
@@ -135,7 +134,7 @@ public class PostMvcController {
 
     @PostMapping("/update/{id}")
     public String updatePost(@PathVariable int id,
-                             @Valid @ModelAttribute("post") Post post,
+                             @Valid @ModelAttribute("post") PostDTO postDto,
                              BindingResult errors,
                              HttpSession session,
                              Model model) {
@@ -151,6 +150,7 @@ public class PostMvcController {
         }
 
         try {
+            Post post = postMapper.fromDto(id, postDto);
             postService.update(post, user);
             return "redirect:/posts";
         } catch (EntityNotFoundException e) {
