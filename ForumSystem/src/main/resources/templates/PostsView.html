@@ -46,6 +46,14 @@
 <section class="container">
   <h1 class="mb-4 text-center">Forum Posts</h1>
 
+  <div class="d-flex justify-content-center mb-5">
+    <a th:if="${isAuthenticated && session.isAdmin}"
+       class="btn btn-primary me-4"
+       th:href="@{/posts/filter}">
+      Filter Posts
+    </a>
+  </div>
+
   <article class="row justify-content-center">
     <div class="col-md-10">
       <div th:each="post : ${posts}" class="card mb-3">
@@ -53,19 +61,14 @@
           <div class="card-body">
             <h5 class="card-title" th:text="${post.title}">Post Title</h5>
             <p class="card-text" th:text="${post.content}">Post Content</p>
-            <div class="mt-auto d-flex justify-content-between">
+
+            <div class="mt-auto d-flex justify-content-between align-items-end">
               <a href="#" th:href="@{/posts/{id}(id=${post.id})}" class="btn btn-primary">Read More</a>
-              <a th:if="${user != null and (user.isAdmin() or post.getCreatedBy().getId() == user.getId())}"
-                 class="btn btn-primary"
-                 th:href="@{/posts/update/{id} (id=${post.id})}">
-                Update
-              </a>
-              <a th:if="${user != null and (user.isAdmin() or post.getCreatedBy().getId() == user.getId())}"
-                 class="btn btn-danger"
-                 th:href="@{/posts/delete/{id}(id=${post.getId()})}">
-                Delete
-              </a>
-              <small class="text-muted">Posted on: <span th:text="${post.timestamp}"></span></small>
+
+              <div class="d-flex flex-column align-items-end">
+                <p class="mb-0"><strong th:text="${post.createdBy.username}">Username</strong></p>
+                <small class="text-muted">Posted on: <span th:text="${post.timestamp}"></span></small>
+              </div>
             </div>
           </div>
         </div>

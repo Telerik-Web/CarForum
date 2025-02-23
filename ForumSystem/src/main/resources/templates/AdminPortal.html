@@ -1,11 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/PageLayout :: head('Admin Portal')}"></head>
 <body>
-<h1>Hi!</h1>
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet culpa dolore dolorem eius eos eum ex expedita fugiat id, illum itaque labore libero magnam minima minus nam nisi nostrum porro quaerat quas quia quod recusandae reprehenderit rerum temporibus tenetur totam.</p>
+<nav th:replace="~{fragments/PageLayout :: navbar}"></nav>
+
+<br/><br/><br/><br/><br/>
+<div class="container d-flex justify-content-center align-items-center mb-5 mt-5">
+    <form class="filter-form p-4 border rounded bg-light shadow"
+          action="#" th:action="@{/users/admin}" method="get" th:object="${filterUserOptions}">
+
+        <h4 class="text-center" th:text="#{users.list}">User Search</h4>
+        <br/>
+
+        <div class="mb-3">
+            <input type="text" class="form-control" placeholder="Username" th:field="*{username}"/>
+        </div>
+
+        <div class="mb-3">
+            <input type="text" class="form-control" placeholder="Email" th:field="*{email}"/>
+        </div>
+
+        <div class="mb-3">
+            <input type="text" class="form-control" placeholder="First Name" th:field="*{firstName}"/>
+        </div>
+
+
+        <div class="d-grid">
+            <input type="submit" class="btn btn-primary" value="Search"/>
+        </div>
+    </form>
+</div>
+
+<br/><br/><br/>
+
+<table class="table table-striped table-hover table-bordered mb-5">
+    <thead class="table-dark text-center">
+    <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Full Name</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}" class="align-middle">
+        <td th:text="${user.username}" class="text-center"></td>
+        <td th:text="${user.email}" class="text-center"></td>
+        <td th:text="${user.firstName} + ' ' + ${user.lastName}" class="text-center"></td>
+        <td class="d-flex gap-2 justify-content-center align-items-center">
+            <form th:action="@{/users/{id}/promote(id=${user.id})}" method="post">
+                <button type="submit" class="btn px-3 py-2"
+                        th:classappend="${user.isAdmin() == false} ? 'btn-info' : 'btn-danger'"
+                        th:text="${user.isAdmin() == false} ? 'Promote To Admin' : 'Demote To User'">
+                </button>
+            </form>
+            <form th:action="@{/users/{id}/block(id=${user.id})}" method="post">
+                <button type="submit" class="btn px-3 py-2"
+                        th:classappend="${user.isBlocked() == false} ? 'btn-danger' : 'btn-success'"
+                        th:text="${user.isBlocked() == false} ? 'Block' : 'Unblock'">
+                </button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+<div th:replace="~{/fragments/PageLayout.html :: scripts}"></div>
 </body>
 </html>

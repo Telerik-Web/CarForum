@@ -11,6 +11,10 @@ public class FilterUserOptions {
     private Optional<String> sortBy;
     private Optional<String> sortOrder;
 
+    public FilterUserOptions() {
+        this(null, null, null, null, null, null);
+    }
+
     public FilterUserOptions(String firstName,
                              String lastName, String username, String email,
                              String sortBy, String sortOrder) {

@@ -59,15 +59,19 @@ public class PostRepositoryImpl implements PostRepository{
             });
 
 
+
             if (!filters.isEmpty()) {
-                queryString.append(" where ")
-                        .append(String.join(" and ", filters));
-            } else {
-                queryString.append(" order by timestamp desc");
+                queryString.append(" where ").append(String.join(" and ", filters));
             }
 
 
-            queryString.append(createOrderBy(filterPostOptions));
+            String orderByClause = createOrderBy(filterPostOptions);
+            if (orderByClause.isEmpty()) {
+                queryString.append(" order by timestamp desc");
+            } else {
+                queryString.append(orderByClause);
+            }
+
             Query<Post> query = session.createQuery(queryString.toString(), Post.class);
             query.setProperties(params);
             return query.list();
@@ -176,7 +180,7 @@ public class PostRepositoryImpl implements PostRepository{
         String orderBy = switch (filterOptions.getSortBy().get()) {
             case "title" -> "title";
             case "content" -> "content";
-            case "createdBy" -> "createdBy.username";
+            case "createdBy", "username" -> "createdBy.username";
             default -> "";
         };
 

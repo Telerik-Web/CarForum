@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/PageLayout.html :: head('Blocked')}"></head>
+<body>
+
+<nav th:replace="~{fragments/PageLayout.html :: navbar}"></nav>
+
+<section class="container mt-5">
+  <div class="masthead vh-100 justify-content-center">
+    <div class="container d-flex align-items-center flex-column">
+      <h1 class="text-center page-title text-danger mb-5">You have been blocked from this forum!!!</h1>
+
+      <div th:if="${isAuthenticated}">
+        <a class="btn btn-primary" href="/" th:href="@{/}">Go Back Home</a>
+      </div>
+      <div th:unless="${isAuthenticated}">
+        <a class="btn btn-primary" href="/auth/login" th:href="@{/auth/login}">Login</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

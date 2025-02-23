@@ -11414,3 +11414,8 @@ section#contact form#contactForm :-ms-input-placeholder {
   word-break: break-word;
   overflow-wrap: break-word;
 }
+
+.filter-form {
+  position: relative;
+  z-index: 1020;
+}

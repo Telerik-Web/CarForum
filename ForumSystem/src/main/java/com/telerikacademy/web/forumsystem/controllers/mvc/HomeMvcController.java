@@ -2,9 +2,10 @@ package com.telerikacademy.web.forumsystem.controllers.mvc;
 
 import com.telerikacademy.web.forumsystem.exceptions.AuthenticationFailureException;
 import com.telerikacademy.web.forumsystem.helpers.AuthenticationHelper;
-import com.telerikacademy.web.forumsystem.models.User;
+import com.telerikacademy.web.forumsystem.models.*;
 import com.telerikacademy.web.forumsystem.services.PostService;
 import com.telerikacademy.web.forumsystem.services.UserService;
+import jakarta.servlet.Filter;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +13,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
+
+import static com.telerikacademy.web.forumsystem.models.FilterPostDTO.checkIfFilterIsEmpty;
+import static com.telerikacademy.web.forumsystem.models.FilterUserDTO.checkIfUserFilterIsEmpty;
 
 @Controller
 @RequestMapping("/")
@@ -45,18 +51,7 @@ public class HomeMvcController {
         return "HomeView";
     }
 
-    @GetMapping("/admin")
-    public String showAdminPage(HttpSession session) {
-        try{
-            User user = authenticationHelper.tryGetUser(session);
-            if(user.isAdmin()){
-                return "AdminPortal";
-            }
-            return "HomeView";
-        } catch (AuthenticationFailureException e){
-            return "redirect:/auth/login";
-        }
-    }
+
 
     @GetMapping("/about")
     public String showAboutPage() {
