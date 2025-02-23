@@ -24,7 +24,6 @@
             <input type="text" class="form-control" placeholder="First Name" th:field="*{firstName}"/>
         </div>
 
-
         <div class="d-grid">
             <input type="submit" class="btn btn-primary" value="Search"/>
         </div>
@@ -48,13 +47,13 @@
         <td th:text="${user.email}" class="text-center"></td>
         <td th:text="${user.firstName} + ' ' + ${user.lastName}" class="text-center"></td>
         <td class="d-flex gap-2 justify-content-center align-items-center">
-            <form th:action="@{/users/{id}/promote(id=${user.id})}" method="post">
+            <form th:if="${currentUser.username != user.username}" th:action="@{/users/{id}/promote(id=${user.id})}" method="post">
                 <button type="submit" class="btn px-3 py-2"
                         th:classappend="${user.isAdmin() == false} ? 'btn-info' : 'btn-danger'"
                         th:text="${user.isAdmin() == false} ? 'Promote To Admin' : 'Demote To User'">
                 </button>
             </form>
-            <form th:action="@{/users/{id}/block(id=${user.id})}" method="post">
+            <form th:if="${currentUser.username != user.username}" th:action="@{/users/{id}/block(id=${user.id})}" method="post">
                 <button type="submit" class="btn px-3 py-2"
                         th:classappend="${user.isBlocked() == false} ? 'btn-danger' : 'btn-success'"
                         th:text="${user.isBlocked() == false} ? 'Block' : 'Unblock'">
@@ -64,7 +63,6 @@
     </tr>
     </tbody>
 </table>
-
 
 <div th:replace="~{/fragments/PageLayout.html :: scripts}"></div>
 </body>

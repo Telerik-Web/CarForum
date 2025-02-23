@@ -20,7 +20,7 @@
 
             <form th:action="@{/posts/{id}/like(id=${post.id})}" method="post">
                 <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-thumbs-up" th:classappend="${post.getLikes().contains(user) ? 'text-success' : ''}"></i>
+                    <i class="fas fa-thumbs-up" th:classappend="${post.getLikes().contains(user) ? 'text-dark' : ''}"></i>
                     <span th:text="${post.getLikesSize()}"></span>
                 </button>
             </form>
