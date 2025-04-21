@@ -2,7 +2,7 @@ package com.telerikacademy.web.forumsystem.repositories;
 
 import com.telerikacademy.web.forumsystem.models.FilterUserOptions;
 import com.telerikacademy.web.forumsystem.models.User;
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 
 import java.util.List;
 

@@ -4,8 +4,8 @@ import com.telerikacademy.web.forumsystem.exceptions.AuthenticationFailureExcept
 import com.telerikacademy.web.forumsystem.exceptions.UnauthorizedOperationException;
 import com.telerikacademy.web.forumsystem.models.User;
 import com.telerikacademy.web.forumsystem.services.UserService;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.servlet.http.HttpSession;
+import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

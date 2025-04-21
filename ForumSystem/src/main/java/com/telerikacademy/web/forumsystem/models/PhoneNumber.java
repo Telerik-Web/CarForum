@@ -1,7 +1,7 @@
 package com.telerikacademy.web.forumsystem.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "phone_numbers")

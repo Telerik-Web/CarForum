@@ -1,9 +1,9 @@
 package com.telerikacademy.web.forumsystem.models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;

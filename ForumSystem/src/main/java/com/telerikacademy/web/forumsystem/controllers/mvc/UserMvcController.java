@@ -6,7 +6,7 @@ import com.telerikacademy.web.forumsystem.models.FilterUserDTO;
 import com.telerikacademy.web.forumsystem.models.FilterUserOptions;
 import com.telerikacademy.web.forumsystem.models.User;
 import com.telerikacademy.web.forumsystem.services.UserService;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

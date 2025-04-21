@@ -1,7 +1,7 @@
 package com.telerikacademy.web.forumsystem.models;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 
 public class RegisterDto extends LoginDto {
     @NotEmpty(message = "Password confirmation cannot be empty!")

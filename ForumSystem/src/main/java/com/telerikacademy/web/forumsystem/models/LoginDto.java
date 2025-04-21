@@ -1,6 +1,6 @@
 package com.telerikacademy.web.forumsystem.models;
 
-import jakarta.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotEmpty;
 
 public class LoginDto {
 

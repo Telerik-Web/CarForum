@@ -1,8 +1,7 @@
 package com.telerikacademy.web.forumsystem.models;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 public class PostDTO {
     @NotEmpty(message = "Title can't be empty")
